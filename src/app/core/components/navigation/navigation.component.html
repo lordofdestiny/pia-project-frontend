@@ -1,0 +1,27 @@
+<div class="card">
+    <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+            <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
+        </ng-template>
+        <ng-template pTemplate="end" class="flex-row">
+            <div class="flex align-items-center mb-4">
+                <a (click)="changeTheme('lara-light-teal')" class="mr-3 cursor-pointer">
+                    Light Teal
+                </a>
+                <a (click)="changeTheme('lara-dark-teal')" class="mr-3 cursor-pointer">
+                    Dark Team
+                </a>
+            </div>
+            <input type="text" pInputText placeholder="Search" class="w-full" />
+        </ng-template>
+    </p-menubar>
+</div>
+<!-- 
+<div class="flex align-items-center mb-4">
+    <a (click)="changeTheme('lara-light-teal')" class="mr-3 cursor-pointer">
+        Light Teal
+    </a>
+    <a (click)="changeTheme('lara-dark-teal')" class="mr-3 cursor-pointer">
+        Dark Team
+    </a>
+</div> -->
