@@ -5,29 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { WelcomeModule } from './features/welcome/welcome.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
-import {
-    NavbarModule,
-    DropdownModule,
-    NavModule,
-    CollapseModule,
-    GridModule,
-} from '@coreui/angular';
 
 @NgModule({
     declarations: [AppComponent],
+    providers: [],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
         WelcomeModule,
         CoreModule,
-        NavbarModule,
-        DropdownModule,
-        NavModule,
-        CollapseModule,
-        GridModule,
     ],
-    providers: [],
     bootstrap: [AppComponent],
     exports: [],
 })

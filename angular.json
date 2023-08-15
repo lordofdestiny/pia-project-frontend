@@ -27,17 +27,7 @@
 							"src/assets"
 						],
 						"styles": [
-							"src/styles.css",
-							{
-								"input": "src/themes/theme-lara-light-teal.scss",
-								"bundleName": "lara-light-teal",
-								"inject": false
-							},
-							{
-								"input": "src/themes/theme-lara-dark-teal.scss",
-								"bundleName": "lara-dark-teal",
-								"inject": false
-							}
+							"src/styles.css"
 						],
 						"scripts": []
 					},
