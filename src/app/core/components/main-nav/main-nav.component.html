@@ -1,0 +1,30 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" [ngClass]="{hidden: !(isHandset$ | async)! }" fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="#">Log In</a>
+      <a mat-list-item routerLink="#">Register</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <span class="spacer" *ngIf="!(isHandset$ | async)"></span>
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>frontend</span>
+      <span style="flex: 2 1 auto"></span>
+      <!-- <span class="spacer"></span> -->
+      <span *ngIf="!(isHandset$ | async)">
+        <span class="spacer"></span>
+        <a routerLink="#" mat-flat-button color="warm">Log In</a>
+        <a routerLink="#" mat-flat-button color="warm">Register</a>
+      </span>
+      <span class="spacer" *ngIf="!(isHandset$ | async)"></span>
+    </mat-toolbar>
+    <ng-content> </ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
