@@ -1,12 +1,11 @@
-import { Route } from '@angular/router';
-import { Component } from '@angular/core';
+import { Input, Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 export interface NavItemData {
-    text: string;
-    route: Route;
+    title: string;
+    route: string;
 }
 
 @Component({
@@ -15,7 +14,9 @@ export interface NavItemData {
     styleUrls: ['./main-nav.component.css'],
 })
 export class MainNavComponent {
-    navItems: NavItemData[];
+    @Input() title: string = 'Angular Material';
+    @Input() navItems: NavItemData[];
+
     isHandset$: Observable<boolean> = this.breakpointObserver
         .observe(Breakpoints.Handset)
         .pipe(

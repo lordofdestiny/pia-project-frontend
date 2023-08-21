@@ -1,7 +1,3 @@
-<app-main-nav>
-    <button mat-raised-button color="primary">Login</button>
-    <mat-slider min="1" max="100" step="1" value="50"></mat-slider>
+<app-main-nav [title]="title" [navItems]="navItems">
+    <router-outlet></router-outlet>
 </app-main-nav>
-
-
-<router-outlet></router-outlet>

@@ -1,0 +1,34 @@
+[
+    {
+        "name": "doctors_1.jpg",
+        "alt": "Doctors, first image"
+    },
+    {
+        "name": "doctors_2.webp",
+        "alt": "Doctors, second image"
+    },
+    {
+        "name": "medical_3.jpg",
+        "alt": "Medical interface image"
+    },
+    {
+        "name": "stetoscope_ekg_4.webp",
+        "alt": "Stetoscope in a shape of an EKG image"
+    },
+    {
+        "name": "care_5.webp",
+        "alt": "Our doctors care image"
+    },
+    {
+        "name": "house_6.jpg",
+        "alt": "Hugh Laurie as our doctor image"
+    },
+    {
+        "name": "heart_7.jpg",
+        "alt": "Heart and a stetoscope graphic"
+    },
+    {
+        "name": "House_MD_8.jpg",
+        "alt": "House team image"
+    }
+]
