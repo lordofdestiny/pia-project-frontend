@@ -3,17 +3,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { ImageData } from '@core/models/image-data.model';
-export { ImageData } from '@core/models/image-data.model';
-
-export interface ImageText {
-    title: string;
-    text: string;
-    link_text?: string;
-    link?: string;
-}
-
-export interface AboutImage extends ImageData, ImageText {}
+import {
+    AboutImage,
+    AboutImageService,
+} from '@features/landing/services/about-images.service';
 
 @Component({
     selector: 'app-about-gallery',
@@ -21,7 +14,7 @@ export interface AboutImage extends ImageData, ImageText {}
     styleUrls: ['./about-gallery.component.css'],
 })
 export class AboutGalleryComponent implements OnInit {
-    @Input() images: AboutImage[] = [];
+    about_data: AboutImage[] = [];
 
     isHandset$: Observable<boolean> = this.breakpointObserver
         .observe(Breakpoints.Handset)
@@ -30,7 +23,12 @@ export class AboutGalleryComponent implements OnInit {
             shareReplay()
         );
 
-    constructor(private breakpointObserver: BreakpointObserver) {}
+    constructor(
+        private breakpointObserver: BreakpointObserver,
+        private aboutImageService: AboutImageService
+    ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.about_data = this.aboutImageService.getGallery().shuffle();
+    }
 }

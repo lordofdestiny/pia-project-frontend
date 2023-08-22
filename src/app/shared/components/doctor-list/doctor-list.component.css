@@ -1,0 +1,109 @@
+.noselect {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+:host p-table ::ng-deep .primeng-table {
+    margin-bottom: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+
+:host p-table ::ng-deep .primeng-table thead tr th {
+    color: var(--primary);
+}
+
+:host p-table ::ng-deep .primeng-table thead tr th.p-sortable-column:not(.p-highlight) p-sorticon i:before {
+    color: var(--primary);
+}
+
+:host p-table ::ng-deep .primeng-table thead tr th p-columnfilter button:not(.p-column-filter-menu-button-active) {
+    color: var(--primary);
+}
+
+:host p-table ::ng-deep .primeng-table .p-column-filter-menu-button.p-column-filter-menu-button-active,
+:host p-table ::ng-deep .primeng-table .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
+    background: #ff005527;
+    color: var(--accent);
+}
+
+
+:host p-table ::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    background-color: #FEFEF4;
+}
+
+:host p-table ::ng-deep .p-datatable .p-datatable-tbody>tr {
+    background-color: #FEFEF4;
+}
+
+
+:host p-table ::ng-deep .p-datatable .p-sortable-column:not(.p-highlight):hover {
+    background: rgba(255, 166, 0, 0.158);
+    color: var(--accent);
+}
+
+:host p-table ::ng-deep .p-datatable .p-sortable-column:not(.p-highlight):hover p-sorticon i::before {
+    color: var(--accent);
+}
+
+:host p-table ::ng-deep .p-datatable .p-sortable-column.p-highlight,
+:host p-table ::ng-deep .p-datatable .p-sortable-column.p-highlight i {
+    color: var(--accent);
+}
+
+:host p-table ::ng-deep .p-datatable .p-sortable-column.p-highlight p-sorticon {
+    color: var(--accent);
+}
+
+:host p-table ::ng-deep .p-datatable .p-sortable-column .p-sortable-column-badge {
+
+    color: var(--accent);
+    background: #EEF2FF;
+}
+
+
+:host p-table ::ng-deep table .primeng-table {
+    background-color: aquamarine;
+}
+
+:host p-table ::ng-deep .p-datatable .p-datatable-tbody tr td div p-image {
+    border-radius: 10px;
+    border: 1px outset rgba(128, 128, 128, 0.329);
+
+}
+
+:host p-table ::ng-deep .p-datatable .color-button {
+    text-decoration: none;
+    background-color: var(--accent);
+    color: var(--bg-color)
+}
+
+@media screen and (max-width: 768px) {
+    :host p-table ::ng-deep .p-datatable .avatar-small-bottom-border {
+        margin-top: 20px;
+        /* border-bottom: 1px solid rgba(114, 114, 114, 0.281) !important; */
+    }
+
+    :host p-table ::ng-deep #pr_id_1.p-datatable-gridlines>.p-datatable-wrapper>.p-datatable-table>.p-datatable-tbody>tr>td:last-child {
+        /* margin-bottom: 20px; */
+        border-bottom: 1px solid rgba(114, 114, 114, 0.281) !important;
+    }
+
+    :host p-table ::ng-deep .p-datatable .p-datatable-tbody>tr>td .p-column-title {
+        color: var(--primary);
+        font-weight: bold;
+    }
+}

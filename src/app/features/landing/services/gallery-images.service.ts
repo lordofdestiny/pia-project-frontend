@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import gallery from '@assets/images/gallery/gallery.json';
 
 import { ImageData } from '@core/models/image-data.model';
-import gallery from '@assets/images/about/about.json';
+export { ImageData } from '@core/models/image-data.model';
 
 @Injectable({
     providedIn: 'any',
 })
-export class AboutImageService {
+export class GalleryImagesService {
     private images: Array<ImageData> = gallery.map(({ name, alt }) => ({
-        path: `assets/images/about/${name}`,
+        path: `assets/images/gallery/${name}`,
         alt,
     }));
 

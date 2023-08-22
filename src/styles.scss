@@ -1,7 +1,12 @@
 @use "sass:map";
 @use '@angular/material' as mat;
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 
+@import "primeng/resources/themes/lara-light-indigo/theme.css";
+@import "primeng/resources/primeng.min.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
 
 /* You can add global styles to this file, and also import other style files */
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
@@ -15,11 +20,13 @@ $custom-typography: mat-typography-config($font-family: '"Ubuntu","Roboto","Helv
 html,
 body {
     height: 100%;
-    line-height: normal;
+    line-height: normal !important;
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
+    background-color: var(--bg-color);
 }
 
 .mat-sidenav-container {

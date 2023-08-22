@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ImageData } from '@core/models/image-data.model';
+import { GalleryImagesService } from '@features/landing/services/gallery-images.service';
 
 @Component({
     selector: 'app-carousel',
@@ -8,14 +9,16 @@ import { ImageData } from '@core/models/image-data.model';
     styleUrls: ['./carousel.component.css'],
 })
 export class CarouselComponent implements OnInit {
-    @Input() slides: ImageData[] = [
+    slides: ImageData[] = [
         {
             path: '/assets/images/gallery/house_6.jpg',
             alt: 'House M.D.',
         },
     ];
 
-    constructor() {}
+    constructor(private galeryImagesService: GalleryImagesService) {
+        this.slides = this.galeryImagesService.getGallery().shuffle();
+    }
 
     ngOnInit(): void {}
 }

@@ -1,5 +1,5 @@
 <div class="carousel-container">
-    <carousel [isAnimated]="true" [isAnimated]="true">
+    <carousel [isAnimated]="true" [isAnimated]="true" [showIndicators]="false">
         <ng-container *ngFor="let slide of slides;">
             <slide>
                 <img [src]="slide.path" [alt]="slide.alt" style="display: block; width: 100%;">

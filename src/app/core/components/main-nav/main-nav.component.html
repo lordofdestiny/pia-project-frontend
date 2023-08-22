@@ -18,7 +18,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" style="z-index: 9999;">
       <div class="d-flex justify-content-between p-0"
         [ngClass]="!(isHandset$ | async) ? 'container' : 'container-fluid'">
 
@@ -42,15 +42,13 @@
         </div>
 
 
-        <span *ngIf="!(isHandset$ | async)" class="d-flex align-items-center">
-          <ng-container *ngFor="let item of navItems">
-            <a routerLink="{{item.route}}" mat-flat-button color="accent">{{item.title}}</a>
-          </ng-container>
-        </span>
+        <div *ngIf="!(isHandset$ | async)" class="d-flex align-items-center">
+          <a routerLink="{{item.route}}" *ngFor="let item of navItems" mat-flat-button color="accent"> <span
+              style="font-size: large;">{{item.title}}</span></a>
+        </div>
 
       </div>
     </mat-toolbar>
-    <!-- <div class="container-fluid justify-content-center"> -->
     <ng-content> </ng-content>
     <!-- </div> -->
   </mat-sidenav-content>

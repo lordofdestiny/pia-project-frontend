@@ -56,7 +56,7 @@
 .img img {
     border-radius: 5px;
     height: auto;
-    width: 100%;
+    width: 65%;
     outline: 1px solid var(--primary);
 }
 

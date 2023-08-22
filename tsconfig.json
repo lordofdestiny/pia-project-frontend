@@ -9,12 +9,36 @@
       "@core/*": [
         "src/app/core/*"
       ],
-      "@assets/*": [
-        "src/assets/*"
+      "@guards/*": [
+        "src/app/core/guards/*"
+      ],
+      "@models/*": [
+        "src/app/core/models/*"
+      ],
+      "@services/*": [
+        "src/app/shared/services/*"
       ],
       "@utils/*": [
         "src/app/core/utils/*"
-      ]
+      ],
+      "@features/*": [
+        "src/app/features/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@components/*": [
+        "src/app/shared/components/*"
+      ],
+      "@directives/*": [
+        "src/app/shared/directives/*"
+      ],
+      "@pipes/*": [
+        "src/app/shared/pipes/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

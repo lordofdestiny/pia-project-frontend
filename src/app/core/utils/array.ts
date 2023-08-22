@@ -3,6 +3,7 @@ declare global {
         shuffle(): Array<T>;
         shuffled(): Array<T>;
         zip<U>(other: U[]): Array<[T, U]>;
+        repeat(n: number): Array<T>;
     }
 }
 
@@ -26,6 +27,10 @@ Array.prototype.shuffled = function <T>(this: T[]): typeof this {
 
 Array.prototype.zip = function <T, U>(this: T[], other: U[]): Array<[T, U]> {
     return this.map((x, i) => [x, other[i]]);
+};
+
+Array.prototype.repeat = function <T>(this: T[], n: number): T[] {
+    return Array(n).fill(this).flat();
 };
 
 export {};

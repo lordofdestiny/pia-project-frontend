@@ -10,8 +10,8 @@ import { NavItemData } from '@core/components/main-nav/main-nav.component';
 export class AppComponent {
     title: string = 'HouseMedica';
     navItems: NavItemData[] = [
-        { route: '/register', title: 'Register' },
         { route: '/login', title: 'Log In' },
+        { route: '/register', title: 'Register' },
     ];
 
     onNgInit() {}
