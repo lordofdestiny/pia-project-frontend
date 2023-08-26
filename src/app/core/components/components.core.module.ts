@@ -11,17 +11,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { MainNavComponent } from './main-nav/main-nav.component';
+import { AuthService } from '@shared/services/auth.service';
+import { LayoutComponent } from './layout/layout.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PipesModule } from '@shared/pipes/pipes.shared.module';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-    declarations: [MainNavComponent, PageNotFoundComponent],
-    providers: [],
+    declarations: [LayoutComponent, PageNotFoundComponent, FooterComponent],
+    providers: [AuthService],
     imports: [
         CommonModule,
         RouterModule,
         LayoutModule,
+        PipesModule,
         MatIconModule,
         MatListModule,
         MatSliderModule,
@@ -30,18 +35,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
         MatToolbarModule,
         MatSidenavModule,
         MatProgressBarModule,
+        MatProgressSpinnerModule,
     ],
-    exports: [
-        MainNavComponent,
-        LayoutModule,
-        MatIconModule,
-        MatListModule,
-        MatSliderModule,
-        MatRippleModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatProgressBarModule,
-    ],
+    exports: [LayoutComponent, FooterComponent],
 })
 export class CoreComponentsModule {}

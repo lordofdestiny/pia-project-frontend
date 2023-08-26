@@ -1,0 +1,38 @@
+<mat-card color="primary" class="container mat-elevation-z12">
+    <h2 class="login-title">Log In</h2>
+
+    <mat-card-content>
+        <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+            class="d-flex flex-column justify-content-start">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput id="username" type="text" formControlName="username" autocomplete="username"
+                    placeholder="my-username__" [errorStateMatcher]="matcher">
+                <mat-icon matSuffix [color]="fieldColor('username')"> {{ fieldIcon('username') }} </mat-icon>
+                <mat-error *ngIf="loginForm.get('username').statusChanges | async">
+                    {{getUsernameErrorMessage()}}
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput id="password" [type]="hidden?'text':'password'" formControlName="password"
+                    autocomplete="current-password" [errorStateMatcher]="matcher">
+
+                <button color="primary" type='button' mat-icon-button matSuffix hold [duration]="0"
+                    [attr.aria-label]="'Hide password'" (onhold)="togglePassword()" (onholdend)="togglePassword()"
+                    (touchstart)="togglePassword()" (touchend)="togglePassword()">
+                    <mat-icon> {{hidden ? 'visibility':'visibility_off' }}</mat-icon>
+                </button>
+
+                <mat-error *ngIf="loginForm.get('password').statusChanges | async">
+                    {{getPasswordErrorMessage()}}
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button type="submit" color="primary" [disabled]="!loginForm.valid">Log In</button>
+        </form>
+    </mat-card-content>
+</mat-card>

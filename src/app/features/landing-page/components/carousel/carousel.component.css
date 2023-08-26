@@ -1,0 +1,45 @@
+.carousel-container {
+    box-shadow: 0px 0px 15px var(--accent);
+}
+
+img {
+    max-height: 700px !important;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+:host ::ng-deep .carousel-indicators button {
+    background-color: var(--accent);
+}
+
+.carousel-caption {
+    border-radius: 10px;
+    background-color: rgba(65, 59, 59, 0.459);
+    width: fit-content;
+    margin: 30px auto;
+    padding: 10px 20px;
+}
+
+.carousel-caption h2 {
+    color: var(--bg-color);
+    margin: 0;
+    width: fit-content;
+    /* margin: auto; */
+    /* top: 50%; */
+}
+
+.separator {
+    width: 90%;
+    height: 5px;
+    margin: 3em auto;
+    border-radius: 10px;
+    opacity: 0.7;
+    background-color: var(--accent);
+    box-shadow: 1px 1px 5px var(--accent);
+}
+
+:host ::ng-deep .right.carousel-control,
+:host ::ng-deep .left.carousel-control {
+    display: none;
+}

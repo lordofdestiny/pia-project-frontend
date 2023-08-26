@@ -13,7 +13,6 @@ export class PageNotFoundComponent implements OnInit {
     ngOnInit(): void {}
 
     handleImageLoaded() {
-        console.log(this.loading);
         this.loading = false;
     }
 }

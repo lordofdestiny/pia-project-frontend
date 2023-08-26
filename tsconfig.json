@@ -9,32 +9,14 @@
       "@core/*": [
         "src/app/core/*"
       ],
-      "@guards/*": [
-        "src/app/core/guards/*"
-      ],
-      "@models/*": [
-        "src/app/core/models/*"
-      ],
-      "@services/*": [
-        "src/app/shared/services/*"
-      ],
-      "@utils/*": [
-        "src/app/core/utils/*"
-      ],
       "@features/*": [
         "src/app/features/*"
       ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
       "@assets/*": [
         "src/assets/*"
-      ],
-      "@components/*": [
-        "src/app/shared/components/*"
-      ],
-      "@directives/*": [
-        "src/app/shared/directives/*"
-      ],
-      "@pipes/*": [
-        "src/app/shared/pipes/*"
       ],
       "@environments/*": [
         "src/environments/*"

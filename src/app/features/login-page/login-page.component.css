@@ -1,0 +1,46 @@
+:host {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.mat-form-field {
+    box-shadow: 2px 2px 20px -5px rgba(0, 0, 0, 0.5);
+    clip-path: inset(-10px 0 0 0);
+    margin-bottom: 1.5rem;
+}
+
+.login-title {
+    font-size: 3.5em;
+    line-height: inherit;
+    margin: 2rem auto;
+    width: fit-content;
+    color: var(--accent);
+    text-shadow: -2px 2px 3px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+input {
+    font-size: 1.5em;
+    line-height: inherit;
+}
+
+input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+}
+
+.mat-card {
+    background-color: var(--bg-color);
+    max-width: 500px;
+    margin: 15% auto;
+
+}
+
+button {
+    margin-top: 20px;
+    width: min-content;
+    margin: 0 auto;
+}

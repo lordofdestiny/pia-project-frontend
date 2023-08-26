@@ -1,20 +1,23 @@
 @use "sass:map";
-@use '@angular/material' as mat;
-@import '@angular/material/theming';
+@use "@angular/material" as mat;
+@import "@angular/material/theming";
 
 @import "primeng/resources/themes/lara-light-indigo/theme.css";
 @import "primeng/resources/primeng.min.css";
-@import "primeicons/primeicons.css";
-@import "primeflex/primeflex.css";
+// @import "primeflex/primeflex.css"; // Conflict with bootstrap
 @import "primeicons/primeicons.css";
 
 /* You can add global styles to this file, and also import other style files */
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
-@import "bootstrap/bootstrap.css";
+@import "bootstrap/bootstrap.min.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import "ol/ol.css";
 
-$custom-typography: mat-typography-config($font-family: '"Ubuntu","Roboto","Helvetica Neue", sans-serif;');
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+$custom-typography: mat-typography-config(
+    $font-family: '"Ubuntu","Roboto","Helvetica Neue", sans-serif;'
+);
 @include mat.core($custom-typography);
 
 html,
@@ -26,30 +29,22 @@ body {
 
 body {
     margin: 0;
-    background-color: var(--bg-color);
-}
-
-.mat-sidenav-container {
-    background-color: var(--bg-color);
-}
-
-.mat-primary * {
-    color: var(--bg-color);
+    min-height: 100vh;
+    background-color: var(--primary);
 }
 
 :root {
-    --bg-color: hsl(60, 80%, 95%);
+    --bg-color: #fcfce8;
     --primary: #3f51b5;
     --accent: #ff4081;
-    --warn: #f44336
+    --warn: #f44336;
+    --bg-input: #e8f0fe;
 }
 
+router-outlet + * {
+    flex: 1;
+}
 
 .spacer-1 {
-    flex: 1 1 auto;
-  }
-
-  
-.spacer-2 {
-    flex: 2 1 auto;
-  }
+    flex: 1;
+}

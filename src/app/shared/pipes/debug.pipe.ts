@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isObservable, Observable, tap } from 'rxjs';
+import { isObservable, tap } from 'rxjs';
 
 const print = (message: string | null | undefined) =>
     message

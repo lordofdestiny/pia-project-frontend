@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DoctorListData, DoctorListDataItem } from '@core/models/doctor.model';
+import { Component, OnInit } from '@angular/core';
+import { DoctorListData } from '@core/models/doctor';
+import { AuthService } from '@shared/services/auth.service';
 
 /**PRIME NG TEST */
-import { Table } from 'primeng/table';
+import { Observable, tap } from 'rxjs';
 import { DoctorsService } from 'src/app/shared/services/doctors.service';
 
 @Component({
@@ -11,16 +12,18 @@ import { DoctorsService } from 'src/app/shared/services/doctors.service';
     styleUrls: ['./doctor-list.component.css'],
 })
 export class DoctorListComponent implements OnInit {
-    doctors: DoctorListData = [];
-    @ViewChild('dt') dt: Table | undefined;
+    doctors: Observable<DoctorListData>;
+    logged_in: Observable<boolean>;
     loading: boolean = true;
-
-    constructor(private doctorService: DoctorsService) {}
+    constructor(
+        private doctorService: DoctorsService,
+        private authService: AuthService
+    ) {}
 
     ngOnInit() {
-        this.doctorService.getAll().subscribe((doctors) => {
-            this.doctors = doctors;
-            this.loading = false;
-        });
+        this.doctors = this.doctorService
+            .getAll()
+            .pipe(tap(() => (this.loading = false)));
+        this.logged_in = this.authService.logged_in;
     }
 }

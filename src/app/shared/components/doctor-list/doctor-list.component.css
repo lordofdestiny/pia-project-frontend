@@ -15,7 +15,6 @@
 }
 
 :host p-table ::ng-deep .primeng-table {
-    margin-bottom: 50px;
     border-radius: 10px;
     overflow: hidden;
 }

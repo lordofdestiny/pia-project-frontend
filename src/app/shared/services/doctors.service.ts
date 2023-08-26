@@ -4,9 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { DoctorListData, DoctorListDataItem } from '@models/doctor.model';
-
-import { baseServerUrl } from '@core/constants/url';
+import { DoctorListData, DoctorListDataItem } from '@core/models/doctor';
+import { baseUri } from '@environments/environment';
 
 @Injectable({
     providedIn: 'any',
@@ -16,14 +15,13 @@ export class DoctorsService {
 
     getAll(): Observable<DoctorListData> {
         return this.http
-            .get<DoctorListData>(`${baseServerUrl}/doctor`)
+            .get<DoctorListData>(`${baseUri}/doctor`)
             .pipe(tap(resolveProfilePictures));
     }
 }
 
 function resolveProfilePicture(doctor: DoctorListDataItem): void {
-    const { first_name, last_name, profile_picture } = doctor;
-    doctor.profile_picture = `${baseServerUrl}${profile_picture}`;
+    doctor.profile_picture = `${baseUri}${doctor.profile_picture}`;
 }
 
 function resolveProfilePictures(doctors: DoctorListData): void {

@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NavItemData } from '@core/components/main-nav/main-nav.component';
 
 @Component({
     selector: 'app-root',
@@ -9,10 +8,6 @@ import { NavItemData } from '@core/components/main-nav/main-nav.component';
 })
 export class AppComponent {
     title: string = 'HouseMedica';
-    navItems: NavItemData[] = [
-        { route: '/login', title: 'Log In' },
-        { route: '/register', title: 'Register' },
-    ];
 
     onNgInit() {}
 }

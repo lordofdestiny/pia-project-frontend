@@ -1,0 +1,12 @@
+<div class="carousel-container">
+    <carousel [isAnimated]="true">
+        <ng-container *ngFor="let slide of slides;">
+            <slide>
+                <img [src]="slide.path" [alt]="slide.alt" style="display: block; width: 100%;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>House M.D. and the Team</h2>
+                </div>
+            </slide>
+        </ng-container>
+    </carousel>
+</div>
