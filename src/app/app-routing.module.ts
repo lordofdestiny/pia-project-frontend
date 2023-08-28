@@ -7,6 +7,7 @@ import { LoginPageComponent } from './features/login-page/login-page.component';
 import { LogoutGuard } from '@core/guards/logout.guard';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { LoggedInGurad } from '@core/guards/loggedin.guard';
+import { RegisterPageComponent } from '@features/register-page/register-page.component';
 
 export const appRoutes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -15,6 +16,11 @@ export const appRoutes: Routes = [
         component: LoginPageComponent,
         canActivate: [LoggedInGurad],
         data: { manager: false },
+    },
+    {
+        path: 'register',
+        component: RegisterPageComponent,
+        canActivate: [LoggedInGurad],
     },
     {
         path: 'manager/login',

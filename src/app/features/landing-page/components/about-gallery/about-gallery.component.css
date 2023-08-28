@@ -64,6 +64,10 @@
     text-align: justify;
 }
 
+.hidden {
+    display: none;
+}
+
 @media (max-width: 576px) {
     .about-gallery .row {
         padding-top: 20px;

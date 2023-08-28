@@ -8,6 +8,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 export class IsHandsetService {
     constructor(private breakpointObserver: BreakpointObserver) {}
 
+    get isHandset(): boolean {
+        return this.breakpointObserver.isMatched(Breakpoints.Handset);
+    }
+
     get isHandset$(): Observable<boolean> {
         return this.breakpointObserver.observe(Breakpoints.Handset).pipe(
             map((result) => result.matches),

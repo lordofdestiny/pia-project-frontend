@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, map, shareReplay, tap } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnInit } from '@angular/core';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import {
     AboutImage,
@@ -15,19 +14,9 @@ import {
 export class AboutGalleryComponent implements OnInit {
     about_data: AboutImage[] = [];
 
-    constructor(
-        private aboutImageService: AboutImageService,
-        private breakpointObserver: BreakpointObserver
-    ) {}
-
-    ngOnInit(): void {
+    constructor(private aboutImageService: AboutImageService) {
         this.about_data = this.aboutImageService.getGallery().shuffle();
     }
 
-    get isSmall$(): Observable<boolean> {
-        return this.breakpointObserver.observe(Breakpoints.Small).pipe(
-            map((result) => result.matches),
-            shareReplay()
-        );
-    }
+    ngOnInit(): void {}
 }

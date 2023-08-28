@@ -1,21 +1,33 @@
 :host {
-    margin-top: 30px;
+    margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+:host>div {
+    background-color: var(--bg-color);
+    max-width: 500px;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+}
 
-.mat-form-field {
-    box-shadow: 2px 2px 20px -5px rgba(0, 0, 0, 0.5);
-    clip-path: inset(-10px 0 0 0);
+form {
+    padding: 0 2rem;
+}
+
+:host ::ng-deep .mat-form-field {
+    box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
+    clip-path: inset(-10px -5px 0 -5px);
     margin-bottom: 1.5rem;
 }
+
 
 .login-title {
     font-size: 3.5em;
     line-height: inherit;
-    margin: 2rem auto;
+    margin: 0 auto 2rem;
     width: fit-content;
     color: var(--accent);
     text-shadow: -2px 2px 3px rgba(0, 0, 0, 0.5);
@@ -24,7 +36,7 @@
 }
 
 input {
-    font-size: 1.5em;
+    font-size: 1.2em;
     line-height: inherit;
 }
 
@@ -32,15 +44,34 @@ input:-webkit-autofill {
     -webkit-background-clip: text !important;
 }
 
-.mat-card {
-    background-color: var(--bg-color);
-    max-width: 500px;
-    margin: 15% auto;
 
+
+button[type="submit"] {
+    font-size: 1.2em;
+    color: var(--bg-color);
+    margin-top: 2rem;
+    width: min-content;
+    padding: 5px 20px;
+    margin: 0 auto;
 }
 
-button {
-    margin-top: 20px;
-    width: min-content;
-    margin: 0 auto;
+:host ::ng-deep .error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--warn);
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        box-shadow: none;
+    }
+
+    :host>div {
+        margin: 0;
+    }
 }

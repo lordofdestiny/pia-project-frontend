@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-import { LoginPageComponent } from './login-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
-import { DirectivesModules } from '@shared/directives/directives.shared.module';
+import { LoginPageComponent } from './login-page.component';
 
 @NgModule({
     declarations: [LoginPageComponent],
@@ -23,16 +21,8 @@ import { DirectivesModules } from '@shared/directives/directives.shared.module';
         MatButtonModule,
         MatCardModule,
         MatIconModule,
-        DirectivesModules,
     ],
-    exports: [
-        LoginPageComponent,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-    ],
+    exports: [LoginPageComponent],
     bootstrap: [LoginPageComponent],
 })
 export class LoginPageModule {}

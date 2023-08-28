@@ -1,17 +1,18 @@
 <div class="about-gallery">
-    <div class="row about-gallery-card" *ngFor="let image of about_data; let i = index">
 
+    <div class="row about-gallery-card" *ngFor="let image of about_data; let i = index">
         <div class="img d-flex justify-content-center col-md-5 p-3 img1">
             <img [src]="image.path" class="img-fluid " [alt]="image.alt" />
         </div>
         <div class="text col-md-7 p-4 pt-1 order-2">
-            <div class="container-fluid" [ngClass]="i%2==1?'ps-sm-0':'pe-sm-0'" [ngClass]="i%2==1?'pe-sm-0':'ps-sm-0'">
+            <div class="container-fluid" [ngClass]="i%2==0?'pe-sm-0':'ps-sm-0'">
                 <h4>{{image.title}}</h4>
                 <div class="img d-flex justify-content-center col-md-5 p-3 img2">
                     <img [src]="image.path" class="img-fluid " [alt]="image.alt" />
                 </div>
-                <p>{{image.text}} {{isSmall$ | async}}</p>
+                <p>{{image.text}}</p>
             </div>
         </div>
     </div>
+
 </div>

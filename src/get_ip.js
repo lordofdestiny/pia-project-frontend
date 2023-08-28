@@ -11,5 +11,6 @@ const ipv4 = Object.keys(networkInterfacesDict)
     .filter(({ internal }) => !internal)
     .map(({ address }) => address);
 
+    ipv4.push('127.0.0.1');
 
 writeFileSync(join(__dirname,'assets', 'ipv4.json'), JSON.stringify(ipv4));

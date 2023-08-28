@@ -9,14 +9,9 @@ import {
     throwError,
 } from 'rxjs';
 import { User, UserCredentials, UserRole } from '@core/models/user.';
-import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { baseUri } from '@environments/environment';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthService {
@@ -31,14 +26,19 @@ export class AuthService {
         return this.#user_role;
     }
 
-    constructor(
-        private cookieService: CookieService,
-        private http: HttpClient,
-        private router: Router
-    ) {
+    constructor(private http: HttpClient, private router: Router) {
         if (sessionStorage.getItem('auth') == 'true') {
             this.#logged_in.next(true);
         }
+    }
+
+    register(user: User) {
+        if (this.#logged_in.value) {
+            return throwError(() => new Error('already logged in'));
+        }
+        return this.http
+            .post<User>(`${baseUri}/auth/register/patient`, user)
+            .pipe(catchError(AuthService.handleError));
     }
 
     login(user: UserCredentials, manager: boolean = false) {
@@ -57,6 +57,24 @@ export class AuthService {
                     this.#user_role = response.type;
                     this.#logged_in.next(true);
                 })
+            );
+    }
+
+    uniqeCredential({
+        value,
+        type,
+    }: {
+        value: string;
+        type: 'email' | 'username';
+    }) {
+        return this.http
+            .post<{ unique: boolean }>(`${baseUri}/auth/unique`, {
+                value,
+                type,
+            })
+            .pipe(
+                catchError(AuthService.handleError),
+                map((response) => response.unique)
             );
     }
 
@@ -80,16 +98,14 @@ export class AuthService {
                 console.log(error.error);
                 break;
             case 401:
-                return throwError(
-                    () => new Error('401 error, unauthorized. bad credentials')
-                );
+                console.log('401 error, unauthorized. bad credentials');
+                break;
             case 404:
                 console.log('404 error, resource not found');
                 break;
             case 409:
-                return throwError(
-                    () => new Error('409 error, already logged in')
-                );
+                console.log('409 error, already logged in');
+                break;
             case 500:
                 alert('500 error, server error. Please try again later');
                 console.log('500 error, server error');
@@ -100,6 +116,6 @@ export class AuthService {
                     error.status
                 );
         }
-        return throwError(() => error.error);
+        return throwError(() => error);
     }
 }

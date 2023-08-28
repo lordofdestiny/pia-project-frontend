@@ -45,8 +45,6 @@
             <td (click)="$event.stopPropagation()" class="avatar-small-bottom-border">
 
                 <div class="d-flex justify-content-center align-items-center w-100">
-                    <!-- <p-image [src]="doctor.profile_picture" [alt]="doctor.profile_picture_alt" [preview]="true"
-                        styleClass="mat-elevation-z1" width="70"></p-image> -->
                     <p-avatar [image]="doctor.profile_picture" size="large"></p-avatar>
                 </div>
             </td>
@@ -69,7 +67,9 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td [attr.colspan]="(logged_in|async)?5:4">No doctors found.</td>
+            <td [attr.colspan]="(logged_in|async)?5:4" [style.padding]="'1.5rem 0'">
+                <span [style.margin]="'0 auto'" [style.display]="'table'">No doctors found.</span>
+            </td>
         </tr>
     </ng-template>
 </p-table>

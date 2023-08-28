@@ -10,7 +10,7 @@ img {
 }
 
 :host ::ng-deep .carousel-indicators button {
-    background-color: var(--accent);
+    background-color: var(--warn);
 }
 
 .carousel-caption {

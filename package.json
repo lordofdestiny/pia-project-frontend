@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-components/file-input": "^8.0.0",
     "@angular/animations": "^14.3.0",
     "@angular/cdk": "^14.2.7",
     "@angular/common": "^14.3.0",
@@ -23,7 +24,6 @@
     "@types/googlemaps": "^3.43.3",
     "@types/node": "^20.4.10",
     "ngx-bootstrap": "^9.0.0",
-    "ngx-cookie-service": "^14.0.1",
     "ngx-mat-multi-sort": "^0.9.1",
     "ol": "^7.5.1",
     "primeflex": "^3.3.1",

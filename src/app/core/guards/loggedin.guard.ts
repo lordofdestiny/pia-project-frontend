@@ -14,7 +14,6 @@ export class LoggedInGurad implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return this.authService.logged_in.pipe(
-            tap((x) => console.log('Logged in: ', x)),
             map((x) => {
                 if (x) {
                     return false;

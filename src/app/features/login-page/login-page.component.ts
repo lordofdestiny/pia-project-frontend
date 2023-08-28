@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@shared/services/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { map } from 'rxjs';
-import { FormGroupDirective, NgForm } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import { map, catchError, tap } from 'rxjs';
+import { InvalidDirtyErrorStateMatcher } from '@core/utils/error-state-matcher';
+import { IsHandsetService } from '@core/services/is-handset.service';
 
 @Component({
     selector: 'app-login-page',
@@ -16,17 +15,7 @@ export class LoginPageComponent implements OnInit {
     is_manager: boolean | null = null;
     hidden: boolean = false;
     usernameRegex: RegExp = /^[_-]*[a-zA-Z][\w-]*$/;
-    /* Password regex */
-    startsWithLetterRegex: RegExp = /^[a-zA-Z].*$/; // Starts with a letter
-    length8to14Regex: RegExp = /^(?=.{8,14}$).*/; // 8 to 14 characters
-
-    containsUppercaseRegex: RegExp = /^(?=[^A-Z]*[A-Z]).*/; // Contains uppercase
-    containsNumberRegex: RegExp = /^(?=[^0-9]*[0-9]).*/; // Contains a digit
-
-    containsSpecialRegex: RegExp =
-        /(?=[^~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?]*[~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])/; // Contains a special charachter
-
-    noRepeatingRegex: RegExp = /^(?:([\x21-\x7e])\1?(?!\1))+$/; // No more than 2 characters repeating
+    matcher = new InvalidDirtyErrorStateMatcher();
 
     passwordRegex: RegExp =
         /^(?=[a-zA-Z].+$)(?=.{8,14}$)(?=[^A-Z]*[A-Z])(?=[^0-9]*[0-9])(?=[^~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?]*[~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])(?:([\w\d~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])\1?(?!\1))+$/;
@@ -55,13 +44,18 @@ export class LoginPageComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private authService: AuthService,
         private router: Router,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private isHandsetService: IsHandsetService
     ) {
         this.activatedRoute.data
             .pipe(map((data) => data['manager']))
             .subscribe((manager) => {
                 this.is_manager = manager;
             });
+    }
+
+    get isHandset$() {
+        return this.isHandsetService.isHandset$;
     }
 
     ngOnInit(): void {}
@@ -83,7 +77,10 @@ export class LoginPageComponent implements OnInit {
         return this.loginForm.get(name).valid ? 'primary' : 'warn';
     }
 
-    togglePassword() {
+    togglePassword(event: Event) {
+        if (event.type === 'click' && this.isHandsetService.isHandset) {
+            return;
+        }
         this.hidden = !this.hidden;
     }
 
@@ -117,25 +114,23 @@ export class LoginPageComponent implements OnInit {
         }
         return '';
     }
-
+    submitted = true; // Whether the form has been submitted
+    errorMessage = ''; // Place to store errors
     onSubmit() {
+        this.submitted = true;
         if (!this.loginForm.valid) {
             alert('Invalid form state');
             return;
         }
         const { username, password } = this.loginForm.value;
-        this.authService.login({ username, password }).subscribe((user) => {
-            this.router.navigate(['/']);
+        this.authService.login({ username, password }).subscribe({
+            next: (user) => {
+                this.router.navigate(['/']);
+            },
+            error: (err) => {
+                const msg = new String(err.error.message);
+                this.errorMessage = msg.toTitleCase();
+            },
         });
     }
-
-    matcher = new (class implements ErrorStateMatcher {
-        isErrorState(
-            control: FormControl | null,
-            form: FormGroupDirective | NgForm | null
-        ): boolean {
-            const isSubmitted = form && form.submitted;
-            return control && control.dirty && control.invalid; // show error only when dirty and invalid
-        }
-    })();
 }

@@ -5,7 +5,7 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@shared/services/auth.service';
 
 @Injectable()
 export class LoggedInGurad implements CanActivate {

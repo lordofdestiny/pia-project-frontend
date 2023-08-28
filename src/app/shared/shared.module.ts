@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PipesModule as SharedPipesModule } from './pipes/pipes.shared.module';
 
 import { SharedComponenetsModule } from '@shared/components/components.shared.module';
-import { DirectivesModules } from '@shared/directives/directives.shared.module';
+import { SharedDirectivesModule } from '@shared/directives/directives.shared.module';
 
 @NgModule({
     declarations: [],
@@ -11,8 +11,12 @@ import { DirectivesModules } from '@shared/directives/directives.shared.module';
         CommonModule,
         SharedComponenetsModule,
         SharedPipesModule,
-        DirectivesModules,
+        SharedDirectivesModule,
     ],
-    exports: [SharedComponenetsModule, SharedPipesModule, DirectivesModules],
+    exports: [
+        SharedComponenetsModule,
+        SharedPipesModule,
+        SharedDirectivesModule,
+    ],
 })
 export class SharedModule {}

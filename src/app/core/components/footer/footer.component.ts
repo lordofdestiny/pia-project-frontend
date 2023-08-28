@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+
 import Map from 'ol/Map';
 import View from 'ol/View';
-import VectorLayer from 'ol/layer/Vector';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
 import OSM from 'ol/source/OSM';
-import * as olProj from 'ol/proj';
-import TileLayer from 'ol/layer/Tile';
-import VectorSource from 'ol/source/Vector';
-import OGCMapTile from 'ol/source/OGCMapTile';
+import Icon from 'ol/style/Icon';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-import * as proj from 'ol/proj';
-import { ViewChild, ElementRef } from '@angular/core';
-import Overlay from 'ol/Overlay';
-import * as interaction from 'ol/interaction';
+import Style from 'ol/style/Style';
+import { fromLonLat } from 'ol/proj';
+import TileLayer from 'ol/layer/Tile';
+import VectorSource from 'ol/source/Vector';
+import VectorImageLayer from 'ol/layer/VectorImage';
 
 @Component({
     selector: 'app-footer',
@@ -22,41 +19,46 @@ import * as interaction from 'ol/interaction';
     styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent implements OnInit {
-    etfCoords = [20.476236, 44.805715];
-    map: Map;
+    locationMap: Map;
+    isOnline: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
+    private etfGeoCoords = [20.476236, 44.805715];
+    private etfMapCoords = fromLonLat(this.etfGeoCoords);
+    private marker_img =
+        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png';
+
     constructor() {}
 
     ngOnInit() {
-        this.map = new Map({
-            interactions: interaction.defaults({ mouseWheelZoom: false }),
+        this.locationMap = this.makeMap();
+    }
 
+    makeMap() {
+        return new Map({
             target: 'house-media-map',
             layers: [
                 new TileLayer({
                     source: new OSM(),
                 }),
+                new VectorImageLayer({
+                    source: new VectorSource({
+                        features: [new Feature(new Point(this.etfMapCoords))],
+                    }),
+                    style: new Style({
+                        image: new Icon({
+                            anchor: [0.5, 1],
+                            scale: 0.1,
+                            src: this.marker_img,
+                        }),
+                    }),
+                }),
             ],
             view: new View({
-                center: olProj.fromLonLat(this.etfCoords),
+                center: this.etfMapCoords,
                 zoom: 17,
                 minZoom: 5,
                 maxZoom: 19,
             }),
         });
-
-        var markers = new VectorLayer({
-            source: new VectorSource(),
-            style: new Style({
-                image: new Icon({
-                    anchor: [0.5, 1],
-                    scale: 0.1,
-                    src: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png',
-                }),
-            }),
-        });
-        this.map.addLayer(markers);
-
-        var marker = new Feature(new Point(olProj.fromLonLat(this.etfCoords)));
-        markers.getSource().addFeature(marker);
     }
 }
