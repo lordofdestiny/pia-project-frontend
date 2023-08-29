@@ -25,7 +25,6 @@ import { DoctorGuard } from './guards/doctor.guard';
 import { LoggedInGurad } from './guards/loggedin.guard';
 import { LogoutGuard } from './guards/logout.guard';
 import { ManagerGuard } from './guards/manager.guard';
-
 @NgModule({
     declarations: [FooterComponent, LayoutComponent, PageNotFoundComponent],
     providers: [

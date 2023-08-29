@@ -56,6 +56,9 @@ abstract class UniqueCredentialValidator implements AsyncValidator {
 
 @Injectable({ providedIn: 'root' })
 export class UniqueEmailValidator extends UniqueCredentialValidator {
+    constructor(authService: AuthService) {
+        super(authService);
+    }
     get credentialType(): TCredential {
         return 'email';
     }
@@ -63,6 +66,9 @@ export class UniqueEmailValidator extends UniqueCredentialValidator {
 
 @Injectable({ providedIn: 'root' })
 export class UniqueUsernameValidator extends UniqueCredentialValidator {
+    constructor(authService: AuthService) {
+        super(authService);
+    }
     get credentialType(): TCredential {
         return 'username';
     }

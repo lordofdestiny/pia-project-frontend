@@ -4,7 +4,7 @@ import { Observable, map, shareReplay } from 'rxjs';
 import {
     AboutImage,
     AboutImageService,
-} from '@features/landing-page/services/about-images.service';
+} from '@features/new-visitor/services/about-images.service';
 
 @Component({
     selector: 'app-about-gallery',

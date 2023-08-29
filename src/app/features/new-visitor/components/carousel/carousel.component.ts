@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ImageData } from '@core/models/image-data';
-import { GalleryImagesService } from '@features/landing-page/services/gallery-images.service';
+import { GalleryImagesService } from '@features/new-visitor/services/gallery-images.service';
 
 @Component({
     selector: 'app-carousel',

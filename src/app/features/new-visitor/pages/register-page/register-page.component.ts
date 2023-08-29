@@ -130,7 +130,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     preview: ElementRef<HTMLImageElement>;
     previewDOM: HTMLImageElement;
     ngAfterViewInit(): void {
-        this.previewDOM = this.preview.nativeElement;
+        // this.previewDOM = this.preview.nativeElement;
     }
 
     async imageValidator(g: AbstractControl): Promise<ValidationErrors> {
@@ -257,6 +257,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 break;
             case 4:
                 const img = group.get('profile_picture');
+
                 if (img.hasError('tooSmall') || img.hasError('tooBig')) {
                     return 'Image size';
                 }

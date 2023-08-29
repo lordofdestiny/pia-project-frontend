@@ -116,6 +116,7 @@ export class AuthService {
                     error.status
                 );
         }
+        error.error.message ??= 'unknown error';
         return throwError(() => error);
     }
 }

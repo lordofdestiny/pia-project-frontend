@@ -4,18 +4,27 @@
     <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()"
         class="d-flex flex-column justify-content-start">
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" *ngVar="loginForm.get('username'); let username">
             <mat-label>Username</mat-label>
             <input matInput id="username" type="text" formControlName="username" autocomplete="username"
                 placeholder="my-username__" [errorStateMatcher]="matcher">
             <mat-icon matSuffix [color]="fieldColor('username')"> {{ fieldIcon('username') }} </mat-icon>
-            <mat-error *ngIf="loginForm.get('username').statusChanges | async">
-                {{getUsernameErrorMessage()}}
-            </mat-error>
 
+            <mat-error *ngIf="username.hasError('required')">
+                You must enter a value
+            </mat-error>
+            <mat-error *ngIf="username.hasError('pattern')">
+                Username is not in a valid format
+            </mat-error>
+            <mat-error *ngIf="username.hasError('minlength')">
+                Username must be at least 4 characters
+            </mat-error>
+            <mat-error *ngIf="username.hasError('maxlength')">
+                Username can be at most 16 characters
+            </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" *ngIf="loginForm.get('password'); let password">
             <mat-label>Password</mat-label>
             <input matInput id="password" [type]="hidden?'text':'password'" formControlName="password"
                 autocomplete="current-password" [errorStateMatcher]="matcher">
@@ -26,8 +35,14 @@
                 <mat-icon> {{hidden ? 'visibility_off':'visibility' }}</mat-icon>
             </button>
 
-            <mat-error *ngIf="loginForm.get('password').statusChanges | async">
-                {{getPasswordErrorMessage()}}
+            <mat-error *ngIf="password.hasError('required')">
+                You must enter your password
+            </mat-error>
+            <mat-error *ngIf="password.hasError('minlength')">
+                Your password is at least 8 characters long
+            </mat-error>
+            <mat-error *ngIf="password.hasError('maxlength')">
+                Your password is at most 14 characters long
             </mat-error>
         </mat-form-field>
         <div *ngIf="submitted" class="error-message">

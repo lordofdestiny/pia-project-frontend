@@ -11,14 +11,14 @@
                 <mat-form-field appearance="fill">
                     <mat-label>First name</mat-label>
                     <input matInput id="first_name" type="text" formControlName="first_name" autocomplete="given-name"
-                        autocapitalize="words" autofocus>
+                        autocapitalize="words" autofocus />
                     <mat-error>First name is required</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Last name</mat-label>
                     <input matInput id="last_name" type="text" formControlName="last_name" autocomplete="family-name"
-                        autocapitalize="words">
+                        autocapitalize="words" />
                     <mat-error>Last name is required</mat-error>
                 </mat-form-field>
                 <div class="nav-buttons">
@@ -33,7 +33,7 @@
                 <mat-form-field appearance="fill" *ngVar="group.get('email'); let email">
                     <mat-label>E-mail</mat-label>
                     <input matInput id="email" type="email" formControlName="email" autocomplete="email"
-                        [errorStateMatcher]="matcher">
+                        [errorStateMatcher]="matcher" />
                     <mat-error *ngIf="email.hasError('required')">
                         Email is required
                     </mat-error>
@@ -48,7 +48,7 @@
                 <mat-form-field appearance="fill" *ngVar="group.get('username'); let username">
                     <mat-label>Username</mat-label>
                     <input matInput id="username" type="text" formControlName="username" autocomplete="username"
-                        [errorStateMatcher]="matcher">
+                        [errorStateMatcher]="matcher" />
                     <mat-error *ngIf="username.hasError('required')">Username is required</mat-error>
                     <mat-error *ngIf="username.hasError('pattern')">Username format is not valid </mat-error>
                     <mat-error *ngIf="username.hasError('minlength')">Username must be at least 4
@@ -70,7 +70,7 @@
                 <mat-form-field appearance="fill" *ngVar="group.get('phone'); let phone">
                     <mat-label>Phone number</mat-label>
                     <input matInput id="phone" type="tel" formControlName="phone" autocomplete="tel-national"
-                        [errorStateMatcher]="matcher">
+                        [errorStateMatcher]="matcher" />
                     <mat-error *ngIf="phone.hasError('required')">Phone number is required</mat-error>
                     <mat-error *ngIf="phone.hasError('pattern')">Phone number format is not valid</mat-error>
                 </mat-form-field>
@@ -78,7 +78,7 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Address</mat-label>
                     <input matInput id="address" type="text" formControlName="address" autocomplete="address-line1"
-                        [errorStateMatcher]="matcher">
+                        [errorStateMatcher]="matcher" />
                     <mat-error>This field is required</mat-error>
                 </mat-form-field>
                 <div class="nav-buttons">
@@ -95,7 +95,7 @@
                 <mat-form-field appearance="fill" *ngVar="group.get('password'); let pwd">
                     <mat-label>New password</mat-label>
                     <input matInput id="password" [type]="passwordHidden?'text':'password'" formControlName="password"
-                        autocomplete="new-password" [errorStateMatcher]="matcher">
+                        autocomplete="new-password" [errorStateMatcher]="matcher" />
 
                     <button type='button' mat-icon-button matSuffix [attr.aria-label]="'Hide password'"
                         (click)="togglePassword($event)" (touchstart)="togglePassword($event)"
@@ -125,7 +125,7 @@
                 <mat-form-field appearance="fill" *ngVar="group.get('confirm_password'); let cpwd">
                     <mat-label>Confirm password</mat-label>
                     <input matInput id="confirm_password" type="password" formControlName="confirm_password"
-                        autocomplete="new-password" [errorStateMatcher]="confirmPasswordMatcher">
+                        autocomplete="new-password" [errorStateMatcher]="confirmPasswordMatcher" />
                     <mat-error *ngIf="cpwd.hasError('required')">Please confirm your password </mat-error>
                     <mat-error *ngIf="group.hasError('mismatch')">
                         Passwords do not match

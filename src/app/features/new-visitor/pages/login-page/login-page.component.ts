@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { map, catchError, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { InvalidDirtyErrorStateMatcher } from '@core/utils/error-state-matcher';
 import { IsHandsetService } from '@core/services/is-handset.service';
 
@@ -16,9 +16,6 @@ export class LoginPageComponent implements OnInit {
     hidden: boolean = false;
     usernameRegex: RegExp = /^[_-]*[a-zA-Z][\w-]*$/;
     matcher = new InvalidDirtyErrorStateMatcher();
-
-    passwordRegex: RegExp =
-        /^(?=[a-zA-Z].+$)(?=.{8,14}$)(?=[^A-Z]*[A-Z])(?=[^0-9]*[0-9])(?=[^~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?]*[~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])(?:([\w\d~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])\1?(?!\1))+$/;
 
     loginForm = this.fb.group({
         username: [
@@ -82,23 +79,6 @@ export class LoginPageComponent implements OnInit {
             return;
         }
         this.hidden = !this.hidden;
-    }
-
-    getUsernameErrorMessage() {
-        const usernameField = this.loginForm.get('username');
-        if (usernameField.hasError('required')) {
-            return 'You must enter a value';
-        }
-        if (usernameField.hasError('pattern')) {
-            return 'Username is not in a valid format';
-        }
-        if (usernameField.hasError('minlength')) {
-            return 'Username must be at least 4 characters';
-        }
-        if (usernameField.hasError('maxlength')) {
-            return 'Username must be at most 16 characters';
-        }
-        return '';
     }
 
     getPasswordErrorMessage() {

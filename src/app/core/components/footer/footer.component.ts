@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -18,7 +18,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, AfterViewInit {
     locationMap: Map;
     isOnline: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
@@ -29,7 +29,9 @@ export class FooterComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit() {
+    ngOnInit() {}
+
+    ngAfterViewInit(): void {
         this.locationMap = this.makeMap();
     }
 
