@@ -15,11 +15,11 @@ import { AppRoutingModule } from './app-routing.module';
     declarations: [AppComponent],
     providers: [],
     imports: [
-        CoreModule,
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        CoreModule,
         LandingModule,
         LoginPageModule,
         RegisterPageModule,

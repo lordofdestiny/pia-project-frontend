@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DoctorListData } from '@core/models/doctor';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
+import { DoctorsService } from '@core/services/doctors.service';
 
 /**PRIME NG TEST */
 import { Observable, tap } from 'rxjs';
-import { DoctorsService } from 'src/app/shared/services/doctors.service';
 
 @Component({
     selector: 'app-doctor-list',

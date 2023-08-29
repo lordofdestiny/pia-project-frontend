@@ -23,6 +23,5 @@ import { LoginPageComponent } from './login-page.component';
         MatIconModule,
     ],
     exports: [LoginPageComponent],
-    bootstrap: [LoginPageComponent],
 })
 export class LoginPageModule {}

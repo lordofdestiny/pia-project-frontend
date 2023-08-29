@@ -18,13 +18,16 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 import { StepperOrientation } from '@angular/material/stepper';
 
-import { InvalidDirtyErrorStateMatcher } from '@core/utils/error-state-matcher';
+import {
+    ConfirmPasswordErrorMatcher,
+    InvalidDirtyErrorStateMatcher,
+} from '@core/utils/error-state-matcher';
 import { Observable, map } from 'rxjs';
 import {
     UniqueEmailValidator,
     UniqueUsernameValidator,
 } from './unique-creds.validator';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,8 +36,10 @@ import { Router } from '@angular/router';
     styleUrls: ['./register-page.component.css'],
 })
 export class RegisterPageComponent implements OnInit, AfterViewInit {
-    hidden: boolean = false;
+    matcher = new InvalidDirtyErrorStateMatcher();
+    confirmPasswordMatcher = new ConfirmPasswordErrorMatcher();
 
+    passwordHidden: boolean = false;
     togglePassword(event: Event) {
         if (
             event.type == 'click' &&
@@ -42,7 +47,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         ) {
             return;
         }
-        this.hidden = !this.hidden;
+        this.passwordHidden = !this.passwordHidden;
     }
 
     emailRegex: RegExp =
@@ -51,8 +56,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     phoneRegex: RegExp =
         /^((\+381)|0)?[\s-]*6[\s-]*(([0-6]|[8-9]|(7[\s-]*[7-8]))(?:[ -]*\d[ -]*){6,7})$/;
     passwordRegex: RegExp =
-        /^(?=[a-zA-Z].+$)(?=.{8,14}$)(?=[^A-Z]*[A-Z])(?=[^0-9]*[0-9])(?=[^~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?]*[~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])(?:([\w\d~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])\1?(?!\1))+$/;
-
+        /^(?=[a-zA-Z].+$)(?=.{8,14}$)(?=[^A-Z]*[A-Z])(?=[^\d]*[\d])(?=[^\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]*[\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e])(?:([\x20-\x7E])\1?(?!\1))+$/;
     registerForm: FormGroup = this.fb.group({
         formArray: this.fb.array([
             this.fb.group({
@@ -77,6 +81,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                         '',
                         [
                             Validators.required,
+                            Validators.minLength(4),
+                            Validators.maxLength(16),
                             Validators.pattern(this.usernameRegex),
                         ],
                         [
@@ -87,7 +93,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                     ],
                 },
                 {
-                    updateOn: 'blur',
+                    updateOn: 'change',
                 }
             ),
             this.fb.group({
@@ -103,6 +109,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                         '',
                         [
                             Validators.required,
+                            Validators.minLength(8),
+                            Validators.maxLength(14),
                             Validators.pattern(this.passwordRegex),
                         ],
                     ],
@@ -113,7 +121,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 }
             ),
             this.fb.group({
-                profile_picture: ['', [], this.imageSizeValidator.bind(this)],
+                profile_picture: ['', [], this.imageValidator.bind(this)],
             }),
         ]),
     });
@@ -125,42 +133,35 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         this.previewDOM = this.preview.nativeElement;
     }
 
-    async imageSizeValidator(g: AbstractControl): Promise<ValidationErrors> {
+    async imageValidator(g: AbstractControl): Promise<ValidationErrors> {
         const file = g.value;
-        if (file === '' || file === null || file === undefined) {
-            return null;
+        if (file === '' || file === undefined) {
+            return Promise.resolve(null);
         }
-        const image =
-            this.previewDOM != undefined ? this.previewDOM : new Image();
+        if ((file as File).type.split('/')[0] !== 'image') {
+            return Promise.resolve({ notImage: true });
+        }
         return new Promise((resolve, reject) => {
+            const image = this.previewDOM;
+            image.onload = function (this: HTMLImageElement) {
+                const { width, height } = this;
+                if (width < 100 || height < 100) {
+                    resolve({
+                        tooSmall: true,
+                    });
+                }
+                if (width > 300 || height > 300) {
+                    resolve({
+                        tooBig: true,
+                    });
+                }
+                resolve(null);
+            };
+            image.onerror = () => reject({ 'error: ': 'Error loading image' });
+
             const reader = new FileReader();
-            reader.onloadend = () => {
-                image.onload = function (this: HTMLImageElement) {
-                    const { width, height } = this;
-
-                    if (width < 100 || height < 100) {
-                        resolve({
-                            tooSmall: true,
-                        });
-                    }
-
-                    if (width > 300 || height > 300) {
-                        resolve({
-                            tooBig: true,
-                        });
-                    }
-                    resolve(null);
-                };
-
-                image.onerror = function (this: HTMLImageElement) {
-                    reject({ 'error: ': 'Error loading image' });
-                };
-
-                image.src = reader.result as string;
-            };
-            reader.onerror = () => {
-                reject({ error: 'Error reading file' });
-            };
+            reader.onloadend = () => (image.src = reader.result as string);
+            reader.onerror = () => reject({ error: 'Error reading file' });
             reader.readAsDataURL(file as Blob);
         });
     }
@@ -169,107 +170,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         return this.registerForm.get('formArray');
     }
 
-    matcher = new InvalidDirtyErrorStateMatcher();
-
-    getConfirmPasswordErrorMessage() {
-        const cpwd = this.formArray.get([3]).get('confirm_password');
-        if (cpwd.hasError('required')) {
-            return 'Please confirm your password';
-        }
-        return '';
-    }
-
-    passwordMatchValidator(g: AbstractControl) {
-        return g.get('password').value === g.get('confirm_password').value
-            ? null
-            : { mismatch: true };
-    }
-
-    getStepErrorMessage(stepIndex: number) {
-        switch (stepIndex) {
-            case 0:
-                return 'Required';
-            case 1: {
-                const group = this.formArray?.get([1]);
-                return group.get('email').hasError('required') ||
-                    group.get('username').hasError('required')
-                    ? 'Required'
-                    : group.get('email').hasError('pattern')
-                    ? 'Email format'
-                    : group.get('username').hasError('pattern')
-                    ? 'Username format'
-                    : '';
-            }
-            case 2: {
-                const group = this.formArray?.get([2]);
-                return group.get('phone').hasError('required') ||
-                    group.get('address').hasError('required')
-                    ? 'Required'
-                    : group.get('phone').hasError('pattern')
-                    ? 'Phone format'
-                    : '';
-            }
-            case 3: {
-                const group = this.formArray?.get([3]);
-                return group.get('password').hasError('required') ||
-                    group.get('confirm_password').hasError('required')
-                    ? 'Required'
-                    : group.get('password').hasError('pattern')
-                    ? 'Password insecure'
-                    : group.hasError('mismatch')
-                    ? 'Passwords do not match'
-                    : '';
-            }
-            default:
-                return '';
-        }
-    }
-
-    getEmailErrorMessage() {
-        const emailField = this.formArray.get([1]).get('email');
-        if (emailField.hasError('required')) {
-            return 'Email is required';
-        }
-        if (emailField.hasError('pattern')) {
-            return 'Email format is not valid';
-        }
-        if (emailField.hasError('notuniqueEmail')) {
-            return 'Email is already taken';
-        }
-        return '';
-    }
-
-    getUsernameErrorMessage() {
-        const usernameField = this.formArray.get([1]).get('username');
-        if (usernameField.hasError('required')) {
-            return 'Username is required';
-        }
-        if (usernameField.hasError('pattern')) {
-            return 'Username format is not valid';
-        }
-        if (usernameField.hasError('minlength')) {
-            return 'Username must be at least 4 characters';
-        }
-        if (usernameField.hasError('maxlength')) {
-            return 'Username must be at most 16 characters';
-        }
-        if (usernameField.hasError('notuniqueUsername')) {
-            return 'Username is already taken';
-        }
-        return '';
-    }
-
-    getPhoneErrorMessage() {
-        const phoneField = this.formArray.get([2]).get('phone');
-        if (phoneField.hasError('required')) {
-            return 'Phone number is required';
-        }
-        if (phoneField.hasError('pattern')) {
-            return 'Phone number format is not valid';
-        }
-        return '';
-    }
-    passwordChecks = [
+    readonly passwordChecks = [
         {
             error: 'Password must start with a letter',
             regex: /^[a-zA-Z].*$/,
@@ -284,43 +185,89 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         },
         {
             error: 'Password must contain a digit',
-            regex: /^(?=[^0-9]*[0-9]).*/,
+            regex: /^(?=[^\d]*[\d]).*/,
         },
         {
             error: 'Password must contain a special character',
-            regex: /(?=[^~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?]*[~!@#$%^&*()_+=\-\[\]{};:'"\\\|,.<>\/?])/,
+            regex: /^(?=[^\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]*[\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]).*/,
         },
         {
             error: 'Password must not contain more than 2 repeating characters',
-            regex: /^(?:([\x21-\x7e])\1?(?!\1))+$/,
+            regex: /^(?:([\x20-\x7e])\1?(?!\1))+$/,
         },
     ];
 
-    getPasswordErrorMessage() {
-        const passwordField = this.formArray.get([3]).get('password');
-
-        if (passwordField.hasError('required')) {
-            return 'Password is required';
-        }
-        if (passwordField.hasError('pattern')) {
-            return 'Password is not secure enough';
-        }
-        return '';
+    passwordMatchValidator(g: AbstractControl) {
+        return g.get('password').value === g.get('confirm_password').value
+            ? null
+            : { mismatch: true };
     }
 
-    getPictureErrorMessage() {
-        const pictureFiled = this.formArray.get([4]).get('profile_picture');
-        if (pictureFiled.hasError('tooSmall')) {
-            return 'Image has to be at least 100x100px';
-        }
-        if (pictureFiled.hasError('tooBig')) {
-            return 'Image has to be at most 300x300px';
+    getStepErrorMessage(stepIndex: number) {
+        if (stepIndex < 0 || stepIndex > 4) return '';
+        const group = this.formArray?.get([stepIndex]);
+        switch (stepIndex) {
+            case 0:
+                return 'Required';
+            case 1:
+                const email = group.get('email');
+                const username = group.get('username');
+                if (
+                    email.hasError('required') ||
+                    username.hasError('required')
+                ) {
+                    return 'Required';
+                }
+                if (email.hasError('pattern')) {
+                    return 'Email format';
+                }
+                if (
+                    username.hasError('pattern') ||
+                    username.hasError('minlength') ||
+                    username.hasError('maxlength')
+                ) {
+                    return 'Username format';
+                }
+                break;
+            case 2:
+                const phone = group.get('phone');
+                const address = group.get('address');
+                if (
+                    phone.hasError('required') ||
+                    address.hasError('required')
+                ) {
+                    return 'Required';
+                }
+                if (phone.hasError('pattern')) {
+                    return 'Phone format';
+                }
+                break;
+            case 3:
+                const pwd = group.get('password');
+                const cpwd = group.get('confirm_password');
+                if (pwd.hasError('required') || cpwd.hasError('required')) {
+                    return 'Required';
+                }
+                if (pwd.hasError('pattern')) {
+                    return 'Password insecure';
+                }
+                if (group.hasError('mismatch')) {
+                    return 'Bad confirmation';
+                }
+                break;
+            case 4:
+                const img = group.get('profile_picture');
+                if (img.hasError('tooSmall') || img.hasError('tooBig')) {
+                    return 'Image size';
+                }
+                if (img.hasError('notImage')) {
+                    return 'Not an image';
+                }
         }
         return '';
     }
 
     modalRef?: BsModalRef;
-
     onSubmit(registerModal: TemplateRef<any>) {
         const mergedData = this.registerForm.value.formArray.reduce(
             (acc, group) => Object.assign(acc, group),

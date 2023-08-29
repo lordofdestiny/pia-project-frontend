@@ -4,45 +4,66 @@ import {
     AsyncValidator,
     ValidationErrors,
 } from '@angular/forms';
-import { AuthService } from '@shared/services/auth.service';
-import { Observable, map, tap } from 'rxjs';
+
+import { switchMap } from 'rxjs/operators';
+import { Observable, map, of, timer } from 'rxjs';
+
+import { AuthService } from '@core/services/auth.service';
+
+type TCredential = 'email' | 'username';
 
 @Injectable({ providedIn: 'root' })
-export class UniqueEmailValidator implements AsyncValidator {
+abstract class UniqueCredentialValidator implements AsyncValidator {
+    abstract get credentialType(): TCredential;
+    get errorName(): string {
+        return `notunique${this.credentialType.toTitleCase()}`;
+    }
+    get debounceTime(): number {
+        return 500;
+    }
     constructor(private authService: AuthService) {}
 
-    validate(control: AbstractControl): Observable<ValidationErrors | null> {
+    private mapIntoValidationErrors() {
+        return map((isUnique) =>
+            !isUnique
+                ? ({
+                      [this.errorName]: true,
+                  } as ValidationErrors)
+                : null
+        );
+    }
+
+    private serviceObservable(value: string) {
         return this.authService
             .uniqeCredential({
-                type: 'email',
-                value: control.value,
+                type: this.credentialType,
+                value: value,
             })
-            .pipe(
-                map((isUnique) =>
-                    !isUnique
-                        ? ({ notuniqueEmail: true } as ValidationErrors)
-                        : null
-                )
-            );
+            .pipe(this.mapIntoValidationErrors());
+    }
+
+    validate(
+        control: AbstractControl<any, any>
+    ): Observable<ValidationErrors | null> {
+        if (control.pristine) {
+            return of(null);
+        }
+        return timer(this.debounceTime).pipe(
+            switchMap(() => this.serviceObservable(control.value))
+        );
     }
 }
 
 @Injectable({ providedIn: 'root' })
-export class UniqueUsernameValidator implements AsyncValidator {
-    constructor(private authService: AuthService) {}
+export class UniqueEmailValidator extends UniqueCredentialValidator {
+    get credentialType(): TCredential {
+        return 'email';
+    }
+}
 
-    validate(control: AbstractControl): Observable<ValidationErrors | null> {
-        return this.authService
-            .uniqeCredential({
-                type: 'username',
-                value: control.value,
-            })
-            .pipe(
-                map((isUnique) =>
-                    !isUnique
-                        ? ({ notuniqueUsername: true } as ValidationErrors)
-                        : null
-                )
-            );
+@Injectable({ providedIn: 'root' })
+export class UniqueUsernameValidator extends UniqueCredentialValidator {
+    get credentialType(): TCredential {
+        return 'username';
     }
 }

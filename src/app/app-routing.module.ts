@@ -37,7 +37,7 @@ export const appRoutes: Routes = [
 ];
 
 @NgModule({
-    providers: [AuthGuard, LoggedInGurad, LogoutGuard],
+    providers: [],
     imports: [
         RouterModule.forRoot(appRoutes, {
             preloadingStrategy: PreloadAllModules,

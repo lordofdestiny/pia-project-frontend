@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { map, catchError, tap } from 'rxjs';
 import { InvalidDirtyErrorStateMatcher } from '@core/utils/error-state-matcher';

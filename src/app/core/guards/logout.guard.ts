@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, UrlTree } from '@angular/router';
 import { Router } from '@angular/router';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 
 @Injectable()
 export class LogoutGuard implements CanActivate {

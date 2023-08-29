@@ -36,6 +36,5 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         CarouselModule.forRoot(),
     ],
     exports: [LandingPageComponent],
-    bootstrap: [LandingPageComponent],
 })
 export class LandingModule {}

@@ -13,10 +13,10 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 
-import { SharedDirectivesModule } from '@shared/directives/directives.shared.module';
-import { PipesModule } from '@shared/pipes/pipes.shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 import { RegisterPageComponent } from './register-page.component';
+
 import {
     UniqueEmailValidator,
     UniqueUsernameValidator,
@@ -43,11 +43,9 @@ import {
         MatIconModule,
         MatStepperModule,
         NgxMatFileInputModule,
-        SharedDirectivesModule,
-        PipesModule,
         ModalModule.forRoot(),
+        SharedModule,
     ],
-    exports: [RegisterPageComponent, SharedDirectivesModule],
-    bootstrap: [RegisterPageComponent],
+    exports: [RegisterPageComponent],
 })
 export class RegisterPageModule {}

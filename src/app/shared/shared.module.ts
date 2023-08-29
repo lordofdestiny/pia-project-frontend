@@ -1,22 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PipesModule as SharedPipesModule } from './pipes/pipes.shared.module';
 
-import { SharedComponenetsModule } from '@shared/components/components.shared.module';
-import { SharedDirectivesModule } from '@shared/directives/directives.shared.module';
+import { DoctorListModule } from '@shared/components/doctor-list/doctor-list.module';
+import { DebugPipe } from '@shared/pipes/debug.pipe';
+import { HoldDirective } from '@shared/directives/hold.directive';
+import { NgVarDirective } from '@shared/directives/ng-var.directive';
 
 @NgModule({
-    declarations: [],
-    imports: [
-        CommonModule,
-        SharedComponenetsModule,
-        SharedPipesModule,
-        SharedDirectivesModule,
-    ],
-    exports: [
-        SharedComponenetsModule,
-        SharedPipesModule,
-        SharedDirectivesModule,
-    ],
+    declarations: [DebugPipe, HoldDirective, NgVarDirective],
+    providers: [],
+    imports: [CommonModule],
+    exports: [DoctorListModule, DebugPipe, HoldDirective, NgVarDirective],
 })
 export class SharedModule {}

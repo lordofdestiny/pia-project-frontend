@@ -29,23 +29,33 @@
 
             <mat-step [formGroupName]="1" *ngVar="formArray?.get([1]); let group" [stepControl]="group"
                 [errorMessage]="getStepErrorMessage(1)" state="identity">
-                <ng-template matStepLabel>ID</ng-template>
-                <mat-form-field appearance="fill">
+                <ng-template matStepLabel>Identity</ng-template>
+                <mat-form-field appearance="fill" *ngVar="group.get('email'); let email">
                     <mat-label>E-mail</mat-label>
                     <input matInput id="email" type="email" formControlName="email" autocomplete="email"
                         [errorStateMatcher]="matcher">
-                    <mat-error *ngIf="group.get('email').statusChanges | async">
-                        {{getEmailErrorMessage()}}
+                    <mat-error *ngIf="email.hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="email.hasError('pattern')">
+                        Email format is not valid
+                    </mat-error>
+                    <mat-error *ngIf="email.hasError('notuniqueEmail')">
+                        Email is already taken
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" *ngVar="group.get('username'); let username">
                     <mat-label>Username</mat-label>
                     <input matInput id="username" type="text" formControlName="username" autocomplete="username"
                         [errorStateMatcher]="matcher">
-                    <mat-error *ngIf="group.get('username').statusChanges | async">
-                        {{getUsernameErrorMessage()}}
-                    </mat-error>
+                    <mat-error *ngIf="username.hasError('required')">Username is required</mat-error>
+                    <mat-error *ngIf="username.hasError('pattern')">Username format is not valid </mat-error>
+                    <mat-error *ngIf="username.hasError('minlength')">Username must be at least 4
+                        charachters</mat-error>
+                    <mat-error *ngIf="username.hasError('maxlength')">Username must be at most 16
+                        charachters</mat-error>
+                    <mat-error *ngIf="username.hasError('notuniqueUsername')"> Username is already taken</mat-error>
                 </mat-form-field>
                 <div class="nav-buttons">
                     <button mat-stroked-button matStepperPrevious>Back</button>
@@ -57,13 +67,12 @@
                 [errorMessage]="getStepErrorMessage(2)" state="contact">
                 <ng-template matStepLabel>Contact</ng-template>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" *ngVar="group.get('phone'); let phone">
                     <mat-label>Phone number</mat-label>
                     <input matInput id="phone" type="tel" formControlName="phone" autocomplete="tel-national"
                         [errorStateMatcher]="matcher">
-                    <mat-error *ngIf="group.get('phone').statusChanges | async">
-                        {{getPhoneErrorMessage()}}
-                    </mat-error>
+                    <mat-error *ngIf="phone.hasError('required')">Phone number is required</mat-error>
+                    <mat-error *ngIf="phone.hasError('pattern')">Phone number format is not valid</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -82,19 +91,25 @@
             <mat-step [formGroupName]="3" *ngVar="formArray?.get([3]); let group" [stepControl]="group"
                 [errorMessage]="getStepErrorMessage(3)" state="password">
                 <ng-template matStepLabel>Password</ng-template>
-                <mat-form-field appearance="fill">
+
+                <mat-form-field appearance="fill" *ngVar="group.get('password'); let pwd">
                     <mat-label>New password</mat-label>
-                    <input matInput id="password" [type]="hidden?'text':'password'" formControlName="password"
+                    <input matInput id="password" [type]="passwordHidden?'text':'password'" formControlName="password"
                         autocomplete="new-password" [errorStateMatcher]="matcher">
 
                     <button type='button' mat-icon-button matSuffix [attr.aria-label]="'Hide password'"
                         (click)="togglePassword($event)" (touchstart)="togglePassword($event)"
                         (touchend)="togglePassword($event)" tabindex="-1">
-                        <mat-icon> {{hidden ? 'visibility_off':'visibility' }}</mat-icon>
+                        <mat-icon> {{passwordHidden ? 'visibility_off':'visibility' }}</mat-icon>
                     </button>
-                    <mat-error *ngIf="group.get('password').statusChanges | async">
-                        {{getPasswordErrorMessage()}}
+                    <mat-error *ngIf="pwd.hasError('required')"> Password is required</mat-error>
+                    <mat-error *ngIf="pwd.hasError('minlength')">
+                        Password must be at least 8 charachters long</mat-error>
+                    <mat-error *ngIf="pwd.hasError('maxlength')">
+                        Password can be at most 14 charachters long
                     </mat-error>
+                    <mat-error *ngIf="pwd.hasError('pattern') ">
+                        Password is not secure enough</mat-error>
                 </mat-form-field>
                 <table class="password_reqs" *ngVar="group.get('password'); let pwd">
                     <tr *ngFor="let check of passwordChecks">
@@ -107,18 +122,15 @@
                     </tr>
                 </table>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" *ngVar="group.get('confirm_password'); let cpwd">
                     <mat-label>Confirm password</mat-label>
                     <input matInput id="confirm_password" type="password" formControlName="confirm_password"
-                        autocomplete="new-password" [errorStateMatcher]="matcher">
-                    <mat-error *ngIf="group.get('password').statusChanges | async">
-                        {{ getConfirmPasswordErrorMessage()}}
+                        autocomplete="new-password" [errorStateMatcher]="confirmPasswordMatcher">
+                    <mat-error *ngIf="cpwd.hasError('required')">Please confirm your password </mat-error>
+                    <mat-error *ngIf="group.hasError('mismatch')">
+                        Passwords do not match
                     </mat-error>
                 </mat-form-field>
-                <div class="pwdmatch"
-                    *ngIf="(group.statusChanges | async) && passwordMatchValidator(group) != null && group.get('confirm_password').dirty">
-                    <span [style.color]="'var(--warn)'">Passwords do not match</span>
-                </div>
                 <div class="nav-buttons">
                     <button mat-stroked-button matStepperPrevious>Back</button>
                     <button mat-stroked-button matStepperNext>Next</button>
@@ -128,24 +140,31 @@
             <mat-step [formGroupName]="4" *ngVar="formArray?.get([4]); let group" [stepControl]="group"
                 [optional]="true" state="picture">
                 <ng-template matStepLabel>Picture</ng-template>
-                <mat-form-field appearance="fill">
-                    <mat-label>Profile picture</mat-label>
-
-                    <ngx-mat-file-input formControlName="profile_picture" type="file" accept="image/*" color="accent">
-                        <mat-icon ngxMatFileInputIcon>
-                            image
-                        </mat-icon>
-                    </ngx-mat-file-input>
-                    <mat-error *ngIf="group.statusChanges | async">
-                        {{getPictureErrorMessage()}}}
-                    </mat-error>
-                </mat-form-field>
                 <ng-container *ngVar="group.get('profile_picture'); let pic">
-                    <img #preview id="image_preview" alt="Image preview"
-                        [style.display]="pic.value!=='' && pic.value!==null && pic.valid ? 'block':'none'">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Profile picture</mat-label>
 
-                    <button *ngIf="pic.value!=='' && pic.value!==null && pic.dirty" type="button" mat-stroked-button
-                        color="accent" (click)="group.get('profile_picture').setValue(null)">
+                        <ngx-mat-file-input formControlName="profile_picture" type="file" accept="image/*"
+                            color="accent">
+                            <mat-icon ngxMatFileInputIcon>
+                                image
+                            </mat-icon>
+                        </ngx-mat-file-input>
+                        <mat-error *ngIf="pic.hasError('tooSmall')">
+                            Image has to be at least 100px &times; 100px
+                        </mat-error>
+                        <mat-error *ngIf="pic.hasError('tooBig')">
+                            Image has to be at most 300px &times; 300px
+                        </mat-error>
+                        <mat-error *ngIf="pic.hasError('notImage')">
+                            You have to select an image
+                        </mat-error>
+                    </mat-form-field>
+                    <img #preview id="image_preview" alt="Image preview"
+                        [style.display]="pic.value!=='' && pic.valid ? 'block':'none'">
+
+                    <button *ngIf="pic.value!=='' && pic.dirty" type="button" mat-stroked-button color="accent"
+                        (click)="pic.setValue('')">
                         Clear
                     </button>
                 </ng-container>
@@ -159,9 +178,13 @@
             <mat-step state="complete">
                 <ng-template matStepLabel>Done</ng-template>
                 <div class="last_page">
-                    <p *ngIf="registerForm.valid">You're all set. Please submit your registration.</p>
-                    <p *ngIf="!registerForm.valid" [style.color]="'var(--warn)'">Some of the data you've entered is not
-                        valid. Corect it in order to register.</p>
+                    <p *ngIf="registerForm.valid">
+                        You're all set. Please click <b>Submit</b> to register.
+                    </p>
+                    <p *ngIf="!registerForm.valid" [style.color]="'var(--warn)'">
+                        Some fields were not populated or have errors.<br />
+                        Corect them in order to register.
+                    </p>
                 </div>
                 <button mat-raised-button color="primary" (click)="onSubmit(registerModal)"
                     [disabled]="!registerForm.valid">Submit</button>

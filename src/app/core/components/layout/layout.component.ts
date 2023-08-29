@@ -1,5 +1,5 @@
 import { Input, Component } from '@angular/core';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { IsHandsetService } from '@core/services/is-handset.service';
 
 export interface NavItem {

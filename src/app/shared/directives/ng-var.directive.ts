@@ -9,7 +9,7 @@ import {
 @Directive({
     selector: '[ngVar]',
 })
-export class NgVar<T = unknown> {
+export class NgVarDirective<T = unknown> {
     private _context: NgVarContext<T> = new NgVarContext<T>();
     private _viewRef: EmbeddedViewRef<NgVarContext<T>> | null = null;
 
@@ -47,7 +47,7 @@ export class NgVar<T = unknown> {
 
     // Passing down variable Type
     static ngTemplateContextGuard<T>(
-        dir: NgVar<T>,
+        dir: NgVarDirective<T>,
         ctx: any
     ): ctx is NgVarContext<T> {
         return true;

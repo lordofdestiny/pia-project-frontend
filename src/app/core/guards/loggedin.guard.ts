@@ -5,7 +5,7 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { map, tap } from 'rxjs';
 
 @Injectable()
