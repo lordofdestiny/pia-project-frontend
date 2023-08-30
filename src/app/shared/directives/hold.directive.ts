@@ -15,8 +15,8 @@ export class HoldDirective {
     @Output() onholding: EventEmitter<any> = new EventEmitter();
     @Output() onholdend: EventEmitter<any> = new EventEmitter();
 
-    private pressing: boolean;
-    private holding: boolean;
+    private pressing: boolean = false;
+    private holding: boolean = false;
     private timeout: any;
     private mouseX: number = 0;
     private mouseY: number = 0;
@@ -32,7 +32,7 @@ export class HoldDirective {
     }
 
     @HostListener('mousedown', ['$event'])
-    onMouseDown(event) {
+    onMouseDown(event: MouseEvent) {
         // don't do right/middle clicks
         if (event.which !== 1) return;
 
@@ -52,7 +52,7 @@ export class HoldDirective {
     }
 
     @HostListener('mousemove', ['$event'])
-    onMouseMove(event) {
+    onMouseMove(event: MouseEvent) {
         if (this.pressing && !this.holding) {
             const xThres = event.clientX - this.mouseX > 10;
             const yThres = event.clientY - this.mouseY > 10;
@@ -62,7 +62,7 @@ export class HoldDirective {
         }
     }
 
-    loop(event) {
+    loop(event: Event) {
         if (this.holding) {
             this.timeout = setTimeout(() => {
                 this.onholding.emit(event);

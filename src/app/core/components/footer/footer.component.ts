@@ -19,7 +19,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
     styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent implements OnInit, AfterViewInit {
-    locationMap: Map;
+    locationMap?: Map;
     isOnline: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
     private etfGeoCoords = [20.476236, 44.805715];

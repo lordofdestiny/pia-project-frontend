@@ -58,7 +58,7 @@ export class LoginPageComponent implements OnInit {
     ngOnInit(): void {}
 
     fieldIcon(name: string): string {
-        const field = this.loginForm.get(name);
+        const field = this.loginForm.get(name)!;
         field.hasError('pattern');
         if (field.valid) {
             return 'check_circle_outline';
@@ -71,7 +71,7 @@ export class LoginPageComponent implements OnInit {
     }
 
     fieldColor(name: string): string {
-        return this.loginForm.get(name).valid ? 'primary' : 'warn';
+        return this.loginForm.get(name)!.valid ? 'primary' : 'warn';
     }
 
     togglePassword(event: Event) {
@@ -81,36 +81,26 @@ export class LoginPageComponent implements OnInit {
         this.hidden = !this.hidden;
     }
 
-    getPasswordErrorMessage() {
-        const passwordField = this.loginForm.get('password');
-        if (passwordField.hasError('required')) {
-            return 'You must enter a value';
-        }
-        if (passwordField.hasError('minlength')) {
-            return 'Your password is at least 8 characters long';
-        }
-        if (passwordField.hasError('maxlength')) {
-            return 'Your password is at most 14 characters long';
-        }
-        return '';
-    }
     submitted = true; // Whether the form has been submitted
     errorMessage = ''; // Place to store errors
     onSubmit() {
+        console.log('Login form submitted');
         this.submitted = true;
         if (!this.loginForm.valid) {
             alert('Invalid form state');
             return;
         }
         const { username, password } = this.loginForm.value;
-        this.authService.login({ username, password }).subscribe({
-            next: (user) => {
-                this.router.navigate(['/']);
-            },
-            error: (err) => {
-                const msg = new String(err.error.message);
-                this.errorMessage = msg.toTitleCase();
-            },
-        });
+        this.authService
+            .login({ username: username!, password: password! })
+            .subscribe({
+                next: (user) => {
+                    this.router.navigate(['/']);
+                },
+                error: (err) => {
+                    const msg = new String(err.error.message);
+                    this.errorMessage = msg.toTitleCase();
+                },
+            });
     }
 }

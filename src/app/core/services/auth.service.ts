@@ -9,21 +9,31 @@ import {
     throwError,
 } from 'rxjs';
 import { User, UserCredentials, UserRole } from '@core/models/user.';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders,
+} from '@angular/common/http';
 import { baseUri } from '@environments/environment';
 
 @Injectable()
 export class AuthService {
     #logged_in = new BehaviorSubject<boolean>(false);
-    #user_role: UserRole = null;
 
     get logged_in() {
         return this.#logged_in;
     }
 
     get user_role() {
-        return this.#user_role;
+        return this.user.type;
+    }
+
+    get user(): User {
+        return JSON.parse(sessionStorage.getItem('user') ?? '{}');
+    }
+
+    set user(value: User) {
+        sessionStorage.setItem('user', JSON.stringify(value));
     }
 
     constructor(private http: HttpClient, private router: Router) {
@@ -32,12 +42,14 @@ export class AuthService {
         }
     }
 
-    register(user: User) {
+    register(user: FormData) {
         if (this.#logged_in.value) {
             return throwError(() => new Error('already logged in'));
         }
         return this.http
-            .post<User>(`${baseUri}/auth/register/patient`, user)
+            .post<User>(`${baseUri}/auth/register/patient`, user, {
+                headers: new HttpHeaders({ enctype: 'multipart/form-data' }),
+            })
             .pipe(catchError(AuthService.handleError));
     }
 
@@ -46,7 +58,7 @@ export class AuthService {
             return throwError(() => new Error('already logged in'));
         }
         return this.http
-            .post<User>(
+            .post<{ user: User; message: string }>(
                 `${baseUri}/auth/login${manager ? 'manager' : ''}`,
                 user
             )
@@ -54,9 +66,29 @@ export class AuthService {
                 catchError(AuthService.handleError),
                 tap((response) => {
                     sessionStorage.setItem('auth', 'true');
-                    this.#user_role = response.type;
+                    this.user = response.user;
                     this.#logged_in.next(true);
                 })
+            );
+    }
+
+    changePassword(old_password: string, new_password: string) {
+        if (!this.#logged_in.value) {
+            return throwError(() => new Error('unauthorized. not logged in'));
+        }
+        return this.http
+            .post<{}>(`${baseUri}/auth/password`, {
+                username: this.user.username,
+                old_password,
+                new_password,
+            })
+            .pipe(
+                catchError(AuthService.handleError),
+                tap(() => {
+                    this.#logged_in.next(false);
+                    sessionStorage.clear();
+                }),
+                map(() => true)
             );
     }
 

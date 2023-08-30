@@ -12,8 +12,8 @@ import { Observable, tap } from 'rxjs';
     styleUrls: ['./doctor-list.component.css'],
 })
 export class DoctorListComponent implements OnInit {
-    doctors: Observable<DoctorListData>;
-    logged_in: Observable<boolean>;
+    doctors?: Observable<DoctorListData>;
+    logged_in?: Observable<boolean>;
     loading: boolean = true;
     constructor(
         private doctorService: DoctorsService,

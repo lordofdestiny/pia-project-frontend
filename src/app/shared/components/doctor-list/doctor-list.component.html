@@ -1,4 +1,4 @@
-<p-table #dt [value]="doctors | async" dataKey="id" sortMode="multiple" [rowHover]="true" [loading]="loading"
+<p-table #dt [value]="(doctors | async)!" dataKey="id" sortMode="multiple" [rowHover]="true" [loading]="loading"
     [filterDelay]="0" [globalFilterFields]="['first_name','last_name','speciality']" responsiveLayout="stack"
     [breakpoint]="'768px'" styleClass="p-datatable-sm p-datatable-gridlines mat-elevation-z12 primeng-table">
 

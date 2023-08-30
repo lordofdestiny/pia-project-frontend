@@ -7,7 +7,7 @@ export class InvalidDirtyErrorStateMatcher implements ErrorStateMatcher {
         form: FormGroupDirective | NgForm | null
     ): boolean {
         const isSubmitted = form && form.submitted;
-        return control && control.dirty && control.invalid; // show error only when dirty and invalid
+        return (control && control.dirty && control.invalid)!; // show error only when dirty and invalid
     }
 }
 
@@ -17,10 +17,8 @@ export class ConfirmPasswordErrorMatcher implements ErrorStateMatcher {
         form: FormGroupDirective | NgForm | null
     ): boolean {
         const isSubmitted = form && form.submitted;
-        return (
-            control &&
+        return (control &&
             control.dirty &&
-            (control.invalid || control.parent.hasError('mismatch'))
-        );
+            (control.invalid || control.parent!.hasError('mismatch')))!;
     }
 }

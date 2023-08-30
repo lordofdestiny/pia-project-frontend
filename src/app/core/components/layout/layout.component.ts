@@ -25,6 +25,11 @@ export class LayoutComponent {
     navItems: NavItems = {
         auth: [
             {
+                route: '/change-password',
+                title: 'Change Password',
+                rlaOptions: { exact: false },
+            },
+            {
                 route: '/logout',
                 title: 'Log out',
                 rlaOptions: { exact: false },

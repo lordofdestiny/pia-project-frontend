@@ -1,4 +1,3 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
     AfterViewInit,
     Component,
@@ -14,21 +13,30 @@ import {
     AbstractControl,
     ValidationErrors,
 } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable, map } from 'rxjs';
 
 import { StepperOrientation } from '@angular/material/stepper';
 
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {
     ConfirmPasswordErrorMatcher,
     InvalidDirtyErrorStateMatcher,
 } from '@core/utils/error-state-matcher';
-import { Observable, map } from 'rxjs';
+import { AuthService } from '@core/services/auth.service';
 import {
     UniqueEmailValidator,
     UniqueUsernameValidator,
 } from './unique-creds.validator';
-import { AuthService } from '@core/services/auth.service';
-import { Router } from '@angular/router';
+import {
+    emailRegex,
+    usernameRegex,
+    passwordRegex,
+    phoneRegex,
+    passwordChecks,
+} from '@core/constants/verification-regex';
+import { FileInput } from 'ngx-material-file-input';
 
 @Component({
     selector: 'app-register-page',
@@ -38,6 +46,7 @@ import { Router } from '@angular/router';
 export class RegisterPageComponent implements OnInit, AfterViewInit {
     matcher = new InvalidDirtyErrorStateMatcher();
     confirmPasswordMatcher = new ConfirmPasswordErrorMatcher();
+    passwordChecks = passwordChecks;
 
     passwordHidden: boolean = false;
     togglePassword(event: Event) {
@@ -50,13 +59,6 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         this.passwordHidden = !this.passwordHidden;
     }
 
-    emailRegex: RegExp =
-        /^[\w-](?:\.?[\w-]){0,63}@[\w-]{1,63}(?:\.[\w-]{1,63})*$/;
-    usernameRegex: RegExp = /^[_-]*[a-zA-Z][\w-]*$/;
-    phoneRegex: RegExp =
-        /^((\+381)|0)?[\s-]*6[\s-]*(([0-6]|[8-9]|(7[\s-]*[7-8]))(?:[ -]*\d[ -]*){6,7})$/;
-    passwordRegex: RegExp =
-        /^(?=[a-zA-Z].+$)(?=.{8,14}$)(?=[^A-Z]*[A-Z])(?=[^\d]*[\d])(?=[^\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]*[\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e])(?:([\x20-\x7E])\1?(?!\1))+$/;
     registerForm: FormGroup = this.fb.group({
         formArray: this.fb.array([
             this.fb.group({
@@ -67,10 +69,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 {
                     email: [
                         '',
-                        [
-                            Validators.required,
-                            Validators.pattern(this.emailRegex),
-                        ],
+                        [Validators.required, Validators.pattern(emailRegex)],
                         [
                             this.uniqueEmailValidator.validate.bind(
                                 this.uniqueEmailValidator
@@ -83,7 +82,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                             Validators.required,
                             Validators.minLength(4),
                             Validators.maxLength(16),
-                            Validators.pattern(this.usernameRegex),
+                            Validators.pattern(usernameRegex),
                         ],
                         [
                             this.uniqueUsernameValidator.validate.bind(
@@ -99,7 +98,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
             this.fb.group({
                 phone: [
                     '',
-                    [Validators.required, Validators.pattern(this.phoneRegex)],
+                    [Validators.required, Validators.pattern(phoneRegex)],
                 ],
                 address: ['', Validators.required],
             }),
@@ -111,7 +110,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                             Validators.required,
                             Validators.minLength(8),
                             Validators.maxLength(14),
-                            Validators.pattern(this.passwordRegex),
+                            Validators.pattern(passwordRegex),
                         ],
                     ],
                     confirm_password: ['', Validators.required],
@@ -127,24 +126,25 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     });
 
     @ViewChild('preview', { static: false })
-    preview: ElementRef<HTMLImageElement>;
-    previewDOM: HTMLImageElement;
+    preview?: ElementRef<HTMLImageElement>;
+    previewDOM?: HTMLImageElement;
     ngAfterViewInit(): void {
-        // this.previewDOM = this.preview.nativeElement;
+        this.previewDOM = this.preview?.nativeElement;
     }
 
-    async imageValidator(g: AbstractControl): Promise<ValidationErrors> {
-        const file = g.value;
-        if (file === '' || file === undefined) {
+    async imageValidator(g: AbstractControl): Promise<ValidationErrors | null> {
+        const files = g?.value?.files;
+        if (files === '' || files === null || files === undefined) {
             return Promise.resolve(null);
         }
+        const file = files[0];
         if ((file as File).type.split('/')[0] !== 'image') {
             return Promise.resolve({ notImage: true });
         }
         return new Promise((resolve, reject) => {
-            const image = this.previewDOM;
-            image.onload = function (this: HTMLImageElement) {
-                const { width, height } = this;
+            const image = this.previewDOM!;
+            image.onload = () => {
+                const { width, height } = image;
                 if (width < 100 || height < 100) {
                     resolve({
                         tooSmall: true,
@@ -166,52 +166,25 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         });
     }
 
-    get formArray(): AbstractControl | null {
-        return this.registerForm.get('formArray');
+    get formArray(): AbstractControl {
+        return this.registerForm.get('formArray')!;
     }
 
-    readonly passwordChecks = [
-        {
-            error: 'Password must start with a letter',
-            regex: /^[a-zA-Z].*$/,
-        },
-        {
-            error: 'Password must be between 8 and 14 characters',
-            regex: /^(?=.{8,14}$).*/,
-        },
-        {
-            error: 'Password must contain an uppercase letter',
-            regex: /^(?=[^A-Z]*[A-Z]).*/,
-        },
-        {
-            error: 'Password must contain a digit',
-            regex: /^(?=[^\d]*[\d]).*/,
-        },
-        {
-            error: 'Password must contain a special character',
-            regex: /^(?=[^\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]*[\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]).*/,
-        },
-        {
-            error: 'Password must not contain more than 2 repeating characters',
-            regex: /^(?:([\x20-\x7e])\1?(?!\1))+$/,
-        },
-    ];
-
     passwordMatchValidator(g: AbstractControl) {
-        return g.get('password').value === g.get('confirm_password').value
+        return g?.get('password')?.value === g?.get('confirm_password')?.value
             ? null
             : { mismatch: true };
     }
 
     getStepErrorMessage(stepIndex: number) {
         if (stepIndex < 0 || stepIndex > 4) return '';
-        const group = this.formArray?.get([stepIndex]);
+        const group = this.formArray.get([stepIndex])!;
         switch (stepIndex) {
             case 0:
                 return 'Required';
             case 1:
-                const email = group.get('email');
-                const username = group.get('username');
+                const email = group.get('email')!;
+                const username = group.get('username')!;
                 if (
                     email.hasError('required') ||
                     username.hasError('required')
@@ -230,8 +203,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 }
                 break;
             case 2:
-                const phone = group.get('phone');
-                const address = group.get('address');
+                const phone = group.get('phone')!;
+                const address = group.get('address')!;
                 if (
                     phone.hasError('required') ||
                     address.hasError('required')
@@ -243,8 +216,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 }
                 break;
             case 3:
-                const pwd = group.get('password');
-                const cpwd = group.get('confirm_password');
+                const pwd = group.get('password')!;
+                const cpwd = group.get('confirm_password')!;
                 if (pwd.hasError('required') || cpwd.hasError('required')) {
                     return 'Required';
                 }
@@ -256,7 +229,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                 }
                 break;
             case 4:
-                const img = group.get('profile_picture');
+                const img = group.get('profile_picture')!;
 
                 if (img.hasError('tooSmall') || img.hasError('tooBig')) {
                     return 'Image size';
@@ -270,12 +243,12 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
 
     modalRef?: BsModalRef;
     onSubmit(registerModal: TemplateRef<any>) {
-        const mergedData = this.registerForm.value.formArray.reduce(
-            (acc, group) => Object.assign(acc, group),
-            {}
+        const formData = new FormData(document.querySelector('form')!);
+        formData.append(
+            'profile_picture',
+            this.registerForm.get('formArray.4.profile_picture')?.value.files[0]
         );
-        Object.assign(mergedData, { confirm_password: undefined });
-        this.authService.register(mergedData).subscribe((response) => {
+        this.authService.register(formData).subscribe((response) => {
             this.modalRef = this.modalService.show(registerModal, {
                 animated: true,
             });

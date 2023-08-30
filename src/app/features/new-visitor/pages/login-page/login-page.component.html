@@ -10,16 +10,16 @@
                 placeholder="my-username__" [errorStateMatcher]="matcher">
             <mat-icon matSuffix [color]="fieldColor('username')"> {{ fieldIcon('username') }} </mat-icon>
 
-            <mat-error *ngIf="username.hasError('required')">
+            <mat-error *ngIf="username!.hasError('required')">
                 You must enter a value
             </mat-error>
-            <mat-error *ngIf="username.hasError('pattern')">
+            <mat-error *ngIf="username!.hasError('pattern')">
                 Username is not in a valid format
             </mat-error>
-            <mat-error *ngIf="username.hasError('minlength')">
+            <mat-error *ngIf="username!.hasError('minlength')">
                 Username must be at least 4 characters
             </mat-error>
-            <mat-error *ngIf="username.hasError('maxlength')">
+            <mat-error *ngIf="username!.hasError('maxlength')">
                 Username can be at most 16 characters
             </mat-error>
         </mat-form-field>
