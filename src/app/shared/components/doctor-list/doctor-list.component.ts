@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DoctorListData } from '@core/models/doctor';
+import { Doctor } from '@core/models/users';
 import { AuthService } from '@core/services/auth.service';
 import { DoctorsService } from '@core/services/doctors.service';
 
@@ -12,7 +12,7 @@ import { Observable, tap } from 'rxjs';
     styleUrls: ['./doctor-list.component.css'],
 })
 export class DoctorListComponent implements OnInit {
-    doctors?: Observable<DoctorListData>;
+    doctors?: Observable<Doctor[]>;
     logged_in?: Observable<boolean>;
     loading: boolean = true;
     constructor(

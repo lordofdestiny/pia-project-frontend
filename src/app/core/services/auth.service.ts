@@ -8,38 +8,47 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { User, UserCredentials, UserRole } from '@core/models/user.';
+import { User, UserCredentials, UserRole } from '@core/models/users';
 import {
     HttpClient,
     HttpErrorResponse,
     HttpHeaders,
 } from '@angular/common/http';
 import { baseUri } from '@environments/environment';
+import { resolveProfilePicture } from '@core/utils/resolveProfilePicture';
 
 @Injectable()
 export class AuthService {
     #logged_in = new BehaviorSubject<boolean>(false);
+    user$ = new BehaviorSubject<User>({} as User);
+
+    set user(user: User) {
+        resolveProfilePicture(user);
+        this.user$.next(user);
+    }
 
     get logged_in() {
         return this.#logged_in;
     }
 
     get user_role() {
-        return this.user.type;
+        return this.user$.value.type;
     }
 
-    get user(): User {
-        return JSON.parse(sessionStorage.getItem('user') ?? '{}');
-    }
-
-    set user(value: User) {
-        sessionStorage.setItem('user', JSON.stringify(value));
+    get full_name() {
+        const { first_name, last_name } = this.user$.value;
+        return `${first_name} ${last_name}`;
     }
 
     constructor(private http: HttpClient, private router: Router) {
         if (sessionStorage.getItem('auth') == 'true') {
             this.#logged_in.next(true);
+            this.user$.next(JSON.parse(sessionStorage.getItem('user') ?? '{}'));
         }
+        this.user$.subscribe((user) => {
+            console.log('user changed', user);
+            sessionStorage.setItem('user', JSON.stringify(user));
+        });
     }
 
     register(user: FormData) {
@@ -64,11 +73,13 @@ export class AuthService {
             )
             .pipe(
                 catchError(AuthService.handleError),
-                tap((response) => {
+                tap(({ user, message: _msg }) => {
                     sessionStorage.setItem('auth', 'true');
-                    this.user = response.user;
+                    resolveProfilePicture(user);
+                    this.user$.next(user);
                     this.#logged_in.next(true);
-                })
+                }),
+                map(({ user }) => user)
             );
     }
 
@@ -78,7 +89,7 @@ export class AuthService {
         }
         return this.http
             .post<{}>(`${baseUri}/auth/password`, {
-                username: this.user.username,
+                username: this.user$.value.username,
                 old_password,
                 new_password,
             })

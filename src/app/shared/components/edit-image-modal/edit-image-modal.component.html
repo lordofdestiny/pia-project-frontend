@@ -1,0 +1,61 @@
+<form [formGroup]="pictureForm" enctype="multipart/form-data">
+    <mat-form-field appearance="fill">
+        <mat-label>Profile picture</mat-label>
+        <mat-icon matPrefix color="accent">image</mat-icon>
+        <ngx-mat-file-input #picture_input formControlName="picture" type="file" accept="image/*"
+            valuePlaceholder="No picture selected" color="accent">
+            <mat-icon ngxMatFileInputIcon>
+                image
+            </mat-icon>
+        </ngx-mat-file-input>
+        <button type="button" matSuffix *ngIf="!picture_input.empty" mat-icon-button color="warn"
+            (click)="picture_input.clear($event);this.pictureForm.markAsPristine(); ">
+            <mat-icon>clear</mat-icon>
+        </button>
+
+        <mat-error app-mat-err-msgs [errors]="errorMessages.profile_picture"></mat-error>
+    </mat-form-field>
+
+
+    <div class="images-change-view" *ngVar="pictureForm.get('picture'); let picture">
+        <div class="image-container">
+            <div class="image-border">
+                <img alt="Current profile" [src]="picture$ | async">
+            </div>
+            <span>Current picture</span>
+        </div>
+        <div class="image-container">
+            <div class="image-border" *ngIf="picture_input.empty || !picture?.valid">
+                <div class="stripped">
+                </div>
+            </div>
+
+            <div class="image-border" [style.display]="!picture_input.empty && picture?.valid ? 'block':'none'">
+                <img #preview id="image_preview" alt="Image preview">
+            </div>
+            <span>New picture</span>
+        </div>
+    </div>
+
+
+    <div class="buttons">
+        <button mat-raised-button type="button" color="green" [disabled]="!pictureForm.dirty || !pictureForm.valid"
+            (click)="handleConfirm()">
+            <mat-icon>check</mat-icon>
+            <span>Confirm</span>
+        </button>
+        <button mat-raised-button type="button" color="warn" pTooltip="Remove your profile picture"
+            tooltipPosition="top" [showDelay]="250" [life]="1500" [hideDelay]="500" (click)="handleRemove()">
+            <mat-icon>delete</mat-icon>
+            <span>Remove</span>
+        </button>
+        <button mat-raised-button type="button" (click)="handleCancel()">
+            <mat-icon>close</mat-icon>
+            <span>Cancel</span>
+        </button>
+    </div>
+
+</form>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>

@@ -1,0 +1,60 @@
+<div class="container">
+    <!-- (keyup.esc)="cancelEdit('first_name',$event )" -->
+    <form [formGroup]="profileForm">
+        <div class="grid-container">
+            <div class="grid-child editing">
+                <div class="fields">
+                    <ng-template #tplInputWithButton let-config>
+                        <mat-form-field appearance="fill" *ngVar="profileForm.get(config.fieldName); let field">
+                            <mat-label>{{config.label}}</mat-label>
+                            <input matInput [id]="config.fieldName" [name]="config.fieldName" [type]="config.type"
+                                [formControlName]="config.fieldName" [autocomplete]="config.autocomplete??'off'"
+                                [autocapitalize]="config.autocapitalize??'off'" [errorStateMatcher]="matcher"
+                                [readonly]="config.readonly" />
+                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                                [ngClass]="field?.value === (user$ | async)?.[config.fieldName]?'hidden':'visible'"
+                                (click)="resetField(config.fieldName)" tabindex="-1">
+                                <mat-icon color="accent">close</mat-icon>
+                            </button>
+                            <mat-error app-mat-err-msgs [errors]="errorMessages[config.fieldName]"></mat-error>
+                        </mat-form-field>
+
+                    </ng-template>
+
+                    <ng-container *ngFor="let config of fieldGenerateConfig">
+                        <ng-container *ngIf="!config.forRole || config.forRole === (user$ | async)?.type;">
+                            <ng-template
+                                *ngTemplateOutlet="tplInputWithButton; context: {$implicit: config}"></ng-template>
+                        </ng-container>
+                    </ng-container>
+
+                </div>
+                <div class="edit" style="justify-self: flex-end;" *ngIf="formEdited  | async" [@inOutAnimation]>
+                    <button mat-raised-button color="green" type="button" [disabled]="!profileForm.valid"
+                        (click)="patchProfile()">
+                        <mat-icon>check</mat-icon>
+                        <span>Save changes</span>
+                    </button>
+                    <button mat-raised-button color="warn" type="button" (click)="profileForm.patchValue(user$.value)">
+                        <mat-icon>close</mat-icon>
+                        <span>Cancel changes</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
+                <div class="image-border">
+                    <img [src]="(user$|async)?.profile_picture" alt="Profile picture" class="picture"
+                        (load)="imageLoaded()">
+                </div>
+                <button mat-raised-button color="green" type="button" [style.margin]="'1rem auto 0'"
+                    [style.display]="'block'" (click)="openEditImageModal()">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit picture</span>
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>

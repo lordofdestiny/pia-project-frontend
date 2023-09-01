@@ -1,0 +1,158 @@
+:host ::ng-deep .mat-form-field-disabled input {
+    color: var(--primary);
+}
+
+:host ::ng-deep .mat-form-field-disabled mat-label {
+    font-weight: 500;
+    color: var(--accent);
+}
+
+form {
+    font-size: 1.3em;
+}
+
+.edit {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+}
+
+button:not(.image-overlay) {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: var(--bg-color)
+}
+
+button:not(.image-overlay) mat-icon {
+    font-size: xx-large;
+    height: fit-content;
+    width: fit-content;
+}
+
+
+
+.edit>button:not(:last-child) {
+    margin: 0 0.5rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 0.25rem;
+    grid-template-areas:
+        "editing picture"
+}
+
+
+@media screen and (max-width: 992px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+            "picture"
+            "editing"
+    }
+}
+
+.grid-child {
+    padding: 0 1rem 1rem
+}
+
+.grid-child.editing {
+    grid-area: editing;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column nowrap;
+    flex: 0;
+}
+
+.grid-child.editing .fields {
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: space-between;
+}
+
+
+.grid-child.editing .fields .mat-form-field {
+    flex: 1 1 350px;
+    margin: 0.5rem 1rem;
+}
+
+@media screen and (max-width: 1400px) {
+    .grid-child.editing .fields {
+        justify-content: flex-start;
+    }
+
+    .grid-child.editing .fields .mat-form-field {
+        flex: 0 1 400px;
+        margin: 0 auto;
+    }
+
+    .grid-child.editing .edit {
+        justify-content: center;
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+    .grid-child.editing .fields {
+        justify-content: space-around;
+    }
+
+    .grid-child.editing .fields .mat-form-field {
+        flex: 1 1 400px;
+        margin-left: 0;
+    }
+}
+
+
+.cancel-edit-button mat-icon {
+    font-weight: 600 !important;
+}
+
+.cancel-edit-button.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+}
+
+.cancel-edit-button.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms;
+}
+
+.grid-child.picture {
+    grid-area: picture;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: column wrap;
+
+}
+
+.grid-child.populate {
+    grid-area: populate;
+}
+
+.image-border img {
+    min-width: 300px;
+    min-height: 300px;
+    object-fit: cover;
+}
+
+.image-border {
+    width: fit-content;
+    position: relative;
+    border: double 10px transparent;
+    border-radius: 50%;
+    background-origin: border-box;
+    background-image: linear-gradient(white, white),
+        radial-gradient(circle at top left, var(--primary), var(--accent), var(--green), var(--warn));
+    background-clip: padding-box, border-box;
+    overflow: hidden;
+}

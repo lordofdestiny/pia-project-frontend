@@ -1,3 +1,11 @@
+:host {
+    display: block;
+    background-color: var(--primary);
+
+    margin-top: 3rem;
+}
+
+
 footer {
     display: block;
     height: 100%;
@@ -23,12 +31,6 @@ footer h2 {
     word-spacing: 4px;
 }
 
-:host {
-    display: block;
-    background-color: var(--primary);
-
-    margin-top: 3em;
-}
 
 
 

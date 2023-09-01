@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { DoctorListData, DoctorListDataItem } from '@core/models/doctor';
 import { baseUri } from '@environments/environment';
+import { Doctor } from '@core/models/users';
+import { resolveProfilePictures } from '@core/utils/resolveProfilePicture';
 
 @Injectable({
     providedIn: 'any',
@@ -13,19 +14,9 @@ import { baseUri } from '@environments/environment';
 export class DoctorsService {
     constructor(private http: HttpClient) {}
 
-    getAll(): Observable<DoctorListData> {
+    public getAll(): Observable<Doctor[]> {
         return this.http
-            .get<DoctorListData>(`${baseUri}/doctor`)
-            .pipe(tap(resolveProfilePictures));
+            .get<Doctor[]>(`${baseUri}/doctor`)
+            .pipe(tap(resolveProfilePictures)) as Observable<Doctor[]>;
     }
-}
-
-function resolveProfilePicture(doctor: DoctorListDataItem): void {
-    doctor.profile_picture = `${baseUri}${doctor.profile_picture}`;
-}
-
-function resolveProfilePictures(doctors: DoctorListData): void {
-    doctors.forEach((doctor) => {
-        resolveProfilePicture(doctor);
-    });
 }

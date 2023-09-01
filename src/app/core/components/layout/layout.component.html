@@ -3,7 +3,8 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)!">
 
-    <mat-toolbar matRipple color="primary" class="p-0 w-100" (click)="drawer.close()" routerLink="/">
+    <mat-toolbar matRipple color="primary" class="p-0 w-100" (click)="drawer.close()"
+      [routerLink]="'/'+(is_logged_in$| async)!?user_role:''">
 
       <div class="d-flex align-items-center p-0 w-100">
         <mat-icon fontIcon="local_hospital" style="font-size: xxx-large; height: fit-content; width: fit-content;"
@@ -13,8 +14,8 @@
     </mat-toolbar>
     <mat-nav-list>
       <a *ngFor="let item of (is_logged_in$ | async)?navItems.auth:navItems.no_auth" mat-list-item
-        [routerLink]="item.route" [routerLinkActive]="'active-sidenav'" [routerLinkActiveOptions]="item.rlaOptions"
-        (click)="drawer.close()">
+        [routerLink]="getRoute(item)" [routerLinkActive]="'active-sidenav'"
+        [routerLinkActiveOptions]="item.rlaOptions??{ exact :true}" (click)="drawer.close()">
         {{item.title}}
         <mat-icon fontIcon="keyboard_arrow_left"></mat-icon></a>
     </mat-nav-list>
@@ -22,8 +23,7 @@
   <mat-sidenav-content>
 
     <mat-toolbar color="primary" style="z-index: 9999;">
-      <div class="d-flex justify-content-between p-0 w-100"
-        [ngClass]="!(isHandset$ | async) ? 'container' : 'container-fluid'">
+      <div class="d-flex justify-content-between p-0 w-100">
 
         <div class="d-flex flex-row justify-content-between w-100 p-0">
 
@@ -32,7 +32,8 @@
 
           <div class="spacer-1" [hidden]="!(isHandset$ | async)!"></div>
 
-          <div matRipple class="d-flex align-items-center px-1" style="border-radius: 5px;" routerLink="/">
+          <div matRipple class="d-flex align-items-center px-1" style="border-radius: 5px;"
+            [routerLink]="'/'+(is_logged_in$| async)!?user_role:''">
             <mat-icon fontIcon="local_hospital" class="large-icon" color="accent"></mat-icon>
             <span style="font-size: x-large;">{{title}}</span>
           </div>
@@ -45,11 +46,11 @@
         </div>
 
         <div *ngIf="!(isHandset$ | async)" class="d-flex align-items-center">
-          <a [routerLink]="item.route" [routerLinkActive]="'active-navbar'" [routerLinkActiveOptions]="item.rlaOptions"
+          <a [routerLink]="getRoute(item)" [routerLinkActive]="'active-navbar'"
+            [routerLinkActiveOptions]="item.rlaOptions??{ exact :true}"
             *ngFor="let item of (is_logged_in$ | async)?navItems.auth:navItems.no_auth" mat-flat-button color="accent">
             <span style="font-size: large;">{{item.title}}</span></a>
         </div>
-
       </div>
     </mat-toolbar>
     <ng-content> </ng-content>

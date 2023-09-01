@@ -12,35 +12,28 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import '@core/utils/array';
 import '@core/utils/string';
 
-import { SharedModule } from '@shared/shared.module';
-
 import { AuthService } from './services/auth.service';
-import { DoctorsService } from './services/doctors.service';
 import { IsHandsetService } from './services/is-handset.service';
 import { FooterComponent } from './components/footer/footer.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { AuthGuard } from './guards/auth.guard';
-import { DoctorGuard } from './guards/doctor.guard';
-import { LoggedInGurad } from './guards/loggedin.guard';
+import { NotLoggedInGurad } from './guards/notloggedin.guard';
 import { LogoutGuard } from './guards/logout.guard';
-import { ManagerGuard } from './guards/manager.guard';
+import { RoleGuard } from './guards/role.guard';
 @NgModule({
     declarations: [FooterComponent, LayoutComponent, PageNotFoundComponent],
     providers: [
-        AuthService,
-        DoctorsService,
         IsHandsetService,
+        AuthService,
         AuthGuard,
-        DoctorGuard,
-        LoggedInGurad,
+        RoleGuard,
+        NotLoggedInGurad,
         LogoutGuard,
-        ManagerGuard,
     ],
     imports: [
         CommonModule,
         RouterModule,
-        SharedModule,
         MatListModule,
         MatIconModule,
         MatButtonModule,

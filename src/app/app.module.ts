@@ -7,7 +7,7 @@ import { CoreModule } from '@core/core.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ChangePasswordModule } from '@features/change-password/change-password.module';
+import { LandingModule } from '@features/landing/landing.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -18,7 +18,7 @@ import { ChangePasswordModule } from '@features/change-password/change-password.
         BrowserAnimationsModule,
         AppRoutingModule,
         CoreModule,
-        ChangePasswordModule,
+        LandingModule,
     ],
     exports: [],
     bootstrap: [AppComponent],

@@ -1,22 +1,35 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
-import { ChangePasswordComponent } from '@features/change-password/change-password.component';
+import { LandingComponent } from '@features/landing/landing.component';
+import { NotLoggedInGurad } from '@core/guards/notloggedin.guard';
+import { AuthGuard } from '@core/guards/auth.guard';
+import { RoleGuard } from '@core/guards/role.guard';
 
 export const appRoutes: Routes = [
     {
         path: '',
+        component: LandingComponent,
+        canActivate: [NotLoggedInGurad],
+    },
+    {
+        path: '',
         loadChildren: () =>
-            import('@features/new-visitor/new-visitor.module').then(
-                ({ NewVisitorModule }) => NewVisitorModule
+            import('@features/user-auth/user-auth.module').then(
+                ({ UserAuthModule }) => UserAuthModule
             ),
     },
     {
-        path: 'change-password',
-        title: 'Change Password',
-        component: ChangePasswordComponent,
+        path: 'patient',
+        canActivate: [AuthGuard, RoleGuard],
+        data: {
+            expectedRole: 'patient',
+        },
+        loadChildren: () =>
+            import('@features/patient/patient.module').then(
+                ({ PatientModule }) => PatientModule
+            ),
     },
-    { path: '**', component: PageNotFoundComponent },
+    { path: '**', redirectTo: 'not-found' },
 ];
 
 @NgModule({
@@ -24,7 +37,9 @@ export const appRoutes: Routes = [
     imports: [
         RouterModule.forRoot(appRoutes, {
             preloadingStrategy: PreloadAllModules,
+            scrollPositionRestoration: 'top',
             enableTracing: false,
+            anchorScrolling: 'enabled',
         }),
     ],
     exports: [RouterModule],

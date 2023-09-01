@@ -37,6 +37,7 @@ body {
     --bg-color: #fcfce8;
     --primary: #3f51b5;
     --accent: #ff4081;
+    --green: #77c66e;
     --warn: #f44336;
     --bg-input: #e8f0fe;
 }
@@ -47,4 +48,41 @@ router-outlet + * {
 
 .spacer-1 {
     flex: 1;
+}
+
+.page_title {
+    font-size: 4rem !important;
+    line-height: normal !important;
+    text-align: center;
+    color: var(--accent);
+    text-shadow:
+        1px 1px 3px var(--primary),
+        -2px -2px 4px wheat;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+}
+
+.mat-button.mat-green,
+.mat-stroked-button.mat-green {
+    color: var(--green);
+}
+.mat-button.mat-green:hover,
+.mat-stroked-button.mat-green:hover {
+    background-color: var(--bg-color);
+}
+
+.mat-raised-button.mat-green,
+.mat-flat-button.mat-green,
+.mat-fab.mat-green,
+.mat-mini-fab.mat-green {
+    color: var(--bg-color);
+    background-color: var(--green);
+}
+
+.mat-icon-button.mat-green {
+    color: var(--green);
 }
