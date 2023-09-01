@@ -21,7 +21,7 @@ button:not(.image-overlay) {
     display: flex;
     align-items: center;
     font-weight: bold;
-    color: var(--bg-color)
+    color: var(--bg-color);
 }
 
 button:not(.image-overlay) mat-icon {
@@ -37,6 +37,7 @@ button:not(.image-overlay) mat-icon {
 }
 
 .grid-container {
+    margin: 1rem 0;
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto;
@@ -57,29 +58,30 @@ button:not(.image-overlay) mat-icon {
 }
 
 .grid-child {
-    padding: 0 1rem 1rem
+    padding: 0 1rem
 }
 
 .grid-child.editing {
     grid-area: editing;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-flow: column nowrap;
-    flex: 0;
 }
 
 .grid-child.editing .fields {
+    height: 100%;
     margin-top: 1rem;
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-end;
-    align-items: space-between;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 
 .grid-child.editing .fields .mat-form-field {
     flex: 1 1 350px;
-    margin: 0.5rem 1rem;
+    /* margin: 0.5rem 1rem; */
+    margin: 0rem 1rem;
 }
 
 @media screen and (max-width: 1400px) {

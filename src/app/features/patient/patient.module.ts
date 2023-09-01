@@ -10,9 +10,10 @@ import { SharedModule } from '@shared/shared.module';
 
 import { PatientComponent } from './patient.component';
 import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
+import { DoctorsComponent } from './pages/doctors/doctors.component';
 
 @NgModule({
-    declarations: [PatientComponent, PatientProfileComponent],
+    declarations: [PatientComponent, PatientProfileComponent, DoctorsComponent],
     imports: [
         // Angular
         CommonModule,

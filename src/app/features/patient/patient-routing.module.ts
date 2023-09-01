@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PatientComponent } from './patient.component';
 import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
 import { SpecializationsResolver } from '@core/resolver/specializations.resolver';
+import { DoctorsComponent } from './pages/doctors/doctors.component';
 
 const routes: Routes = [
     {
@@ -20,6 +21,10 @@ const routes: Routes = [
                     specializations: SpecializationsResolver,
                 },
                 component: PatientProfileComponent,
+            },
+            {
+                path: 'doctors',
+                component: DoctorsComponent,
             },
         ],
     },

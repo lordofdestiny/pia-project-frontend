@@ -1,0 +1,14 @@
+p.tip {
+    width: max-content;
+    font-size: 1.5em;
+    align-self: flex-end;
+    margin-top: 2rem;
+    color: var(--accent);
+    font-weight: bold;
+    line-height: 1.5em;
+}
+
+p.tip kbd {
+    background-color: var(--primary);
+    margin-inline: 0.5rem;
+}

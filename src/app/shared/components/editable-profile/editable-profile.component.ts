@@ -45,18 +45,12 @@ interface FieldConfig {
     animations: [
         trigger('inOutAnimation', [
             transition(':enter', [
-                style({ width: '90%', height: '100%', opacity: 0 }),
-                animate(
-                    '0.5s ease-out',
-                    style({ width: '*', height: '*', opacity: 1 })
-                ),
+                style({ width: '90%', opacity: 0 }),
+                animate('0.5s ease-out', style({ width: '*', opacity: 1 })),
             ]),
             transition(':leave', [
-                style({ width: '*', height: '*', opacity: 1 }),
-                animate(
-                    '0.5s ease-in',
-                    style({ width: '90%', height: '100%', opacity: 0 })
-                ),
+                style({ width: '*', opacity: 1 }),
+                animate('0.5s ease-in', style({ width: '90%', opacity: 0 })),
             ]),
         ]),
     ],
