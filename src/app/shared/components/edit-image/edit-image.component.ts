@@ -16,12 +16,12 @@ import { BehaviorSubject } from 'rxjs';
 type EditAction = 'edit' | 'remove';
 
 @Component({
-    selector: 'app-edit-image-modal',
-    templateUrl: './edit-image-modal.component.html',
-    styleUrls: ['./edit-image-modal.component.css'],
+    selector: 'app-edit-image',
+    templateUrl: './edit-image.component.html',
+    styleUrls: ['./edit-image.component.css'],
     providers: [ConfirmationService],
 })
-export class EditImageModalComponent implements OnInit, OnDestroy {
+export class EditImageComponent implements OnInit, OnDestroy {
     constructor(
         public dialogRef: DynamicDialogRef,
         public dialogConfig: DynamicDialogConfig,

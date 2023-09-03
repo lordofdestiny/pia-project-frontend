@@ -46,13 +46,7 @@ button:not(.image-overlay) mat-icon {
         "editing picture"
 }
 
-@media screen and (max-width: 1400px) {
-    .grid-container {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 768px) {
     .grid-container {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
@@ -80,46 +74,15 @@ button:not(.image-overlay) mat-icon {
 }
 
 
-.grid-child.editing .fields .mat-form-field:has(:not(input[type="tel"])) {
-    flex: 1 1 350px;
-    /* margin: 0.5rem 1rem; */
+.grid-child.editing .fields .mat-form-field:not(:has(textarea)) {
+    margin: 0rem 0.5rem;
+    flex: 0 1 calc(50% - 1rem);
+}
+
+.grid-child.editing .fields .mat-form-field:has(textarea) {
+    flex: 1 1 calc(100% - 1rem);
     margin: 0rem 0.5rem;
 }
-
-.grid-child.editing .fields .mat-form-field:has(input[type="tel"]) {
-    flex: 1 1 500px;
-    margin: 0rem 0.5rem;
-}
-
-
-@media screen and (max-width: 1400px) {
-    .grid-child.editing .fields {
-        justify-content: flex-start;
-        /* flex: 0; */
-    }
-
-    .grid-child.editing .fields .mat-form-field {
-        flex: 0 1 400px;
-        margin: 0 auto;
-    }
-
-    .grid-child.editing .edit {
-        justify-content: center;
-    }
-
-}
-
-@media screen and (max-width: 992px) {
-    .grid-child.editing .fields {
-        justify-content: space-around;
-    }
-
-    .grid-child.editing .fields .mat-form-field {
-        flex: 1 1 500px;
-        margin-left: 0;
-    }
-}
-
 
 .cancel-edit-button mat-icon {
     font-weight: 600 !important;

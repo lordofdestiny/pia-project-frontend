@@ -8,7 +8,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { Doctor, User, UserCredentials, UserRole } from '@core/models/users';
+import { User, UserCredentials } from '@core/models/users';
 import {
     HttpClient,
     HttpErrorResponse,
@@ -16,7 +16,6 @@ import {
 } from '@angular/common/http';
 import { baseUri } from '@environments/environment';
 import { resolveProfilePicture } from '@core/utils/resolveProfilePicture';
-import { debug } from 'console';
 
 @Injectable({
     providedIn: 'root',
@@ -31,7 +30,7 @@ export class AuthService {
     }
 
     get logged_in() {
-        return this.#logged_in;
+        return this.#logged_in.asObservable();
     }
 
     get user_role() {

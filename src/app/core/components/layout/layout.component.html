@@ -4,7 +4,7 @@
     [opened]="!(isHandset$ | async)!">
 
     <mat-toolbar matRipple color="primary" class="p-0 w-100" (click)="drawer.close()"
-      [routerLink]="'/'+(is_logged_in$| async)!?(user$ | async)!.type:''">
+      [routerLink]="'/'+(is_logged_in$| async)!?(authService.user$ | async)!.type:''">
 
       <div class="d-flex align-items-center p-0 w-100">
         <mat-icon fontIcon="local_hospital" style="font-size: xxx-large; height: fit-content; width: fit-content;"
@@ -33,7 +33,7 @@
           <div class="spacer-1" [hidden]="!(isHandset$ | async)!"></div>
 
           <div matRipple class="d-flex align-items-center px-1" style="border-radius: 5px;"
-            [routerLink]="'/'+(is_logged_in$| async)!?(user$ | async)!.type:''">
+            [routerLink]="'/'+(is_logged_in$| async)!?(authService.user$ | async)!.type:''">
             <mat-icon fontIcon="local_hospital" class="large-icon" color="accent"></mat-icon>
             <span style="font-size: x-large;">{{title}}</span>
           </div>

@@ -81,8 +81,8 @@ export const appRoutes: Routes = [
         RouterModule.forRoot(appRoutes, {
             preloadingStrategy: PreloadAllModules,
             scrollPositionRestoration: 'top',
-            enableTracing: true,
             anchorScrolling: 'enabled',
+            enableTracing: false,
         }),
     ],
     exports: [RouterModule],

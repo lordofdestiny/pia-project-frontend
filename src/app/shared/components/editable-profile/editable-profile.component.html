@@ -1,5 +1,4 @@
 <div class="container">
-    <!-- (keyup.esc)="cancelEdit('first_name',$event )" -->
     <form [formGroup]="profileForm">
         <div class="grid-container">
             <div class="grid-child editing">
@@ -32,11 +31,11 @@
                 <div class="edit" style="justify-self: flex-end;"
                     *ngIf="((user$|async)?.type === renderFor) && (formEdited  | async)" [@inOutAnimation]>
                     <button mat-raised-button color="green" type="button" [disabled]="!profileForm.valid"
-                        (click)="patchProfile()">
+                        (click)="updateProfile()">
                         <mat-icon>check</mat-icon>
                         <span>Save changes</span>
                     </button>
-                    <button mat-raised-button color="warn" type="button" (click)="profileForm.patchValue(user$.value)">
+                    <button mat-raised-button color="warn" type="button" (click)="resetForm()">
                         <mat-icon>close</mat-icon>
                         <span>Cancel changes</span>
                     </button>
@@ -49,7 +48,7 @@
             <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
                 <div class="image-border">
                     <img [src]="(user$|async)?.profile_picture" alt="Profile picture" class="picture"
-                        (load)="imageLoaded()">
+                        (load)="this.imgLoading = false;">
                 </div>
                 <button *ngIf="((user$|async)?.type === renderFor)" mat-raised-button color="green" type="button"
                     [style.margin]="'1rem auto 0'" [style.display]="'block'" (click)="openEditImageModal()">

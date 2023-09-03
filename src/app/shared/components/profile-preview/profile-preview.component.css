@@ -81,22 +81,6 @@ button:not(.image-overlay) mat-icon {
     background-color: rgb(245, 222, 179, 0.1) !important;
 }
 
-.cancel-edit-button mat-icon {
-    font-weight: 600 !important;
-}
-
-.cancel-edit-button.visible {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s linear 0s, opacity 300ms;
-}
-
-.cancel-edit-button.hidden {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 300ms, opacity 300ms;
-}
-
 .grid-child.picture {
     grid-area: picture;
     display: flex;

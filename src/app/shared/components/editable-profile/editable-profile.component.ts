@@ -1,11 +1,15 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import {
-    AbstractControl,
-    FormBuilder,
-    FormControl,
-    Validators,
-} from '@angular/forms';
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    OnChanges,
+    Output,
+    EventEmitter,
+    SimpleChanges,
+} from '@angular/core';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { style, transition, trigger, animate } from '@angular/animations';
 import { BehaviorSubject, of } from 'rxjs';
 
@@ -24,14 +28,23 @@ import {
     UniqueEmailValidator,
     UniqueUsernameValidator,
 } from '@core/services/unique-creds.service';
-import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
 import { Specialization } from '@core/models/specialization';
 import { ProfileService } from '@core/services/profile.service';
+import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
 
-import { EditImageModalComponent as EditImageComponent } from '@shared/components/edit-image-modal/edit-image-modal.component';
+import { EditImageComponent } from '@shared/components/edit-image/edit-image.component';
 
 import { FieldBase, baseFieldConfig } from '@core/utils/profile-fields';
 import { User, UserRole } from '@core/models/users';
+
+export type PictureEventAction = 'edit' | 'cancel' | 'delete';
+export interface PictureEventBase {
+    action: PictureEventAction;
+    picture?: File;
+}
+export type PictureEvent =
+    | (PictureEventBase & { action: 'edit'; picture: File })
+    | (PictureEventBase & { action: 'cancel' | 'delete'; picture?: undefined });
 
 @Component({
     selector: 'app-editable-profile',
@@ -52,11 +65,12 @@ import { User, UserRole } from '@core/models/users';
     providers: [DialogService],
 })
 export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() renderFor?: UserRole;
     imgLoading = true;
-    imageLoaded() {
-        this.imgLoading = false;
-    }
+    @Input() renderFor?: UserRole;
+    @Input() _user: User | null = null;
+    @Output() profileEdited = new EventEmitter<User>();
+    @Output() pictureEdited = new EventEmitter<PictureEvent>();
+    @Output() valueChanged = new EventEmitter<User>();
     user?: User;
     user$ = this.authService.user$;
 
@@ -71,7 +85,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
             '',
             [Validators.required, Validators.pattern(emailRegex)],
             [
-                this.uniqueAndNotMinevalidator(
+                this.uniqueAndNotMineValidator(
                     'email',
                     this.emailValidator
                 ).bind(this),
@@ -86,7 +100,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
                 Validators.pattern(usernameRegex),
             ],
             [
-                this.uniqueAndNotMinevalidator(
+                this.uniqueAndNotMineValidator(
                     'username',
                     this.usernameValidator
                 ).bind(this),
@@ -96,7 +110,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         address: ['', [Validators.required]],
     });
 
-    uniqueAndNotMinevalidator(
+    uniqueAndNotMineValidator(
         field: 'email' | 'username',
         validator: UniqueCredentialValidator
     ) {
@@ -133,17 +147,14 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    fieldEdited(key: string) {
-        return this.profileForm.get(key)?.value === this.user$.value[key];
-    }
-
-    resetField(key: string, event?: Event) {
+    protected resetField(key: string, event?: Event) {
         this.profileForm.patchValue({
             [key]: this.user?.[key] ?? '',
         });
     }
 
-    patchProfile() {
+    protected updateProfile() {
+        this.profileEdited.emit(this.profileForm.value as any);
         this.profileService
             .update_profile(this.profileForm.value as any)
             .subscribe({
@@ -151,7 +162,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
                     this.profileForm.markAsPristine();
                 },
                 error: (err) => {
-                    this.profileForm.patchValue(this.user$.value as any);
+                    this.resetForm();
                     console.error(err);
                 },
                 complete: () => {
@@ -160,33 +171,23 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
+    protected resetForm() {
+        this.profileForm.patchValue(this.user as any);
+        this.profileForm.markAsPristine();
+    }
+
+    protected fieldEdited(key: string) {
+        return this.profileForm.get(key)?.value === this.user$.value[key];
+    }
+
     get fromEdited(): boolean {
         return (
-            this.fieldConfig?.every(
-                ({ key }) =>
-                    this.profileForm?.get(key)?.value === this.user$.value[key]
-            ) ?? false
+            this.fieldConfig?.every(({ key }) => this.fieldEdited(key)) ?? false
         );
     }
 
-    ngOnInit(): void {
-        this.profileForm.valueChanges.subscribe(() =>
-            this.formEdited.next(!this.fromEdited)
-        );
-    }
-
-    ngOnChanges() {
-        console.log(this.user$.value.type, this.renderFor);
-        this.fieldConfig = baseFieldConfig(
-            this.user$.value.type,
-            this.renderFor ?? this.user$.value.type
-        );
-        console.log(this.user$.value.type !== this.renderFor);
-    }
-
-    dialogRef: DynamicDialogRef | undefined;
-    openEditImageModal() {
-        this.dialogRef = this.dialogService.open(EditImageComponent, {
+    private createEditImageDialog() {
+        return this.dialogService.open(EditImageComponent, {
             data: {
                 profile_picture: this.user$.value.profile_picture,
             },
@@ -202,28 +203,41 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
             modal: true,
             baseZIndex: 10000,
         });
+    }
 
-        this.dialogRef.onClose.subscribe(
-            ({ action = 'cancel', picture } = {}) => {
-                if (action === 'edit' && picture !== undefined) {
-                    const formData = new FormData(document.forms[0]);
-                    formData.append('profile_picture', picture);
-                    this.profileService.update_avatar(formData).subscribe({
-                        error: (err) => {
-                            console.error(err);
-                        },
+    dialogRef: DynamicDialogRef | undefined;
+    protected openEditImageModal() {
+        this.createEditImageDialog().onClose.subscribe(
+            (event: PictureEvent = { action: 'cancel' }) => {
+                const { action, picture } = event;
+                if (action === 'edit') {
+                    this.pictureEdited.emit({
+                        action: 'edit',
+                        picture,
                     });
-                }
-                if (action == 'delete') {
-                    this.profileService.delete_avatar().subscribe({
-                        error: (err) => {
-                            console.error(err);
-                        },
+                } else {
+                    this.pictureEdited.emit({
+                        action,
                     });
                 }
             }
         );
     }
+
+    ngOnInit(): void {
+        this.profileForm.valueChanges.subscribe((value) => {
+            this.formEdited.next(!this.fromEdited);
+            this.valueChanged.emit(value as any);
+        });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.fieldConfig = baseFieldConfig(
+            this.user$.value.type,
+            this.renderFor ?? this.user$.value.type
+        );
+    }
+
     ngOnDestroy() {
         if (this.dialogRef) {
             this.dialogRef.close();

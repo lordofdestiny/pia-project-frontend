@@ -83,19 +83,17 @@ export const baseFieldConfig = (
             type: 'tel',
             readonly: role !== renderFor,
         }),
-    ];
-
-    if (role === 'doctor' || renderFor === 'doctor') {
-        base.push(...doctorAdditionalFields(role, renderFor));
-    }
-    base.push(
         new TextareaField({
             key: 'address',
             label: 'Address',
             type: 'text',
             readonly: role !== renderFor,
-        })
-    );
+        }),
+    ];
+
+    if (role === 'doctor' || renderFor === 'doctor') {
+        base.push(...doctorAdditionalFields(role, renderFor));
+    }
     return base;
 };
 
