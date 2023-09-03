@@ -17,9 +17,8 @@ export class NotLoggedInGurad implements CanActivate {
             map((x) => {
                 if (x) {
                     this.router.navigate([this.authService.user$.value.type]);
-                    return false;
                 }
-                return true;
+                return !x;
             })
         );
     }

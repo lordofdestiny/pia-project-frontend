@@ -26,7 +26,7 @@ import { AuthService } from '@core/services/auth.service';
 import {
     UniqueEmailValidator,
     UniqueUsernameValidator,
-} from '../../../../core/services/unique-creds.service';
+} from '@core/services/unique-creds.service';
 import {
     emailRegex,
     usernameRegex,
@@ -57,6 +57,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         this.passwordHidden = !this.passwordHidden;
     }
 
+    private emailValidator = new UniqueEmailValidator(this.authService);
+    private usernameValidator = new UniqueUsernameValidator(this.authService);
     registerForm: FormGroup = this.fb.group({
         formArray: this.fb.array([
             this.fb.group({
@@ -69,8 +71,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                         '',
                         [Validators.required, Validators.pattern(emailRegex)],
                         [
-                            this.uniqueEmailValidator.validate.bind(
-                                this.uniqueEmailValidator
+                            this.emailValidator.validate.bind(
+                                this.emailValidator
                             ),
                         ],
                     ],
@@ -83,8 +85,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                             Validators.pattern(usernameRegex),
                         ],
                         [
-                            this.uniqueUsernameValidator.validate.bind(
-                                this.uniqueUsernameValidator
+                            this.usernameValidator.validate.bind(
+                                this.usernameValidator
                             ),
                         ],
                     ],
@@ -264,8 +266,6 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         private authService: AuthService,
         private modalService: BsModalService,
         private breakpointObserver: BreakpointObserver,
-        private uniqueEmailValidator: UniqueEmailValidator,
-        private uniqueUsernameValidator: UniqueUsernameValidator,
         public errorMessages: FieldErrorMessagesService
     ) {
         this.stepperOrientation = breakpointObserver

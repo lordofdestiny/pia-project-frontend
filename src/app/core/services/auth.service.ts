@@ -8,7 +8,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { User, UserCredentials, UserRole } from '@core/models/users';
+import { Doctor, User, UserCredentials, UserRole } from '@core/models/users';
 import {
     HttpClient,
     HttpErrorResponse,
@@ -16,8 +16,11 @@ import {
 } from '@angular/common/http';
 import { baseUri } from '@environments/environment';
 import { resolveProfilePicture } from '@core/utils/resolveProfilePicture';
+import { debug } from 'console';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthService {
     #logged_in = new BehaviorSubject<boolean>(false);
     user$ = new BehaviorSubject<User>({} as User);
@@ -46,7 +49,6 @@ export class AuthService {
             this.user$.next(JSON.parse(sessionStorage.getItem('user') ?? '{}'));
         }
         this.user$.subscribe((user) => {
-            console.log('user changed', user);
             sessionStorage.setItem('user', JSON.stringify(user));
         });
     }
@@ -68,15 +70,16 @@ export class AuthService {
         }
         return this.http
             .post<{ user: User; message: string }>(
-                `${baseUri}/auth/login${manager ? 'manager' : ''}`,
+                manager
+                    ? `${baseUri}/auth/login/manager`
+                    : `${baseUri}/auth/login`,
                 user
             )
             .pipe(
                 catchError(AuthService.handleError),
                 tap(({ user, message: _msg }) => {
                     sessionStorage.setItem('auth', 'true');
-                    resolveProfilePicture(user);
-                    this.user$.next(user);
+                    this.user = user;
                     this.#logged_in.next(true);
                 }),
                 map(({ user }) => user)

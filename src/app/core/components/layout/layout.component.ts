@@ -25,8 +25,8 @@ export class LayoutComponent {
     navItems: NavItems = {
         auth: [
             {
-                route: () => this.user_role,
-                title: 'Home',
+                route: () => this.user$.value.type,
+                title: 'Dashboard',
                 rlaOptions: {
                     paths: 'subset',
                     fragment: 'ignored',
@@ -60,7 +60,7 @@ export class LayoutComponent {
     }
 
     is_logged_in$ = this.authService.logged_in;
-    user_role = this.authService.user_role;
+    user$ = this.authService.user$;
     isHandset$ = this.isHandsetService.isHandset$;
 
     constructor(

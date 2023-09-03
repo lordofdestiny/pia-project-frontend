@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -33,20 +33,26 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DebugPipe } from '@shared/pipes/debug.pipe';
 import { HoldDirective } from '@shared/directives/hold.directive';
 import { NgVarDirective } from '@shared/directives/ng-var.directive';
-import { DoctorListComponent } from './components/doctor-list/doctor-list.component';
-import { EditableProfileComponent } from './components/editable-profile/editable-profile.component';
-import { MatErrMsgsComponent } from './components/mat-err-msgs/mat-err-msgs.component';
-import { EditImageModalComponent } from './components/edit-image-modal/edit-image-modal.component';
+import { BackButtonDirective } from '@shared/directives/back-button.directive';
+import { DoctorListComponent } from '@shared/components/doctor-list/doctor-list.component';
+import { EditableProfileComponent } from '@shared/components/editable-profile/editable-profile.component';
+import { MatErrMsgsComponent } from '@shared/components/mat-err-msgs/mat-err-msgs.component';
+import { EditImageModalComponent } from '@shared/components/edit-image-modal/edit-image-modal.component';
+import { ProfilePreviewComponent } from './components/profile-preview/profile-preview.component';
+import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor-patient-view.component';
 
 @NgModule({
     declarations: [
-        DoctorListComponent,
-        EditableProfileComponent,
         DebugPipe,
         HoldDirective,
         NgVarDirective,
+        BackButtonDirective,
         MatErrMsgsComponent,
+        ProfilePreviewComponent,
+        EditableProfileComponent,
         EditImageModalComponent,
+        DoctorListComponent,
+        DoctorPatientViewComponent,
     ],
     providers: [],
     imports: [
@@ -54,6 +60,7 @@ import { EditImageModalComponent } from './components/edit-image-modal/edit-imag
         CommonModule,
         RouterModule,
         FormsModule,
+        NgStyle,
         ReactiveFormsModule,
         // Angular Material
         MatIconModule,
@@ -84,11 +91,13 @@ import { EditImageModalComponent } from './components/edit-image-modal/edit-imag
     ],
     exports: [
         MatErrMsgsComponent,
-        DoctorListComponent,
         EditableProfileComponent,
+        ProfilePreviewComponent,
+        DoctorListComponent,
         DebugPipe,
         HoldDirective,
         NgVarDirective,
+        BackButtonDirective,
     ],
 })
 export class SharedModule {}

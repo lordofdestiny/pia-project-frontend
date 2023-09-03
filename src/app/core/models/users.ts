@@ -1,6 +1,9 @@
+import { type } from 'os';
+import { Examination, Specialization } from './specialization';
+
 export type UserRole = 'patient' | 'doctor' | 'manager';
 
-export interface User {
+export interface UserBase {
     username: string;
     password: string;
     email: string;
@@ -13,12 +16,21 @@ export interface User {
     [keyof: string]: any;
 }
 
-export interface Patient extends User {}
+export type User = Patient | Doctor | Manager;
+export type Patient = UserBase & {
+    type: 'patient';
+};
 
-export interface Doctor extends User {
-    specialization: string;
+export type Doctor = UserBase & {
+    type: 'doctor';
+    specialization: Specialization | string;
+    examinations: Examination[];
     licence_number: string;
     branch: string;
-}
+};
+
+export type Manager = UserBase & {
+    type: 'manager';
+};
 
 export type UserCredentials = Pick<User, 'username' | 'password'>;

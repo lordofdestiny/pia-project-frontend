@@ -45,7 +45,8 @@
             <span>Confirm</span>
         </button>
         <button mat-raised-button type="button" color="warn" pTooltip="Remove your profile picture"
-            tooltipPosition="top" [showDelay]="250" [life]="1500" [hideDelay]="500" (click)="handleRemove()">
+            tooltipPosition="top" [showDelay]="250" [life]="1500" [hideDelay]="500" [disabled]="pictureForm.dirty"
+            (click)="handleRemove()">
             <mat-icon>delete</mat-icon>
             <span>Remove</span>
         </button>

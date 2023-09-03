@@ -14,7 +14,7 @@ import { FieldErrorMessagesService } from '@core/services/field-error-messages.s
     styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-    is_manager: boolean | null = null;
+    is_manager = this.activatedRoute.snapshot.data['manager'];
     hidden: boolean = false;
     usernameRegex: RegExp = /^[_-]*[a-zA-Z][\w-]*$/;
     matcher = new ShowOnDirtyErrorStateMatcher();
@@ -46,13 +46,7 @@ export class LoginPageComponent implements OnInit {
         private fb: FormBuilder,
         private isHandsetService: IsHandsetService,
         public errorMessages: FieldErrorMessagesService
-    ) {
-        this.activatedRoute.data
-            .pipe(map((data) => data['manager']))
-            .subscribe((manager) => {
-                this.is_manager = manager;
-            });
-    }
+    ) {}
 
     get isHandset$() {
         return this.isHandsetService.isHandset$;
@@ -94,7 +88,13 @@ export class LoginPageComponent implements OnInit {
         }
         const { username, password } = this.loginForm.value;
         this.authService
-            .login({ username: username!, password: password! })
+            .login(
+                {
+                    username: username!,
+                    password: password!,
+                },
+                this.is_manager
+            )
             .subscribe({
                 next: (user) => {
                     const role = user.type;

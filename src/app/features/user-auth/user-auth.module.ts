@@ -37,8 +37,6 @@ import { EditPasswordComponent } from './pages/edit-password/edit-password.compo
             provide: STEPPER_GLOBAL_OPTIONS,
             useValue: { showError: true, displayDefaultIndicatorType: false },
         },
-        UniqueEmailValidator,
-        UniqueUsernameValidator,
     ],
     imports: [
         // Angular

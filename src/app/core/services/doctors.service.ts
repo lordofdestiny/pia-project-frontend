@@ -6,7 +6,10 @@ import { tap } from 'rxjs/operators';
 
 import { baseUri } from '@environments/environment';
 import { Doctor } from '@core/models/users';
-import { resolveProfilePictures } from '@core/utils/resolveProfilePicture';
+import {
+    resolveProfilePicture,
+    resolveProfilePictures,
+} from '@core/utils/resolveProfilePicture';
 
 @Injectable({
     providedIn: 'any',
@@ -18,5 +21,11 @@ export class DoctorsService {
         return this.http
             .get<Doctor[]>(`${baseUri}/doctor`)
             .pipe(tap(resolveProfilePictures)) as Observable<Doctor[]>;
+    }
+
+    public getOne(doctorId: string): Observable<Doctor> {
+        return this.http
+            .get<Doctor>(`${baseUri}/doctor/${doctorId}`)
+            .pipe(tap(resolveProfilePicture)) as Observable<Doctor>;
     }
 }

@@ -1,0 +1,31 @@
+<div class="container mt-5 ">
+    <button type="button" mat-raised-button class="goback" color="accent" routerLink="/patient/doctors">
+        <mat-icon>arrow_back_ios</mat-icon>
+        <span> Go back </span>
+    </button>
+    <div class="mb-lg-4 mb-md-4 mb-sm-2 d-flex align-items-center flex-row" [style.position]="'relative'">
+
+        <h1 class="page_title mx-auto">Doctor</h1>
+    </div>
+
+    <app-profile-preview [user]="doctor" [styles]="{'margin-bottom' : '2rem', 'font-size':'1.0em'}">
+    </app-profile-preview>
+
+    <h2>Examinations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let examination of doctor.examinations">
+                <td>{{examination.name}}</td>
+                <td>{{examination.price}}</td>
+                <td>{{durationString(examination.duration)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,29 @@
+<form [ngStyle]="styles">
+    <div class="grid-container">
+        <div class="grid-child editing">
+            <div class="fields">
+                <ng-container *ngFor="let config of fieldsConfig" [ngSwitch]="config.controlType">
+                    <mat-form-field appearance="fill" *ngSwitchCase="'textbox'">
+                        <mat-label>{{config.label}}</mat-label>
+                        <input matInput [id]="config.key" [type]="config.type" [disabled]="true"
+                            [value]="user[config.key]" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" *ngSwitchCase="'textarea'">
+                        <mat-label>{{config.label}}</mat-label>
+                        <textarea matInput [id]="config.key" [disabled]="true" rows="4" wrap="soft"
+                            [value]="user[config.key]">
+                        </textarea>
+                    </mat-form-field>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
+            <div class="image-border">
+                <img [src]="user.profile_picture" alt="Profile picture" class="picture" (load)="imageLoaded()">
+            </div>
+        </div>
+
+    </div>
+</form>

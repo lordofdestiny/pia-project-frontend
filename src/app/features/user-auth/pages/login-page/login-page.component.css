@@ -1,11 +1,12 @@
 :host {
-    margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: -3rem;
 }
 
 :host>div {
+    font-size: 1.2em;
     background-color: var(--bg-color);
     max-width: 500px;
     margin: 10% auto;
@@ -13,14 +14,10 @@
     border-radius: 10px;
 }
 
-form {
-    padding: 0 2rem;
-}
 
 :host ::ng-deep .mat-form-field {
     box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
     clip-path: inset(-10px -5px 0 -5px);
-    margin-bottom: 1.5rem;
 }
 
 
@@ -36,7 +33,6 @@ form {
 }
 
 input {
-    font-size: 1.2em;
     line-height: inherit;
 }
 
@@ -52,14 +48,14 @@ button[type="submit"] {
     margin-top: 2rem;
     width: min-content;
     padding: 5px 20px;
-    margin: 0 auto;
+    margin: 1rem auto;
 }
 
 :host ::ng-deep .error-message {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -1rem;
+
     margin-bottom: 1rem;
     font-size: 1.2em;
     font-weight: 500;
@@ -69,6 +65,11 @@ button[type="submit"] {
 @media screen and (max-width: 500px) {
     .container {
         box-shadow: none;
+    }
+
+    form {
+        padding: 1rem 0;
+        font-size: 1.2em;
     }
 
     :host>div {

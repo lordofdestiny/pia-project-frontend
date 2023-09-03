@@ -13,10 +13,11 @@
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
 }
 
-.mat-toolbar.mat-primary {
+.mat-toolbar {
   position: sticky;
   top: 0;
   z-index: 1;
+  min-height: 64px;
 }
 
 .hidden {
@@ -29,7 +30,7 @@
 
 .mat-toolbar {
   color: var(--bg-color);
-  min-height: 56px;
+  height: 64px;
 }
 
 .mat-nav-list {

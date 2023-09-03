@@ -4,6 +4,7 @@ import { PatientComponent } from './patient.component';
 import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
 import { SpecializationsResolver } from '@core/resolver/specializations.resolver';
 import { DoctorsComponent } from './pages/doctors/doctors.component';
+import { ExaminationsComponent } from './pages/examinations/examinations.component';
 
 const routes: Routes = [
     {
@@ -25,6 +26,10 @@ const routes: Routes = [
             {
                 path: 'doctors',
                 component: DoctorsComponent,
+            },
+            {
+                path: 'examinations',
+                component: ExaminationsComponent,
             },
         ],
     },

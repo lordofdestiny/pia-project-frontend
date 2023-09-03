@@ -1,5 +1,6 @@
 export type Examination = {
     id: string;
+    name: string;
     duration: number;
     price: number;
     disabled: boolean;

@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import {
     AbstractControl,
     AsyncValidator,
@@ -12,7 +11,6 @@ import { AuthService } from '@core/services/auth.service';
 
 type TCredential = 'email' | 'username';
 
-@Injectable({ providedIn: 'root' })
 export abstract class UniqueCredentialValidator implements AsyncValidator {
     abstract get credentialType(): TCredential;
     get errorName(): string {
@@ -21,7 +19,7 @@ export abstract class UniqueCredentialValidator implements AsyncValidator {
     get debounceTime(): number {
         return 500;
     }
-    constructor(private authService: AuthService) {}
+    constructor(protected authService: AuthService) {}
 
     private mapIntoValidationErrors() {
         return map((isUnique) =>
@@ -54,7 +52,6 @@ export abstract class UniqueCredentialValidator implements AsyncValidator {
     }
 }
 
-@Injectable({ providedIn: 'root' })
 export class UniqueEmailValidator extends UniqueCredentialValidator {
     constructor(authService: AuthService) {
         super(authService);
@@ -64,7 +61,6 @@ export class UniqueEmailValidator extends UniqueCredentialValidator {
     }
 }
 
-@Injectable({ providedIn: 'root' })
 export class UniqueUsernameValidator extends UniqueCredentialValidator {
     constructor(authService: AuthService) {
         super(authService);

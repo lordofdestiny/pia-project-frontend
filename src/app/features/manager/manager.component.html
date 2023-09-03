@@ -1,0 +1,15 @@
+<h2 class="page_title">Dashboard</h2>
+<div class="container-fluid px-0 py-4" color="primary">
+    <nav mat-tab-nav-bar dynamicHeight mat-align-tabs="center" [tabPanel]="tabPanel">
+        <a mat-tab-link *ngFor="let link of navLinks" routerLink="{{baseRoute}}/{{ link.location }}" routerLinkActive
+            #rla="routerLinkActive" [active]="rla.isActive">
+            <mat-icon color="accent">{{ link.icon }}</mat-icon>
+            <span>{{ link.label | uppercase }}</span>
+        </a>
+    </nav>
+</div>
+<mat-tab-nav-panel #tabPanel>
+    <div [style.margin-bottom.rem]="-2">
+        <router-outlet></router-outlet>
+    </div>
+</mat-tab-nav-panel>

@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors } from '@angular/forms';
 
-import { ConfirmEventType, ConfirmationService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 type EditAction = 'edit' | 'remove';
 

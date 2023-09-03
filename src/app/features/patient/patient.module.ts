@@ -4,16 +4,21 @@ import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 
-import { PatientRoutingModule } from './patient-routing.module';
-
 import { SharedModule } from '@shared/shared.module';
 
 import { PatientComponent } from './patient.component';
+import { PatientRoutingModule } from './patient-routing.module';
 import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
 import { DoctorsComponent } from './pages/doctors/doctors.component';
+import { ExaminationsComponent } from './pages/examinations/examinations.component';
 
 @NgModule({
-    declarations: [PatientComponent, PatientProfileComponent, DoctorsComponent],
+    declarations: [
+        PatientComponent,
+        PatientProfileComponent,
+        DoctorsComponent,
+        ExaminationsComponent,
+    ],
     imports: [
         // Angular
         CommonModule,
@@ -22,7 +27,6 @@ import { DoctorsComponent } from './pages/doctors/doctors.component';
         MatTabsModule,
         // My Modules
         SharedModule,
-        // Routing
         PatientRoutingModule,
     ],
 })

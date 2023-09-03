@@ -1,6 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
+import {
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    Validators,
+} from '@angular/forms';
 import { style, transition, trigger, animate } from '@angular/animations';
 import { BehaviorSubject, of } from 'rxjs';
 
@@ -20,24 +25,14 @@ import {
     UniqueUsernameValidator,
 } from '@core/services/unique-creds.service';
 import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
-import { UserRole } from '@core/models/users';
 import { Specialization } from '@core/models/specialization';
 import { ProfileService } from '@core/services/profile.service';
 
 import { EditImageModalComponent as EditImageComponent } from '@shared/components/edit-image-modal/edit-image-modal.component';
 
-interface FieldConfig {
-    fieldName: string;
-    label: string;
-    type: string;
-    autocomplete?: string;
-    autocapitalize?: string;
-    forRole?: UserRole;
-    readonly?: boolean;
-}
+import { FieldBase, baseFieldConfig } from '@core/utils/profile-fields';
+import { User, UserRole } from '@core/models/users';
 
-// TODO: Submit form on enter
-// TODO: Add doctor fields
 @Component({
     selector: 'app-editable-profile',
     templateUrl: './editable-profile.component.html',
@@ -56,16 +51,19 @@ interface FieldConfig {
     ],
     providers: [DialogService],
 })
-export class EditableProfileComponent implements OnInit, OnDestroy {
+export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
+    @Input() renderFor?: UserRole;
     imgLoading = true;
     imageLoaded() {
         this.imgLoading = false;
     }
+    user?: User;
     user$ = this.authService.user$;
 
-    // formEdited = false;
     formEdited = new BehaviorSubject<boolean>(false);
     matcher = new ShowOnDirtyErrorStateMatcher();
+    private emailValidator = new UniqueEmailValidator(this.authService);
+    private usernameValidator = new UniqueUsernameValidator(this.authService);
     profileForm = this.fb.group({
         first_name: ['', [Validators.required]],
         last_name: ['', [Validators.required]],
@@ -78,9 +76,6 @@ export class EditableProfileComponent implements OnInit, OnDestroy {
                     this.emailValidator
                 ).bind(this),
             ],
-            {
-                updateOn: 'change',
-            },
         ],
         username: [
             '',
@@ -96,9 +91,6 @@ export class EditableProfileComponent implements OnInit, OnDestroy {
                     this.usernameValidator
                 ).bind(this),
             ],
-            {
-                updateOn: 'change',
-            },
         ],
         phone: ['', [Validators.required, Validators.pattern(phoneRegex)]],
         address: ['', [Validators.required]],
@@ -116,62 +108,7 @@ export class EditableProfileComponent implements OnInit, OnDestroy {
         };
     }
 
-    fieldNames: string[] = Object.keys(this.profileForm.controls);
-
-    fieldGenerateConfig: FieldConfig[] = [
-        {
-            fieldName: 'first_name',
-            label: 'First Name',
-            type: 'text',
-            autocapitalize: 'words',
-        },
-        {
-            fieldName: 'last_name',
-            label: 'Last Name',
-            type: 'text',
-            autocapitalize: 'words',
-        },
-        {
-            fieldName: 'email',
-            label: 'Email',
-            type: 'email',
-            readonly: this.user$.value.type !== 'patient',
-        },
-        {
-            fieldName: 'username',
-            label: 'Username',
-            type: 'text',
-            readonly: this.user$.value.type === 'manager',
-        },
-        {
-            fieldName: 'phone',
-            label: 'Phone',
-            type: 'tel',
-        },
-        {
-            fieldName: 'address',
-            label: 'Address',
-            type: 'text',
-        },
-        {
-            fieldName: 'licence_number',
-            label: 'Licence Number',
-            type: 'text',
-            forRole: 'doctor',
-        },
-        {
-            fieldName: 'branch',
-            label: 'Branch',
-            type: 'text',
-            forRole: 'doctor',
-        },
-        // {
-        //     fieldName: 'specialization',
-        //     label: 'Specialization',
-        //     type: 'text',
-        //     forRole: 'doctor',
-        // }
-    ];
+    fieldConfig?: FieldBase<string>[];
 
     specializations?: Specialization[];
 
@@ -180,20 +117,29 @@ export class EditableProfileComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private authService: AuthService,
         private profileService: ProfileService,
-        private emailValidator: UniqueEmailValidator,
-        private usernameValidator: UniqueUsernameValidator,
         public errorMessages: FieldErrorMessagesService,
         public dialogService: DialogService
     ) {
         this.specializations = this.route.snapshot.data['specializations'];
         this.user$.subscribe((user) => {
-            this.profileForm.patchValue(user as any);
+            if (
+                user.type === 'doctor' &&
+                user.specialization instanceof Object
+            ) {
+                user.specialization = user.specialization?.id;
+            }
+            this.user = user;
+            this.profileForm.patchValue(this.user as any);
         });
     }
 
-    resetField(fieldName: string, event?: Event) {
+    fieldEdited(key: string) {
+        return this.profileForm.get(key)?.value === this.user$.value[key];
+    }
+
+    resetField(key: string, event?: Event) {
         this.profileForm.patchValue({
-            [fieldName]: this.user$.value?.[fieldName],
+            [key]: this.user?.[key] ?? '',
         });
     }
 
@@ -214,17 +160,28 @@ export class EditableProfileComponent implements OnInit, OnDestroy {
             });
     }
 
-    calculateFormEdited(): boolean {
-        return this.fieldNames.every(
-            (key: string) =>
-                this.profileForm?.get(key)?.value === this.user$.value[key]
+    get fromEdited(): boolean {
+        return (
+            this.fieldConfig?.every(
+                ({ key }) =>
+                    this.profileForm?.get(key)?.value === this.user$.value[key]
+            ) ?? false
         );
     }
 
     ngOnInit(): void {
         this.profileForm.valueChanges.subscribe(() =>
-            this.formEdited.next(!this.calculateFormEdited())
+            this.formEdited.next(!this.fromEdited)
         );
+    }
+
+    ngOnChanges() {
+        console.log(this.user$.value.type, this.renderFor);
+        this.fieldConfig = baseFieldConfig(
+            this.user$.value.type,
+            this.renderFor ?? this.user$.value.type
+        );
+        console.log(this.user$.value.type !== this.renderFor);
     }
 
     dialogRef: DynamicDialogRef | undefined;

@@ -73,6 +73,9 @@
     background: #EEF2FF;
 }
 
+:host p-table ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 0.5rem 1.5rem;
+}
 
 :host p-table ::ng-deep table .primeng-table {
     background-color: aquamarine;
@@ -90,7 +93,7 @@
     color: var(--bg-color)
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 995px) {
     :host p-table ::ng-deep .p-datatable .avatar-small-bottom-border {
         margin-top: 20px;
         /* border-bottom: 1px solid rgba(114, 114, 114, 0.281) !important; */
@@ -105,4 +108,15 @@
         color: var(--primary);
         font-weight: bold;
     }
+
+    :host p-table ::ng-deep .p-datatable .p-datatable-tbody>tr>td>.p-column-title {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-color: var(--accent);
+    }
+
+    :host p-table ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+        padding-bottom: 2rem;
+    }
+
 }

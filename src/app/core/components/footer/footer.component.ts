@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import Map from 'ol/Map';
@@ -18,7 +18,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
 })
-export class FooterComponent implements OnInit, AfterViewInit {
+export class FooterComponent implements OnInit {
     locationMap?: Map;
     isOnline: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
@@ -29,9 +29,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
     constructor() {}
 
-    ngOnInit() {}
-
-    ngAfterViewInit(): void {
+    ngOnInit() {
         this.locationMap = this.makeMap();
     }
 

@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-patient-profile',
-  templateUrl: './patient-profile.component.html',
-  styleUrls: ['./patient-profile.component.css']
+    selector: 'app-patient-profile',
+    host: { class: 'container' },
+    template: `<div class="container">
+        <app-editable-profile renderFor="patient"></app-editable-profile>
+    </div>`,
 })
 export class PatientProfileComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }

@@ -62,8 +62,8 @@
 
                 <mat-form-field appearance="fill">
                     <mat-label>Address</mat-label>
-                    <input matInput id="address" name="address" type="text" formControlName="address"
-                        autocomplete="address-line1" [errorStateMatcher]="matcher" />
+                    <textarea matInput id="address" name="address" formControlName="address" [style.resize]="'none'"
+                        autocomplete="address-line1" [errorStateMatcher]="matcher" rows="4" wrap="soft"></textarea>
                     <mat-error app-mat-err-msgs [errors]="errorMessages.address"></mat-error>
                 </mat-form-field>
                 <div class=" nav-buttons">
