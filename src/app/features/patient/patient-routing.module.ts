@@ -18,9 +18,6 @@ const routes: Routes = [
             },
             {
                 path: 'profile',
-                resolve: {
-                    specializations: SpecializationsResolver,
-                },
                 component: PatientProfileComponent,
             },
             {

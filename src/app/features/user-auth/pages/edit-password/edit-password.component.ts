@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+    FormBuilder,
+    Validators,
+    FormGroup,
+    AbstractControlOptions,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
@@ -51,7 +56,7 @@ export class EditPasswordComponent implements OnInit {
         },
         {
             validators: [this.passwordMatchValidator],
-        }
+        } as AbstractControlOptions
     );
 
     hidden: { [field: string]: boolean } = {
@@ -72,7 +77,6 @@ export class EditPasswordComponent implements OnInit {
     }
 
     constructor(
-        private activatedRoute: ActivatedRoute,
         private authService: AuthService,
         private router: Router,
         private fb: FormBuilder,
@@ -92,9 +96,11 @@ export class EditPasswordComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
         const { current, new: new_password } = this.changePasswordForm.value;
-        this.authService.changePassword(current, new_password).subscribe({
-            next: () => this.router.navigate(['logout']),
-            error: (err) => (this.errorMessage = err.error.message),
-        });
+        if (current != null && new_password != null) {
+            this.authService.changePassword(current, new_password).subscribe({
+                next: () => this.router.navigate(['logout']),
+                error: (err) => (this.errorMessage = err.error.message),
+            });
+        }
     }
 }

@@ -1,11 +1,6 @@
-import { Injectable } from '@angular/core';
-
 import { ErrorMessage } from '@shared/components/mat-err-msgs/mat-err-msgs.component';
 
-@Injectable({
-    providedIn: 'any',
-})
-export class FieldErrorMessagesService {
+export const ErrorMessages = new (class ErorMessages {
     [key: string]: any;
 
     get first_name(): ErrorMessage[] {
@@ -127,4 +122,43 @@ export class FieldErrorMessagesService {
             },
         ];
     }
-}
+
+    get branch(): ErrorMessage[] {
+        return [
+            {
+                name: 'required',
+                message: 'Branch is required',
+            },
+        ];
+    }
+
+    get specialization(): ErrorMessage[] {
+        return [
+            {
+                name: 'required',
+                message: 'Specialization is required',
+            },
+        ];
+    }
+
+    get licence_number(): ErrorMessage[] {
+        return [
+            {
+                name: 'required',
+                message: 'Licence number is required',
+            },
+            {
+                name: 'minlength',
+                message: 'Must be at least 5 characters long',
+            },
+            {
+                name: 'maxlength',
+                message: 'Must be at most 12 characters long',
+            },
+            {
+                name: 'pattern',
+                message: 'Must contain only digits',
+            },
+        ];
+    }
+})();

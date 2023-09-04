@@ -87,7 +87,7 @@ input:-webkit-autofill {
     color: var(--green);
 }
 
-.mat-form-field {
+.mat-form-field[appearance="fill"] {
     box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
     clip-path: inset(-10px -5px 0 -5px);
     margin-bottom: 1rem;

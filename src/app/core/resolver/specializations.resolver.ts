@@ -7,7 +7,7 @@ import {
 import { Specialization } from '@core/models/specialization';
 import { AuthService } from '@core/services/auth.service';
 import { SpecializationService } from '@core/services/specialization.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +21,9 @@ export class SpecializationsResolver
     ) {}
 
     resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
+        _route: ActivatedRouteSnapshot,
+        _state: RouterStateSnapshot
     ): Observable<Specialization[] | undefined> {
-        if (this.authService.user_role === 'doctor') {
-            return this.specializationService.get_all();
-        }
-        return of(undefined);
+        return this.specializationService.get_all();
     }
 }

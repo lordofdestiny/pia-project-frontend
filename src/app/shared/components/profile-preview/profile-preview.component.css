@@ -79,6 +79,13 @@ button:not(.image-overlay) mat-icon {
     border-radius: 5px;
     border: 1px solid var(--primary);
     background-color: rgb(245, 222, 179, 0.1) !important;
+    align-self: flex-start;
+    order: 1;
+}
+
+.grid-child.editing .fields .mat-form-field:has(textarea) {
+    align-self: flex-end;
+    order: 2;
 }
 
 .grid-child.picture {

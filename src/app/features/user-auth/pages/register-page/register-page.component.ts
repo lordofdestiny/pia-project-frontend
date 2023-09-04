@@ -34,7 +34,7 @@ import {
     phoneRegex,
     passwordChecks,
 } from '@core/constants/verification-regex';
-import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
+import { ErrorMessages } from '@core/utils/form-error-messages';
 
 @Component({
     selector: 'app-register-page',
@@ -43,6 +43,7 @@ import { FieldErrorMessagesService } from '@core/services/field-error-messages.s
 })
 export class RegisterPageComponent implements OnInit, AfterViewInit {
     matcher = new ShowOnDirtyErrorStateMatcher();
+    errorMessages = ErrorMessages;
     confirmPasswordMatcher = new ConfirmPasswordErrorMatcher();
     passwordChecks = passwordChecks;
 
@@ -265,8 +266,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         private fb: FormBuilder,
         private authService: AuthService,
         private modalService: BsModalService,
-        private breakpointObserver: BreakpointObserver,
-        public errorMessages: FieldErrorMessagesService
+        private breakpointObserver: BreakpointObserver
     ) {
         this.stepperOrientation = breakpointObserver
             .observe('(min-width: 800px)')

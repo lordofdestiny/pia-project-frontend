@@ -4,6 +4,7 @@ import { Examination, Specialization } from './specialization';
 export type UserRole = 'patient' | 'doctor' | 'manager';
 
 export interface UserBase {
+    id: string;
     username: string;
     password: string;
     email: string;

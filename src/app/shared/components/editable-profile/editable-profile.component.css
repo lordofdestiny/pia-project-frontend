@@ -57,6 +57,7 @@ button:not(.image-overlay) mat-icon {
 }
 
 
+
 .grid-child.editing {
     grid-area: editing;
     display: flex;
@@ -66,23 +67,27 @@ button:not(.image-overlay) mat-icon {
 
 .grid-child.editing .fields {
     height: 100%;
-    margin-top: 1rem;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
+    gap: 0;
 }
 
 
-.grid-child.editing .fields .mat-form-field:not(:has(textarea)) {
-    margin: 0rem 0.5rem;
-    flex: 0 1 calc(50% - 1rem);
+.grid-child.editing .fields .mat-form-field {
+    margin: 0 0.5rem;
+    flex: 1 1 calc(50% - 1rem);
+    min-width: calc(300px + 2rem);
+    order: 1;
 }
 
 .grid-child.editing .fields .mat-form-field:has(textarea) {
+    order: 2;
     flex: 1 1 calc(100% - 1rem);
-    margin: 0rem 0.5rem;
+
 }
+
 
 .cancel-edit-button mat-icon {
     font-weight: 600 !important;
@@ -106,7 +111,7 @@ button:not(.image-overlay) mat-icon {
     align-items: center;
     justify-content: flex-start;
     flex-flow: column wrap;
-
+    margin: 1rem;
 }
 
 .grid-child.populate {

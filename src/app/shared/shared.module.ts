@@ -5,10 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Angular Material
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 
@@ -40,6 +42,7 @@ import { MatErrMsgsComponent } from '@shared/components/mat-err-msgs/mat-err-msg
 import { EditImageComponent } from './components/edit-image/edit-image.component';
 import { ProfilePreviewComponent } from './components/profile-preview/profile-preview.component';
 import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor-patient-view.component';
+import { ProfileUpdatedDialogComponent } from './components/profile-update-dialog/profiile-update-dialog.component';
 
 @NgModule({
     declarations: [
@@ -53,6 +56,7 @@ import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor
         EditImageComponent,
         DoctorListComponent,
         DoctorPatientViewComponent,
+        ProfileUpdatedDialogComponent,
     ],
     providers: [],
     imports: [
@@ -64,10 +68,12 @@ import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor
         ReactiveFormsModule,
         // Angular Material
         MatIconModule,
-        MatButtonModule,
+        MatSelectModule,
         MatFormFieldModule,
         MatInputModule,
         MatTooltipModule,
+        MatDialogModule,
+        MatButtonModule,
         // PrimeNG
         KeyFilterModule,
         FormsModule,

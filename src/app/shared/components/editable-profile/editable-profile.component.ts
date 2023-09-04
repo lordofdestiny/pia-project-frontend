@@ -29,13 +29,13 @@ import {
     UniqueUsernameValidator,
 } from '@core/services/unique-creds.service';
 import { Specialization } from '@core/models/specialization';
-import { ProfileService } from '@core/services/profile.service';
-import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
 
 import { EditImageComponent } from '@shared/components/edit-image/edit-image.component';
 
 import { FieldBase, baseFieldConfig } from '@core/utils/profile-fields';
+import { ErrorMessages } from '@core/utils/form-error-messages';
 import { User, UserRole } from '@core/models/users';
+import '@core/utils/object';
 
 export type PictureEventAction = 'edit' | 'cancel' | 'delete';
 export interface PictureEventBase {
@@ -65,16 +65,18 @@ export type PictureEvent =
     providers: [DialogService],
 })
 export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
+    errorMessages = ErrorMessages;
     imgLoading = true;
+    @Input() styles: any = {};
+    @Input() classes: any = {};
     @Input() renderFor?: UserRole;
-    @Input() _user: User | null = null;
-    @Output() profileEdited = new EventEmitter<User>();
+    @Input() user?: User | null = null;
+    @Output() userChange = new EventEmitter<User>();
+    @Output() profileEdited = new EventEmitter<Partial<User>>();
     @Output() pictureEdited = new EventEmitter<PictureEvent>();
     @Output() valueChanged = new EventEmitter<User>();
-    user?: User;
-    user$ = this.authService.user$;
 
-    formEdited = new BehaviorSubject<boolean>(false);
+    hasChange = new BehaviorSubject<boolean>(false);
     matcher = new ShowOnDirtyErrorStateMatcher();
     private emailValidator = new UniqueEmailValidator(this.authService);
     private usernameValidator = new UniqueUsernameValidator(this.authService);
@@ -110,18 +112,6 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         address: ['', [Validators.required]],
     });
 
-    uniqueAndNotMineValidator(
-        field: 'email' | 'username',
-        validator: UniqueCredentialValidator
-    ) {
-        return (control: AbstractControl) => {
-            if (control.value === this.user$.value[field]) {
-                return of(null);
-            }
-            return validator.validate.bind(validator)(control);
-        };
-    }
-
     fieldConfig?: FieldBase<string>[];
 
     specializations?: Specialization[];
@@ -130,45 +120,38 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         private fb: FormBuilder,
         private route: ActivatedRoute,
         private authService: AuthService,
-        private profileService: ProfileService,
-        public errorMessages: FieldErrorMessagesService,
         public dialogService: DialogService
     ) {
         this.specializations = this.route.snapshot.data['specializations'];
-        this.user$.subscribe((user) => {
-            if (
-                user.type === 'doctor' &&
-                user.specialization instanceof Object
-            ) {
-                user.specialization = user.specialization?.id;
-            }
-            this.user = user;
-            this.profileForm.patchValue(this.user as any);
-        });
     }
 
+    uniqueAndNotMineValidator(
+        field: 'email' | 'username',
+        validator: UniqueCredentialValidator
+    ) {
+        return (control: AbstractControl) => {
+            if (control.value === this.user?.[field]) {
+                return of(null);
+            }
+            return validator.validate.bind(validator)(control);
+        };
+    }
     protected resetField(key: string, event?: Event) {
+        event?.stopPropagation?.();
         this.profileForm.patchValue({
             [key]: this.user?.[key] ?? '',
         });
     }
 
     protected updateProfile() {
-        this.profileEdited.emit(this.profileForm.value as any);
-        this.profileService
-            .update_profile(this.profileForm.value as any)
-            .subscribe({
-                next: (_user) => {
-                    this.profileForm.markAsPristine();
-                },
-                error: (err) => {
-                    this.resetForm();
-                    console.error(err);
-                },
-                complete: () => {
-                    this.formEdited.next(false);
-                },
-            });
+        const { value } = this.profileForm;
+        const untouchedFields = Object.keys(value).filter(
+            this.fieldEdited.bind(this)
+        ) as (keyof typeof value)[];
+        this.profileEdited.emit(
+            Object.omit(this.profileForm.value, ...untouchedFields) as any
+        );
+        this.userChange.emit({ ...value } as any);
     }
 
     protected resetForm() {
@@ -177,7 +160,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     protected fieldEdited(key: string) {
-        return this.profileForm.get(key)?.value === this.user$.value[key];
+        return this.profileForm.get(key)?.value === this.user?.[key];
     }
 
     get fromEdited(): boolean {
@@ -189,7 +172,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
     private createEditImageDialog() {
         return this.dialogService.open(EditImageComponent, {
             data: {
-                profile_picture: this.user$.value.profile_picture,
+                profile_picture: this.user?.profile_picture,
             },
             header: 'Edit profile picture',
             width: '70%',
@@ -224,24 +207,71 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
+    private addedControls = false;
+    private addDoctorControls() {
+        if (this.addedControls) return;
+        this.addedControls = true;
+        this.profileForm.get('email')?.disable();
+        this.profileForm.addControl(
+            'licence_number' as any,
+            this.fb.control('', [
+                Validators.required,
+                Validators.minLength(5),
+                Validators.maxLength(12),
+                Validators.pattern(/^\d{5,12}$/),
+            ])
+        );
+        this.profileForm.addControl(
+            'specialization' as any,
+            this.fb.control('', [Validators.required])
+        );
+        this.profileForm.addControl(
+            'branch' as any,
+            this.fb.control({ value: '', disabled: true }, [
+                Validators.required,
+            ])
+        );
+    }
+
     ngOnInit(): void {
+        if (this.renderFor === 'doctor') {
+            this.addDoctorControls();
+        }
         this.profileForm.valueChanges.subscribe((value) => {
-            this.formEdited.next(!this.fromEdited);
+            this.hasChange.next(!this.fromEdited);
             this.valueChanged.emit(value as any);
         });
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.fieldConfig = baseFieldConfig(
-            this.user$.value.type,
-            this.renderFor ?? this.user$.value.type
-        );
+        if (changes?.['user']) {
+            if (this.renderFor === 'doctor') {
+                this.addDoctorControls();
+            }
+            if (changes?.['user'].isFirstChange()) {
+                this.fieldConfig = baseFieldConfig(
+                    this.user?.type ?? 'patient',
+                    this.renderFor ?? 'patient'
+                );
+                if (this.user?.type === 'doctor') {
+                    this.fieldConfig.find(
+                        ({ key }) => key === 'specialization'
+                    )!.options = this.specializations!.map(({ id, name }) => ({
+                        key: name,
+                        value: id,
+                    }));
+                }
+            }
+            this.profileForm.patchValue(this.user as any);
+            this.profileForm.markAsPristine();
+            this.hasChange.next(false);
+        }
     }
 
     ngOnDestroy() {
         if (this.dialogRef) {
             this.dialogRef.close();
         }
-        this.formEdited.complete();
+        this.hasChange.complete();
     }
 }

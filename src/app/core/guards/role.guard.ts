@@ -15,24 +15,21 @@ import { AuthService } from '@core/services/auth.service';
 @Injectable()
 export class RoleGuard implements CanActivate, CanLoad {
     // here you can inject your auth service to check that user is signed in or not
-    constructor(
-        private authService: AuthService,
-        private router: Router,
-        private activatedRoute: ActivatedRoute
-    ) {}
+    constructor(private authService: AuthService, private router: Router) {}
 
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): boolean {
         const allowedRole = route.data['expectedRole'];
-        if (this.authService.user_role !== allowedRole) {
-            this.router.navigate([allowedRole]);
-            return false;
+        if (this.authService.user_role === allowedRole) {
+            return true;
         }
-        return true;
+        this.router.navigate([this.authService.user_role]);
+        return false;
     }
     canLoad(route: Route): boolean {
+        console.log(route.data);
         const allowedRole = route.data?.['expectedRole'];
         if (
             this.authService.logged_in &&
@@ -40,8 +37,7 @@ export class RoleGuard implements CanActivate, CanLoad {
         ) {
             return true;
         }
-        this.router.navigate([allowedRole]);
-
+        this.router.navigate([this.authService.user_role]);
         return false;
     }
 }

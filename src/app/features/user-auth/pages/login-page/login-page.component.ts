@@ -6,7 +6,7 @@ import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
 import { AuthService } from '@core/services/auth.service';
 import { IsHandsetService } from '@core/services/is-handset.service';
-import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
+import { ErrorMessages } from '@core/utils/form-error-messages';
 
 @Component({
     selector: 'app-login-page',
@@ -14,6 +14,7 @@ import { FieldErrorMessagesService } from '@core/services/field-error-messages.s
     styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
+    errorMessages = ErrorMessages;
     is_manager = this.activatedRoute.snapshot.data['manager'];
     hidden: boolean = false;
     usernameRegex: RegExp = /^[_-]*[a-zA-Z][\w-]*$/;
@@ -44,8 +45,7 @@ export class LoginPageComponent implements OnInit {
         private authService: AuthService,
         private router: Router,
         private fb: FormBuilder,
-        private isHandsetService: IsHandsetService,
-        public errorMessages: FieldErrorMessagesService
+        private isHandsetService: IsHandsetService
     ) {}
 
     get isHandset$() {

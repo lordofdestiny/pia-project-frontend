@@ -6,11 +6,11 @@ import {
     ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors } from '@angular/forms';
+import { ErrorMessages } from '@core/utils/form-error-messages';
 
 import { ConfirmationService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { FieldErrorMessagesService } from '@core/services/field-error-messages.service';
 import { BehaviorSubject } from 'rxjs';
 
 type EditAction = 'edit' | 'remove';
@@ -25,11 +25,10 @@ export class EditImageComponent implements OnInit, OnDestroy {
     constructor(
         public dialogRef: DynamicDialogRef,
         public dialogConfig: DynamicDialogConfig,
-        public errorMessages: FieldErrorMessagesService,
         private confirmationService: ConfirmationService,
         private fb: FormBuilder
     ) {}
-
+    errorMessages = ErrorMessages;
     pictureForm = this.fb.group({
         picture: ['', [], [this.imageValidator.bind(this)]],
     });
@@ -101,7 +100,7 @@ export class EditImageComponent implements OnInit, OnDestroy {
     handleRemove() {
         this.confirmationService.confirm({
             message:
-                'Are you sure that you want to remove your profile picutre?',
+                'Are you sure that you want to remove your profile picutre? People might not be able to recognize you anymore.',
             header: 'Delete profile picture',
             icon: 'pi pi-exclamation-triangle ',
             acceptButtonStyleClass: 'mat-raised-button mat-warn',

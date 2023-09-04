@@ -1,35 +1,56 @@
-<div class="container">
+<div class="container" [ngStyle]="styles" [ngClass]="classes">
     <form [formGroup]="profileForm">
         <div class="grid-container">
             <div class="grid-child editing">
                 <div class="fields">
                     <ng-container *ngFor="let config of fieldConfig ?? []" [ngSwitch]="config.controlType">
-                        <mat-form-field appearance="fill" *ngSwitchCase="'textbox'" class="align-self-center">
+                        <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" color="accent">
                             <mat-label>{{config.label}}</mat-label>
                             <input matInput [id]="config.key" [name]="config.key" [type]="config.type"
                                 [formControlName]="config.key" [autocapitalize]="config.autocapitalize??'off'"
-                                [errorStateMatcher]="matcher" [readonly]="config.readonly" />
+                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" />
                             <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
-                                [ngClass]="fieldEdited(config.key)?'hidden':'visible'" (click)="resetField(config.key)"
-                                tabindex="-1">
+                                [ngClass]="fieldEdited(config.key)?'hidden':'visible'"
+                                (click)="resetField(config.key,$event)" tabindex="-1">
                                 <mat-icon color="accent">close</mat-icon>
                             </button>
                             <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="fill" *ngSwitchCase="'textarea'" class="align-self-center">
+                        <mat-form-field appearance="outline" *ngSwitchCase="'textarea'" color="accent">
                             <mat-label>{{config.label}}</mat-label>
                             <textarea matInput [id]="config.key" [name]="config.key" [formControlName]="config.key"
                                 [style.resize]="'none'" [autocapitalize]="config.autocapitalize??'off'"
-                                [errorStateMatcher]="matcher" rows="4" wrap="soft"
-                                [readonly]="config.readonly"></textarea>
+                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" rows="4"
+                                wrap="soft"></textarea>
+                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                                [ngClass]="fieldEdited(config.key)?'hidden':'visible'"
+                                (click)="resetField(config.key,$event)" tabindex="-1">
+                                <mat-icon color="accent">close</mat-icon>
+                            </button>
                             <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
                         </mat-form-field>
+
+                        <mat-form-field appearance="outline" *ngSwitchCase="'dropdown'" color="accent">
+                            <mat-label>{{config.label}}</mat-label>
+                            <mat-select [id]="config.key" name="specialization" formControlName="specialization"
+                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)">
+                                <mat-option *ngFor="let option of config.options" [value]="option.value">
+                                    {{option.key}}
+                                </mat-option>
+                            </mat-select>
+                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                                [style.display]="fieldEdited(config.key)?'none':'block'"
+                                (click)="resetField(config.key,$event)" tabindex="-1">
+                                <mat-icon color="accent">close</mat-icon>
+                            </button>
+                            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+                        </mat-form-field>
+
                     </ng-container>
                 </div>
 
-                <div class="edit" style="justify-self: flex-end;"
-                    *ngIf="((user$|async)?.type === renderFor) && (formEdited  | async)" [@inOutAnimation]>
+                <div class=" edit" style="justify-self: flex-end;" *ngIf=" (hasChange  | async)" [@inOutAnimation]>
                     <button mat-raised-button color="green" type="button" [disabled]="!profileForm.valid"
                         (click)="updateProfile()">
                         <mat-icon>check</mat-icon>
@@ -42,16 +63,13 @@
                 </div>
             </div>
 
-            <!-- Render input for specialization if user is a doctor -->
-            <!-- Write errorMessages for doctor fields -->
-
             <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
                 <div class="image-border">
-                    <img [src]="(user$|async)?.profile_picture" alt="Profile picture" class="picture"
+                    <img [src]="user?.profile_picture" alt="Profile picture" class="picture"
                         (load)="this.imgLoading = false;">
                 </div>
-                <button *ngIf="((user$|async)?.type === renderFor)" mat-raised-button color="green" type="button"
-                    [style.margin]="'1rem auto 0'" [style.display]="'block'" (click)="openEditImageModal()">
+                <button mat-raised-button color="green" type="button" [style.margin]="'1rem auto 0'"
+                    [style.display]="'block'" (click)="openEditImageModal()">
                     <mat-icon>edit</mat-icon>
                     <span>Edit picture</span>
                 </button>

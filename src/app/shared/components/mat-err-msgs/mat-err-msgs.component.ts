@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, Injector, Input } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    Injector,
+    Input,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import {
     MatFormField,
     MatFormFieldControl,
@@ -14,7 +21,7 @@ export interface ErrorMessage {
     selector: '[app-mat-err-msgs]',
     template: '{{error}}',
 })
-export class MatErrMsgsComponent implements AfterViewInit {
+export class MatErrMsgsComponent implements AfterViewInit, OnChanges {
     error: string = 'Invalid input';
     error_messages: ErrorMessage[] = [];
     private inputRef?: MatFormFieldControl<MatInput>;
@@ -32,6 +39,14 @@ export class MatErrMsgsComponent implements AfterViewInit {
         this.inputRef.ngControl?.statusChanges?.subscribe(
             this.setErrorMessage.bind(this)
         );
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['errors']) {
+            if (!changes['errors'].currentValue) {
+                this.error_messages = [];
+            }
+        }
     }
 
     private setErrorMessage(state: 'valid' | 'invalid') {

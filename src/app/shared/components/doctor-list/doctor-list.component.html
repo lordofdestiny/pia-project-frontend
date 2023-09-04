@@ -50,11 +50,11 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-doctor let-columns="columns">
-        <tr>
+        <tr [style.font-size.em]="1.2">
             <td (click)="$event.stopPropagation()" class="avatar-small-bottom-border">
 
-                <div class="d-flex justify-content-center align-items-center w-100">
-                    <p-avatar [image]="doctor.profile_picture" size="large"></p-avatar>
+                <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                    <p-avatar [image]="doctor.profile_picture" size="xlarge" shape="circle"></p-avatar>
                 </div>
             </td>
             <td><span class="p-column-title">First Name </span> {{doctor.first_name}} </td>

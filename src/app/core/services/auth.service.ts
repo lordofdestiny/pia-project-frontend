@@ -24,6 +24,10 @@ export class AuthService {
     #logged_in = new BehaviorSubject<boolean>(false);
     user$ = new BehaviorSubject<User>({} as User);
 
+    get user() {
+        return this.user$.value;
+    }
+
     set user(user: User) {
         resolveProfilePicture(user);
         this.user$.next(user);
