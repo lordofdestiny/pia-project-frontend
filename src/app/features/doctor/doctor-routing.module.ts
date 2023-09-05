@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DoctorComponent } from './doctor.component';
 import { DoctorProfileComponent } from './pages/doctor-profile/doctor-profile.component';
 import { RoleGuard } from '@core/guards/role.guard';
-import { SpecializationsResolver } from '@core/resolver/specializations.resolver';
+import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
+import { ExaminationsResolver } from '@core/resolvers/examinations.resolver';
 
 const routes: Routes = [
     {
@@ -23,6 +24,7 @@ const routes: Routes = [
                 path: 'profile',
                 resolve: {
                     specializations: SpecializationsResolver,
+                    examinations: ExaminationsResolver,
                 },
                 component: DoctorProfileComponent,
             },

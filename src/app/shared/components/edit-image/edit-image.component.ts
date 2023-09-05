@@ -1,6 +1,7 @@
 import {
     Component,
     ElementRef,
+    Input,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -22,6 +23,7 @@ type EditAction = 'edit' | 'remove';
     providers: [ConfirmationService],
 })
 export class EditImageComponent implements OnInit, OnDestroy {
+    forManager: boolean = false;
     constructor(
         public dialogRef: DynamicDialogRef,
         public dialogConfig: DynamicDialogConfig,
@@ -37,6 +39,7 @@ export class EditImageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         const picture = this.dialogConfig.data.profile_picture;
+        this.forManager = this.dialogConfig.data.forManager ?? false;
         this.picture$.next(picture);
     }
 
@@ -99,8 +102,9 @@ export class EditImageComponent implements OnInit, OnDestroy {
 
     handleRemove() {
         this.confirmationService.confirm({
-            message:
-                'Are you sure that you want to remove your profile picutre? People might not be able to recognize you anymore.',
+            message: this.forManager
+                ? "Are you sure that you want to remove this user's profile picture?"
+                : 'Are you sure that you want to remove your profile picutre? People might not be able to recognize you anymore.',
             header: 'Delete profile picture',
             icon: 'pi pi-exclamation-triangle ',
             acceptButtonStyleClass: 'mat-raised-button mat-warn',

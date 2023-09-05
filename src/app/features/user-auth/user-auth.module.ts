@@ -17,10 +17,6 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { SharedModule } from '@shared/shared.module';
 
 import { UserAuthRoutingModule } from '@features/user-auth/user-auth-routing.module';
-import {
-    UniqueEmailValidator,
-    UniqueUsernameValidator,
-} from '@core/services/unique-creds.service';
 import { RegisterPageComponent } from '@features/user-auth/pages/register-page/register-page.component';
 import { LoginPageComponent } from '@features/user-auth/pages/login-page/login-page.component';
 

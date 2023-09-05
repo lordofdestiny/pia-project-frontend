@@ -50,7 +50,7 @@ export class MatErrMsgsComponent implements AfterViewInit, OnChanges {
     }
 
     private setErrorMessage(state: 'valid' | 'invalid') {
-        if (state === 'valid') {
+        if (state.toLowerCase() === 'valid') {
             return;
         }
         // active errors on the formcontrol

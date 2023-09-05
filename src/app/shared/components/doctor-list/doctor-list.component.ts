@@ -22,7 +22,7 @@ export class DoctorListComponent implements OnInit {
 
     ngOnInit() {
         this.doctors = this.doctorService
-            .getAll()
+            .get_all()
             .pipe(tap(() => (this.loading = false)));
         this.logged_in = this.authService.logged_in;
     }

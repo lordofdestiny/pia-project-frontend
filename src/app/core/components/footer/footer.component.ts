@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import Map from 'ol/Map';
@@ -27,7 +27,7 @@ export class FooterComponent implements OnInit {
     private marker_img =
         'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png';
 
-    constructor() {}
+    constructor(public hostElement: ElementRef) {}
 
     ngOnInit() {
         this.locationMap = this.makeMap();

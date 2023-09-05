@@ -1,4 +1,8 @@
-<h2 class="page_title">Dashboard</h2>
+<h2 class="page_title">
+    <mat-icon color="primary" class="title-icon">supervised_user_circle</mat-icon>
+    <span>Dashboard</span>
+</h2>
+
 <div class="container-fluid px-0 py-4" color="primary">
     <nav mat-tab-nav-bar dynamicHeight mat-align-tabs="center" [tabPanel]="tabPanel">
         <a mat-tab-link *ngFor="let link of navLinks" routerLink="{{baseRoute}}/{{ link.location }}" routerLinkActive
@@ -9,7 +13,5 @@
     </nav>
 </div>
 <mat-tab-nav-panel #tabPanel>
-    <div [style.margin-bottom.rem]="-2">
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 </mat-tab-nav-panel>

@@ -11,8 +11,7 @@ export class ManagerComponent implements OnInit {
     baseRoute = '/manager';
     navLinks = [
         { location: 'profile', label: 'Profile', icon: 'account_circle' },
-        { location: 'patients', label: 'Patients', icon: 'face' },
-        { location: 'doctors', label: 'Doctors', icon: 'healing ' },
+        { location: 'users', label: 'Users', icon: 'person' },
     ];
 
     constructor(private titleService: Title, private authService: AuthService) {

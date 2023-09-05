@@ -1,8 +1,19 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+    ActivatedRouteSnapshot,
+    RouterModule,
+    RouterStateSnapshot,
+    Routes,
+} from '@angular/router';
+
+import { RoleGuard } from '@core/guards/role.guard';
+import { PatientsResolver } from '@core/resolvers/patients.resolver';
+import { DoctorsResolver } from '@core/resolvers/doctors.resolver';
+import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
+
 import { ManagerComponent } from './manager.component';
 import { ManagerProfileComponent } from './pages/manager-profile/manager-profile.component';
-import { RoleGuard } from '@core/guards/role.guard';
+import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 
 const routes: Routes = [
     {
@@ -21,6 +32,15 @@ const routes: Routes = [
             {
                 path: 'profile',
                 component: ManagerProfileComponent,
+            },
+            {
+                path: 'users',
+                resolve: {
+                    patients: PatientsResolver,
+                    doctors: DoctorsResolver,
+                    specializations: SpecializationsResolver,
+                },
+                component: ManageUsersComponent,
             },
         ],
     },

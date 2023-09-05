@@ -10,9 +10,10 @@ import { DoctorRoutingModule } from './doctor-routing.module';
 import { DoctorComponent } from './doctor.component';
 import { DoctorProfileComponent } from './pages/doctor-profile/doctor-profile.component';
 import { SharedModule } from '@shared/shared.module';
+import { PickExaminationsComponent } from './components/pick-examinations/pick-examinations.component';
 
 @NgModule({
-    declarations: [DoctorComponent, DoctorProfileComponent],
+    declarations: [DoctorComponent, DoctorProfileComponent, PickExaminationsComponent],
     imports: [
         CommonModule,
         //Angular material

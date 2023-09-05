@@ -1,11 +1,4 @@
-:host {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: -3rem;
-}
-
-:host>div {
+:host .mat-card {
     font-size: 1.2em;
     background-color: var(--bg-color);
     max-width: 500px;
@@ -14,15 +7,8 @@
     border-radius: 10px;
 }
 
-
-:host ::ng-deep .mat-form-field {
-    box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
-    clip-path: inset(-10px -5px 0 -5px);
-}
-
-
 .login-title {
-    font-size: 3.5em;
+    font-size: 3.5rem;
     line-height: inherit;
     margin: 0 auto 2rem;
     width: fit-content;
@@ -32,15 +18,16 @@
     font-weight: bold;
 }
 
+
+:host ::ng-deep .mat-form-field {
+    box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
+    clip-path: inset(-10px -5px 0 -5px);
+}
+
+
 input {
     line-height: inherit;
 }
-
-input:-webkit-autofill {
-    -webkit-background-clip: text !important;
-}
-
-
 
 button[type="submit"] {
     font-size: 1.2em;
@@ -48,14 +35,10 @@ button[type="submit"] {
     margin-top: 2rem;
     width: min-content;
     padding: 5px 20px;
-    margin: 1rem auto;
+    margin: 0 auto;
 }
 
 :host ::ng-deep .error-message {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     margin-bottom: 1rem;
     font-size: 1.2em;
     font-weight: 500;

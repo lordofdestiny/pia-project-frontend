@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PatientComponent } from './patient.component';
 import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
-import { SpecializationsResolver } from '@core/resolver/specializations.resolver';
 import { DoctorsComponent } from './pages/doctors/doctors.component';
 import { ExaminationsComponent } from './pages/examinations/examinations.component';
 

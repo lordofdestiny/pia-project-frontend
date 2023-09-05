@@ -1,0 +1,152 @@
+<main class="container" [style.margin-bottom.rem]="10">
+
+    <mat-accordion>
+        <!-- Manage registrations requests-->
+        <mat-expansion-panel [(expanded)]="false && panelOpenStates['requests']"
+            [disabled]="patients.requests.length <=  0">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3 *ngIf="patients.requests.length>0" [matBadge]=" patients.requests.length" matBadgeColor="accent"
+                        matBadgeOverlap="false">
+                        Pending requests
+                    </h3>
+                    <h3 *ngIf="patients.requests.length <=0">
+                        No pending requests
+                    </h3>
+                </mat-panel-title>
+                <mat-panel-description [style.font-weight]="'bold'" class="justify-content-end">
+                    <mat-icon color="accent">person_outline</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <section>
+                <h3> Pending requests </h3>
+                <mat-card *ngFor="let patient of getPage(patients.requests,'requests');let x = index"
+                    class="mat-elevation-z0">
+                    <mat-card-content class="d-flex justify-content-center">
+                        <app-editable-profile [user]="patient" renderFor="manager" [disabled]="true"
+                            [styles]="{'font-size':'0.8rem'}">
+                        </app-editable-profile>
+                    </mat-card-content>
+                    <mat-card-actions class="request-buttons" *ngVar="getOriginalIndex('requests',x); let orgIndex">
+                        <div class="d-flex justify-content-end" style="grid-area: buttons">
+                            <button mat-raised-button type="button" color="warn" class="request-button"
+                                (click)="handleDeny(orgIndex)">Deny</button>
+                            <button mat-raised-button type=" button" color="green" class="request-button"
+                                (click)="handleApprove(orgIndex)">Approve</button>
+                        </div>
+                        <div style="grid-area: gap"></div>
+                    </mat-card-actions>
+                </mat-card>
+
+                <mat-paginator #reqs_paginator [length]="patients.requests.length" [pageSize]="defaultPageSize"
+                    [style.color]="'var(--accent)'" [style.font-weight]="500" color="accent"
+                    [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true"
+                    (page)="updatePageIndex('requests',$event)" aria-label="Select page">
+                </mat-paginator>
+            </section>
+
+        </mat-expansion-panel>
+
+        <!-- Manage Patients-->
+        <mat-expansion-panel [(expanded)]="panelOpenStates['approved']" [disabled]="patients.approved.length <=  0">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3 [matBadge]="patients.approved.length" matBadgeColor="accent" matBadgeOverlap="false">
+                        Patients
+                    </h3>
+                </mat-panel-title>
+                <mat-panel-description [style.font-weight]="'bold'"
+                    [style.justify-content]="patients.approved.length <= 0?'space-between':'flex-end'">
+                    <span *ngIf="patients.approved.length <= 0">No patients</span>
+                    <mat-icon color="accent">person</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <section>
+                <h3> Patients </h3>
+                <mat-card *ngFor="let patient of getPage(patients.approved,'approved'); let x = index;"
+                    class="mat-elevation-z0">
+                    <ng-container *ngVar="getOriginalIndex('approved',x);let orgIndex">
+                        <mat-card-content>
+                            <app-editable-profile [user]="patients.approved[orgIndex]" renderFor="manager"
+                                [styles]="{'font-size':'0.8rem'}"
+                                (profileEdited)="handleProfileEdited(patients.approved, orgIndex, $event)"
+                                (pictureEdited)="handlePictureEdited(patients.approved, orgIndex, $event)">
+                            </app-editable-profile>
+                        </mat-card-content>
+                        <mat-card-actions class="d-flex justify-content-start mx-2">
+                            <button type="button" mat-stroked-button color="warn"
+                                (click)="handleDelete(patients.approved, orgIndex)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete patient</span></button>
+                        </mat-card-actions>
+                    </ng-container>
+                </mat-card>
+
+                <mat-paginator #patients_paginator [length]="patients.approved.length" [pageSize]="defaultPageSize"
+                    [style.color]="'var(--accent)'" [style.font-weight]="500" color="accent"
+                    [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions"
+                    (page)="updatePageIndex('approved',$event)" aria-label="Select page">
+                </mat-paginator>
+            </section>
+
+        </mat-expansion-panel>
+
+        <!-- Manage doctors-->
+        <mat-expansion-panel [(expanded)]="panelOpenStates['doctors']" [disabled]="doctors.length <=  0">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3 [matBadge]="doctors.length" matBadgeColor="accent" matBadgeOverlap="false">
+                        Doctors
+                    </h3>
+                </mat-panel-title>
+                <mat-panel-description [style.font-weight]="'bold'"
+                    [style.justify-content]="doctors.length <= 0?'space-between':'flex-end'">
+                    <span *ngIf="doctors.length <= 0">No doctors</span>
+                    <mat-icon color="accent">healing</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <section>
+                <h3> Doctors </h3>
+                <mat-card *ngFor="let patient of getPage(doctors,'doctors'); let x = index;" class="mat-elevation-z0">
+                    <ng-container *ngVar="getOriginalIndex('doctors',x);let orgIndex">
+                        <mat-card-content>
+                            <app-editable-profile [user]="doctors[orgIndex]" renderFor="manager"
+                                [styles]="{'font-size':'0.8rem'}"
+                                (profileEdited)="handleProfileEdited(doctors, orgIndex, $event)"
+                                (pictureEdited)="handlePictureEdited(doctors, orgIndex,$event)">
+                            </app-editable-profile>
+                        </mat-card-content>
+                        <mat-card-actions class="d-flex justify-content-start mx-2">
+                            <button type="button" mat-stroked-button color="warn"
+                                (click)="handleDelete(doctors, orgIndex)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete doctor</span></button>
+                        </mat-card-actions>
+                    </ng-container>
+                </mat-card>
+                <mat-paginator #doctors_paginator [length]="doctors.length" [pageSize]="defaultPageSize"
+                    [style.color]="'var(--accent)'" [style.font-weight]="500" color="accent"
+                    [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions"
+                    (page)="updatePageIndex('doctors',$event)" aria-label="Select page">
+                </mat-paginator>
+            </section>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [(expanded)]="panelOpenStates['create-doctor']">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3> New doctor </h3>
+                </mat-panel-title>
+                <mat-panel-description [style.font-weight]="'bold'" class="justify-content-end">
+                    <mat-icon color="accent">person_add</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <section>
+                <h3>Create a new doctor</h3>
+                <app-create-doctor #doctor_creator (created)="handleCreateDoctor($event)"
+                    (cleared)="handleClearCreateDoctor()"></app-create-doctor>
+            </section>
+        </mat-expansion-panel>
+
+    </mat-accordion>
+</main>

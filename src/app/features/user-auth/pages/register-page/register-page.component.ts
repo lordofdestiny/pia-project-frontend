@@ -35,6 +35,7 @@ import {
     passwordChecks,
 } from '@core/constants/verification-regex';
 import { ErrorMessages } from '@core/utils/form-error-messages';
+import { PatinetService } from '@core/services/patinet.service';
 
 @Component({
     selector: 'app-register-page',
@@ -252,7 +253,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
                     ?.files?.[0]
             );
         }
-        this.authService.register(formData).subscribe((response) => {
+        this.patientService.register(formData).subscribe((response) => {
             this.modalRef = this.modalService.show(registerModal, {
                 animated: true,
             });
@@ -265,6 +266,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         private router: Router,
         private fb: FormBuilder,
         private authService: AuthService,
+        private patientService: PatinetService,
         private modalService: BsModalService,
         private breakpointObserver: BreakpointObserver
     ) {

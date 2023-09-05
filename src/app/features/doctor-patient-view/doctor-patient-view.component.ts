@@ -11,11 +11,7 @@ export class DoctorPatientViewComponent implements OnInit {
     username: string = this.route.snapshot.params['username'];
     doctor: Doctor = this.route.snapshot.data['doctor'];
 
-    constructor(private route: ActivatedRoute) {
-        if (this.doctor.specialization instanceof Object) {
-            this.doctor.specialization = this.doctor.specialization?.name ?? '';
-        }
-    }
+    constructor(private route: ActivatedRoute) {}
 
     durationString(duration: number): string {
         const minutes = duration % 60;

@@ -24,6 +24,18 @@ export class AuthService {
     #logged_in = new BehaviorSubject<boolean>(false);
     user$ = new BehaviorSubject<User>({} as User);
 
+    constructor(private http: HttpClient, private router: Router) {
+        if (sessionStorage.getItem('auth') == 'true' && !this.user?.id) {
+            this.#logged_in.next(true);
+            this.user$.next(JSON.parse(sessionStorage.getItem('user') ?? '{}'));
+        } else {
+            sessionStorage.clear();
+        }
+        this.user$.subscribe((user) => {
+            sessionStorage.setItem('user', JSON.stringify(user));
+        });
+    }
+
     get user() {
         return this.user$.value;
     }
@@ -44,27 +56,6 @@ export class AuthService {
     get full_name() {
         const { first_name, last_name } = this.user$.value;
         return `${first_name} ${last_name}`;
-    }
-
-    constructor(private http: HttpClient, private router: Router) {
-        if (sessionStorage.getItem('auth') == 'true') {
-            this.#logged_in.next(true);
-            this.user$.next(JSON.parse(sessionStorage.getItem('user') ?? '{}'));
-        }
-        this.user$.subscribe((user) => {
-            sessionStorage.setItem('user', JSON.stringify(user));
-        });
-    }
-
-    register(user: FormData) {
-        if (this.#logged_in.value) {
-            return throwError(() => new Error('already logged in'));
-        }
-        return this.http
-            .post<User>(`${baseUri}/auth/register/patient`, user, {
-                headers: new HttpHeaders({ enctype: 'multipart/form-data' }),
-            })
-            .pipe(catchError(AuthService.handleError));
     }
 
     login(user: UserCredentials, manager: boolean = false) {
@@ -141,7 +132,7 @@ export class AuthService {
         );
     }
 
-    private static handleError(error: HttpErrorResponse): Observable<never> {
+    public static handleError(error: HttpErrorResponse): Observable<never> {
         switch (error.status) {
             case 0:
                 console.log(error.error);

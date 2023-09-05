@@ -1,3 +1,13 @@
 h2.page_title {
     margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-icon.title-icon {
+    font-size: 4rem;
+    width: max-content;
+    height: max-content;
+
 }

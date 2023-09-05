@@ -8,6 +8,7 @@ import { CoreModule } from '@core/core.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingModule } from '@features/landing/landing.module';
+import { NavigationEnd, Router } from '@angular/router';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,5 +25,5 @@ import { LandingModule } from '@features/landing/landing.module';
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor() {}
+    constructor(private router: Router) {}
 }

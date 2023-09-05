@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LandingComponent } from '@features/landing/landing.component';
 
-import { DoctorResolver } from '@core/resolver/doctor.resolver';
+import { DoctorResolver } from '@core/resolvers/doctor.resolver';
 
 import { AuthGuard } from '@core/guards/auth.guard';
 import { RoleGuard } from '@core/guards/role.guard';
 import { NotLoggedInGurad } from '@core/guards/notloggedin.guard';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor-patient-view.component';
+import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
 
 export const appRoutes: Routes = [
     {
@@ -36,9 +37,22 @@ export const appRoutes: Routes = [
             ),
     },
     {
+        path: 'doctors/:username',
+        canLoad: [RoleGuard],
+        canActivate: [RoleGuard],
+        data: {
+            expectedRole: 'patient',
+        },
+        component: DoctorPatientViewComponent,
+        resolve: {
+            doctor: DoctorResolver,
+            specializations: SpecializationsResolver,
+        },
+    },
+    {
         path: 'doctor',
         canLoad: [RoleGuard],
-        canActivate: [AuthGuard],
+        canActivate: [RoleGuard],
         data: {
             expectedRole: 'doctor',
         },
@@ -48,18 +62,9 @@ export const appRoutes: Routes = [
             ),
     },
     {
-        path: 'doctors/:username',
-        canActivate: [RoleGuard],
-        data: {
-            expectedRole: 'patient',
-        },
-        component: DoctorPatientViewComponent,
-        resolve: { doctor: DoctorResolver },
-    },
-    {
         path: 'manager',
         canLoad: [RoleGuard],
-        canActivate: [RoleGuard],
+        canActivate: [AuthGuard, RoleGuard],
         data: {
             expectedRole: 'manager',
         },

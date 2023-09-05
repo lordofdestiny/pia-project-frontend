@@ -22,7 +22,7 @@ export class ProfileUpdatedDialogComponent {
     ) {}
     titleColor = this.data.success ? 'var(--green)' : 'var(--warn)';
 
-    static displayProfileUpdateDialog(
+    static displayDialog(
         dialog: MatDialog,
         title: string,
         message: string,
@@ -39,22 +39,16 @@ export class ProfileUpdatedDialogComponent {
         });
     }
 
-    static displayProfileUpdateSuccessDialog(
-        message: string,
-        dialog: MatDialog
-    ) {
-        ProfileUpdatedDialogComponent.displayProfileUpdateDialog(
+    static displaySuccessDialog(message: string, dialog: MatDialog) {
+        ProfileUpdatedDialogComponent.displayDialog(
             dialog,
             'Success',
             message,
             true
         );
     }
-    static displayProfileUpdateFailedDialog(
-        message: string,
-        dialog: MatDialog
-    ) {
-        ProfileUpdatedDialogComponent.displayProfileUpdateDialog(
+    static displayFailedDialog(message: string, dialog: MatDialog) {
+        ProfileUpdatedDialogComponent.displayDialog(
             dialog,
             'Failed',
             message,

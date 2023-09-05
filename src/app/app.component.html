@@ -1,5 +1,5 @@
 <app-layout [title]="title">
-    <router-outlet></router-outlet>
-    <router-outlet></router-outlet>
-    <app-footer></app-footer>
+    <router-outlet (activate)="showFooter = true" (decativate)="showFooter = false"></router-outlet>
+    <div style="flex-grow:1"></div>
+    <app-footer *ngIf="showFooter" [style.margin-top]="'auto'"></app-footer>
 </app-layout>

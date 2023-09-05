@@ -1,0 +1,100 @@
+<form [formGroup]="doctorForm">
+    <ng-container *ngFor="let config of fieldConfig ?? []">
+        <mat-form-field *ngIf="config.controlType=='textbox' && config.type !='password'" appearance="outline"
+            color="accent">
+            <mat-label>{{config.label}}</mat-label>
+            <input matInput [name]="config.key" [type]="config.type" [formControlName]="config.key"
+                [autocomplete]="'off'" [autocapitalize]="config.autocapitalize??'off'" [errorStateMatcher]="matcher"
+                tabindex="1" />
+
+            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="config.controlType=='textarea'" color="accent">
+            <mat-label>{{config.label}}</mat-label>
+            <textarea matInput [name]="config.key" [formControlName]="config.key" [style.resize]="'none'"
+                [autocapitalize]="config.autocapitalize??'off'" [errorStateMatcher]="matcher" [autocomplete]="'off'"
+                tabindex="2" rows="3" wrap="soft"></textarea>
+
+            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="config.controlType=='dropdown'" color="accent">
+            <mat-label>{{config.label}}</mat-label>
+            <mat-select name="specialization" [formControlName]="config.key" [errorStateMatcher]="matcher" tabindex="1">
+                <mat-option default>--</mat-option>
+                <mat-option *ngFor="let option of config.options" [value]="option.id">
+                    {{option.name}}
+                </mat-option>
+            </mat-select>
+
+            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="config.controlType=='image'">
+            <mat-label>Profile picture</mat-label>
+            <mat-icon matPrefix color="accent">image</mat-icon>
+            <ngx-mat-file-input #picture [formControlName]="config.key" type="file" accept="image/*" tabindex="1"
+                valuePlaceholder="No picture selected" color="accent">
+                <mat-icon ngxMatFileInputIcon>
+                    image
+                </mat-icon>
+            </ngx-mat-file-input>
+            <button type="button" matSuffix *ngIf="!picture.empty" mat-icon-button color="warn"
+                (click)="picture.clear($event)">
+                <mat-icon>clear</mat-icon>
+            </button>
+
+            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+        </mat-form-field>
+
+    </ng-container>
+
+    <div class="password">
+        <table class="password_reqs" *ngVar="doctorForm!.get('password'); let pwd">
+            <tr *ngFor="let check of passwordChecks">
+                <td *ngVar="check.regex.test(pwd!.value ?? ''); let valid">
+                    <mat-icon *ngIf="!pwd!.dirty" color="accent">help</mat-icon>
+                    <mat-icon *ngIf="pwd!.dirty && valid" color="primary">check</mat-icon>
+                    <mat-icon *ngIf="pwd!.dirty && !valid" color="warn">cancel</mat-icon>
+                </td>
+                <td><span>{{check.error}}</span></td>
+            </tr>
+        </table>
+        <div class="password_field">
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Password</mat-label>
+                <input matInput [name]="'password'" type="password" formControlName="password" autocomplete="off"
+                    [errorStateMatcher]="matcher" tabindex="3" />
+                <mat-error app-mat-err-msgs [errors]="errorMessages['password']"></mat-error>
+            </mat-form-field>
+        </div>
+        <div class="confirm_field">
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Confirm password</mat-label>
+                <input matInput [name]="'confirm_password'" type="password" formControlName="confirm_password"
+                    autocomplete="off" [errorStateMatcher]="matcher" tabindex="3"
+                    [errorStateMatcher]="confirmPasswordMatcher" />
+
+                <mat-error *ngIf="doctorForm.get('confirm_password')?.hasError('required')">
+                    Please confirm your password
+                </mat-error>
+                <mat-error *ngIf="doctorForm?.hasError('mismatch')">
+                    Passwords do not match
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fill"></div>
+    </div>
+    <div class="buttons">
+        <span *ngIf="doctorForm.dirty && !doctorForm.valid" [style.text-align]="'end'" [style.font-weight]="600"
+            [style.color]="'var(--accent)'">
+            First fill out the form correctly
+        </span>
+        <button type="button" mat-raised-button color="primary" [disabled]="!doctorForm.valid"
+            (click)="handleCreate()">Create</button>
+        <button type="button" mat-raised-button color="warn" (click)="handleClear()">Cancel</button>
+    </div>
+</form>
+
+<img #preview [style.display]="'none'" aria-hidden="true" />

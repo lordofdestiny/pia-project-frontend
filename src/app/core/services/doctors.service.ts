@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -17,15 +17,23 @@ import {
 export class DoctorsService {
     constructor(private http: HttpClient) {}
 
-    public getAll(): Observable<Doctor[]> {
+    public register(doctor: FormData): Observable<Doctor> {
         return this.http
-            .get<Doctor[]>(`${baseUri}/doctor`)
-            .pipe(tap(resolveProfilePictures)) as Observable<Doctor[]>;
+            .post<Doctor>(`${baseUri}/doctors`, doctor, {
+                headers: new HttpHeaders({ enctype: 'multipart/form-data' }),
+            })
+            .pipe(tap(resolveProfilePicture));
     }
 
-    public getOne(doctorId: string): Observable<Doctor> {
+    public get_all(): Observable<Doctor[]> {
         return this.http
-            .get<Doctor>(`${baseUri}/doctor/${doctorId}`)
-            .pipe(tap(resolveProfilePicture)) as Observable<Doctor>;
+            .get<Doctor[]>(`${baseUri}/doctors`)
+            .pipe(tap(resolveProfilePictures));
+    }
+
+    public get(doctorId: string): Observable<Doctor> {
+        return this.http
+            .get<Doctor>(`${baseUri}/doctors/${doctorId}`)
+            .pipe(tap(resolveProfilePicture));
     }
 }

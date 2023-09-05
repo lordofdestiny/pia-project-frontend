@@ -1,80 +1,81 @@
-<div class="container" [ngStyle]="styles" [ngClass]="classes">
-    <form [formGroup]="profileForm">
-        <div class="grid-container">
-            <div class="grid-child editing">
-                <div class="fields">
-                    <ng-container *ngFor="let config of fieldConfig ?? []" [ngSwitch]="config.controlType">
-                        <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" color="accent">
-                            <mat-label>{{config.label}}</mat-label>
-                            <input matInput [id]="config.key" [name]="config.key" [type]="config.type"
-                                [formControlName]="config.key" [autocapitalize]="config.autocapitalize??'off'"
-                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" />
-                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
-                                [ngClass]="fieldEdited(config.key)?'hidden':'visible'"
-                                (click)="resetField(config.key,$event)" tabindex="-1">
-                                <mat-icon color="accent">close</mat-icon>
-                            </button>
-                            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
-                        </mat-form-field>
+<form [formGroup]="profileForm" [ngStyle]="styles" [ngClass]="classes">
+    <div class="grid-container">
+        <div class="grid-child editing">
+            <div class="fields">
+                <ng-container *ngFor="let config of fieldConfig ?? []" [ngSwitch]="config.controlType">
+                    <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" color="accent">
+                        <mat-label>{{config.label}}</mat-label>
+                        <input matInput [name]="config.key" [type]="config.type" [formControlName]="config.key"
+                            [autocapitalize]="config.autocapitalize??'off'" [autocomplete]="config.autocomplete??'off'"
+                            [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" />
+                        <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                            [ngClass]="fieldEdited(config.key)?'visible':'hidden'"
+                            (click)="resetField(config.key,$event)" tabindex="-1">
+                            <mat-icon color="accent">close</mat-icon>
+                        </button>
+                        <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+                    </mat-form-field>
 
-                        <mat-form-field appearance="outline" *ngSwitchCase="'textarea'" color="accent">
-                            <mat-label>{{config.label}}</mat-label>
-                            <textarea matInput [id]="config.key" [name]="config.key" [formControlName]="config.key"
-                                [style.resize]="'none'" [autocapitalize]="config.autocapitalize??'off'"
-                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" rows="4"
-                                wrap="soft"></textarea>
-                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
-                                [ngClass]="fieldEdited(config.key)?'hidden':'visible'"
-                                (click)="resetField(config.key,$event)" tabindex="-1">
-                                <mat-icon color="accent">close</mat-icon>
-                            </button>
-                            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
-                        </mat-form-field>
+                    <mat-form-field appearance="outline" *ngSwitchCase="'textarea'" color="accent">
+                        <mat-label>{{config.label}}</mat-label>
+                        <textarea matInput [name]="config.key" [formControlName]="config.key" [style.resize]="'none'"
+                            [autocapitalize]="config.autocapitalize??'off'" [autocomplete]="config.autocomplete??'off'"
+                            [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)" rows="3"
+                            wrap="soft"></textarea>
+                        <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                            [ngClass]="fieldEdited(config.key)?'visible':'hidden'"
+                            (click)="resetField(config.key,$event)" tabindex="-1">
+                            <mat-icon color="accent">close</mat-icon>
+                        </button>
+                        <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+                    </mat-form-field>
 
-                        <mat-form-field appearance="outline" *ngSwitchCase="'dropdown'" color="accent">
-                            <mat-label>{{config.label}}</mat-label>
-                            <mat-select [id]="config.key" name="specialization" formControlName="specialization"
-                                [errorStateMatcher]="matcher" (keyup.control.c)="resetField(config.key,$event)">
-                                <mat-option *ngFor="let option of config.options" [value]="option.value">
-                                    {{option.key}}
-                                </mat-option>
-                            </mat-select>
-                            <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
-                                [style.display]="fieldEdited(config.key)?'none':'block'"
-                                (click)="resetField(config.key,$event)" tabindex="-1">
-                                <mat-icon color="accent">close</mat-icon>
-                            </button>
-                            <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
-                        </mat-form-field>
+                    <mat-form-field appearance="outline" *ngSwitchCase="'dropdown'" color="accent">
+                        <mat-label>{{config.label}}</mat-label>
+                        <mat-select name="specialization" formControlName="specialization" [errorStateMatcher]="matcher"
+                            (keyup.control.c)="resetField(config.key,$event)">
+                            <mat-option *ngFor="let option of config.options" [value]="option.id">
+                                {{option.name}}
+                            </mat-option>
+                        </mat-select>
+                        <button type="button" mat-icon-button matSuffix color="warn" class="cancel-edit-button"
+                            [style.margin-bottom.rem]="0.33" [style.display]="fieldEdited(config.key)?'block':'none'"
+                            (click)="resetField(config.key,$event)" tabindex="-1">
+                            <mat-icon color="accent">close</mat-icon>
+                        </button>
+                        <mat-error app-mat-err-msgs [errors]="errorMessages[config.key]"></mat-error>
+                    </mat-form-field>
 
-                    </ng-container>
-                </div>
-
-                <div class=" edit" style="justify-self: flex-end;" *ngIf=" (hasChange  | async)" [@inOutAnimation]>
-                    <button mat-raised-button color="green" type="button" [disabled]="!profileForm.valid"
-                        (click)="updateProfile()">
-                        <mat-icon>check</mat-icon>
-                        <span>Save changes</span>
-                    </button>
-                    <button mat-raised-button color="warn" type="button" (click)="resetForm()">
-                        <mat-icon>close</mat-icon>
-                        <span>Cancel changes</span>
-                    </button>
-                </div>
+                </ng-container>
             </div>
 
-            <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
-                <div class="image-border">
-                    <img [src]="user?.profile_picture" alt="Profile picture" class="picture"
-                        (load)="this.imgLoading = false;">
-                </div>
-                <button mat-raised-button color="green" type="button" [style.margin]="'1rem auto 0'"
-                    [style.display]="'block'" (click)="openEditImageModal()">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit picture</span>
+            <div *ngIf="loaded && !disabled" class="edit" style="justify-self: flex-end;"
+                [ngClass]="(hasChange | async)?'visible':'hidden'">
+                <button mat-raised-button color="green" type="button"
+                    [disabled]="!(hasChange  | async) || !profileForm.valid" (click)="updateProfile()">
+                    <mat-icon>check</mat-icon>
+                    <span>Save changes</span>
+                </button>
+                <button mat-raised-button color="warn" type="button" [disabled]="!(hasChange  | async)"
+                    (click)="resetForm()">
+                    <mat-icon>close</mat-icon>
+                    <span>Cancel changes</span>
                 </button>
             </div>
-
         </div>
-    </form>
-</div>
+
+        <div class="grid-child picture" [style.visible]="imgLoading?'hidden':'visible'">
+            <div class="image-border">
+                <div class="striped" *ngIf="!user?.profile_picture"></div>
+                <img [src]=" user?.profile_picture" alt="Profile picture" class="picture"
+                    (load)="this.imgLoading = false;">
+            </div>
+            <button *ngIf="!disabled" mat-raised-button color="green" type="button" [style.margin]="'1rem auto 0'"
+                [style.display]="disabled?'none':'block'" (click)="openEditImageModal()">
+                <mat-icon>edit</mat-icon>
+                <span>Edit picture</span>
+            </button>
+        </div>
+
+    </div>
+</form>

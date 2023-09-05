@@ -8,9 +8,9 @@ import {
     Output,
     EventEmitter,
     SimpleChanges,
+    AfterViewInit,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { style, transition, trigger, animate } from '@angular/animations';
 import { BehaviorSubject, of } from 'rxjs';
 
 import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
@@ -34,7 +34,7 @@ import { EditImageComponent } from '@shared/components/edit-image/edit-image.com
 
 import { FieldBase, baseFieldConfig } from '@core/utils/profile-fields';
 import { ErrorMessages } from '@core/utils/form-error-messages';
-import { User, UserRole } from '@core/models/users';
+import { Doctor, Manager, Patient, User, UserRole } from '@core/models/users';
 import '@core/utils/object';
 
 export type PictureEventAction = 'edit' | 'cancel' | 'delete';
@@ -50,29 +50,20 @@ export type PictureEvent =
     selector: 'app-editable-profile',
     templateUrl: './editable-profile.component.html',
     styleUrls: ['./editable-profile.component.css'],
-    animations: [
-        trigger('inOutAnimation', [
-            transition(':enter', [
-                style({ width: '90%', opacity: 0 }),
-                animate('0.5s ease-out', style({ width: '*', opacity: 1 })),
-            ]),
-            transition(':leave', [
-                style({ width: '*', opacity: 1 }),
-                animate('0.5s ease-in', style({ width: '90%', opacity: 0 })),
-            ]),
-        ]),
-    ],
     providers: [DialogService],
 })
-export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
+export class EditableProfileComponent<T extends Patient | Doctor | Manager>
+    implements OnInit, OnChanges, OnDestroy, AfterViewInit
+{
     errorMessages = ErrorMessages;
     imgLoading = true;
+    @Input() disabled = false;
     @Input() styles: any = {};
     @Input() classes: any = {};
     @Input() renderFor?: UserRole;
-    @Input() user?: User | null = null;
-    @Output() userChange = new EventEmitter<User>();
-    @Output() profileEdited = new EventEmitter<Partial<User>>();
+    @Input() user?: T;
+    @Output() userChange = new EventEmitter<T>();
+    @Output() profileEdited = new EventEmitter<Partial<T>>();
     @Output() pictureEdited = new EventEmitter<PictureEvent>();
     @Output() valueChanged = new EventEmitter<User>();
 
@@ -110,11 +101,15 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         ],
         phone: ['', [Validators.required, Validators.pattern(phoneRegex)]],
         address: ['', [Validators.required]],
+        branch: '',
+        specialization: '',
+        licence_number: '',
+        profile_picture: null as unknown,
     });
 
     fieldConfig?: FieldBase<string>[];
 
-    specializations?: Specialization[];
+    specializations: Specialization[];
 
     constructor(
         private fb: FormBuilder,
@@ -122,7 +117,8 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         private authService: AuthService,
         public dialogService: DialogService
     ) {
-        this.specializations = this.route.snapshot.data['specializations'];
+        this.specializations =
+            this.route.snapshot.data['specializations'] ?? [];
     }
 
     uniqueAndNotMineValidator(
@@ -138,34 +134,69 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
     }
     protected resetField(key: string, event?: Event) {
         event?.stopPropagation?.();
-        this.profileForm.patchValue({
-            [key]: this.user?.[key] ?? '',
-        });
+        if (key === 'specialization' && this.user?.type === 'doctor') {
+            this.profileForm.patchValue({
+                specialization: this.user?.specialization?.id ?? null,
+            });
+        } else {
+            this.profileForm.patchValue({
+                [key]: this.user?.[key] ?? '',
+            });
+        }
+        this.profileForm.get(key)?.markAsPristine();
+        if (!this.formEdited) {
+            this.hasChange.next(false);
+            this.profileForm.markAsPristine();
+        }
     }
 
     protected updateProfile() {
         const { value } = this.profileForm;
-        const untouchedFields = Object.keys(value).filter(
+
+        const editedFields = Object.keys(value).filter(
             this.fieldEdited.bind(this)
         ) as (keyof typeof value)[];
+
         this.profileEdited.emit(
-            Object.omit(this.profileForm.value, ...untouchedFields) as any
+            Object.assign(
+                { type: this.user?.type },
+                Object.pick(this.profileForm.value, ...editedFields)
+            ) as any
         );
-        this.userChange.emit({ ...value } as any);
+        this.userChange.emit(
+            Object.assign(
+                { type: this.user?.type },
+                Object.pick(this.profileForm.value, ...editedFields)
+            ) as any
+        );
     }
 
     protected resetForm() {
         this.profileForm.patchValue(this.user as any);
+        if (this.user?.type === 'doctor') {
+            const spec = this.specializations.find(
+                ({ id }) => id === this.user?.specialization?.id
+            );
+            if (this.profileForm.get('specialization')) {
+                this.profileForm.patchValue({
+                    specialization: spec?.id ?? null,
+                });
+            }
+        }
         this.profileForm.markAsPristine();
+        this.hasChange.next(false);
     }
 
     protected fieldEdited(key: string) {
-        return this.profileForm.get(key)?.value === this.user?.[key];
+        if (key === 'specialization') {
+            return this.profileForm.get(key)?.value !== this.user?.[key]?.id;
+        }
+        return this.profileForm.get(key)?.value !== this.user?.[key];
     }
 
-    get fromEdited(): boolean {
+    get formEdited(): boolean {
         return (
-            this.fieldConfig?.every(({ key }) => this.fieldEdited(key)) ?? false
+            this.fieldConfig?.some(({ key }) => this.fieldEdited(key)) ?? false
         );
     }
 
@@ -173,6 +204,7 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
         return this.dialogService.open(EditImageComponent, {
             data: {
                 profile_picture: this.user?.profile_picture,
+                forManager: this.renderFor === 'manager',
             },
             header: 'Edit profile picture',
             width: '70%',
@@ -194,6 +226,9 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
             (event: PictureEvent = { action: 'cancel' }) => {
                 const { action, picture } = event;
                 if (action === 'edit') {
+                    this.profileForm.patchValue({
+                        profile_picture: picture,
+                    });
                     this.pictureEdited.emit({
                         action: 'edit',
                         picture,
@@ -211,8 +246,10 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
     private addDoctorControls() {
         if (this.addedControls) return;
         this.addedControls = true;
-        this.profileForm.get('email')?.disable();
-        this.profileForm.addControl(
+        if (this.renderFor === 'doctor') {
+            this.profileForm.get('email')?.disable();
+        }
+        this.profileForm.setControl(
             'licence_number' as any,
             this.fb.control('', [
                 Validators.required,
@@ -221,50 +258,53 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
                 Validators.pattern(/^\d{5,12}$/),
             ])
         );
-        this.profileForm.addControl(
+        this.profileForm.setControl(
             'specialization' as any,
-            this.fb.control('', [Validators.required])
+            this.fb.control(null, [Validators.required])
         );
-        this.profileForm.addControl(
+        this.profileForm.setControl(
             'branch' as any,
-            this.fb.control({ value: '', disabled: true }, [
-                Validators.required,
-            ])
+            this.fb.control(
+                { value: '', disabled: this.renderFor === 'doctor' },
+                [Validators.required]
+            )
         );
     }
 
+    loaded = false;
     ngOnInit(): void {
         if (this.renderFor === 'doctor') {
             this.addDoctorControls();
         }
         this.profileForm.valueChanges.subscribe((value) => {
-            this.hasChange.next(!this.fromEdited);
+            this.hasChange.next(this.formEdited);
             this.valueChanged.emit(value as any);
         });
+        this.loaded = true;
     }
 
+    ngAfterViewInit(): void {}
+
     ngOnChanges(changes: SimpleChanges) {
-        if (changes?.['user']) {
-            if (this.renderFor === 'doctor') {
+        if (changes?.['user']?.isFirstChange()) {
+            this.fieldConfig = baseFieldConfig(
+                this.user?.type ?? 'patient',
+                this.renderFor ?? 'manager'
+            );
+            if (this.user?.type === 'doctor') {
+                this.fieldConfig.find(
+                    ({ key }) => key === 'specialization'
+                )!.options = this.specializations;
                 this.addDoctorControls();
             }
-            if (changes?.['user'].isFirstChange()) {
-                this.fieldConfig = baseFieldConfig(
-                    this.user?.type ?? 'patient',
-                    this.renderFor ?? 'patient'
-                );
-                if (this.user?.type === 'doctor') {
-                    this.fieldConfig.find(
-                        ({ key }) => key === 'specialization'
-                    )!.options = this.specializations!.map(({ id, name }) => ({
-                        key: name,
-                        value: id,
-                    }));
-                }
-            }
-            this.profileForm.patchValue(this.user as any);
-            this.profileForm.markAsPristine();
-            this.hasChange.next(false);
+        }
+        if (changes?.['user']) {
+            this.resetForm();
+        }
+        if (changes['disabled']?.currentValue) {
+            this.profileForm.disable();
+        } else {
+            this.profileForm.enable();
         }
     }
 
@@ -273,5 +313,9 @@ export class EditableProfileComponent implements OnInit, OnChanges, OnDestroy {
             this.dialogRef.close();
         }
         this.hasChange.complete();
+        this.userChange.complete();
+        this.profileEdited.complete();
+        this.pictureEdited.complete();
+        this.valueChanged.complete();
     }
 }

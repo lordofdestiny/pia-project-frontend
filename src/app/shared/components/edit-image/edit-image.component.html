@@ -18,15 +18,22 @@
 
 
     <div class="images-change-view" *ngVar="pictureForm.get('picture'); let picture">
-        <div class="image-container">
+        <div class="image-container" *ngIf="picture$ | async">
             <div class="image-border">
                 <img alt="Current profile" [src]="picture$ | async">
             </div>
-            <span>Current picture</span>
+            <span [style.visilbe]="!picture_input.empty?'visible':'hidden'">Current picture</span>
         </div>
-        <div class="image-container">
+        <div class="image-container" *ngIf="!(picture$ | async) && picture_input.empty">
+            <div class="image-border">
+                <div class="striped">
+                </div>
+            </div>
+            <span> No profile picture yet</span>
+        </div>
+        <div class="image-container" [style.display]="!picture_input.empty ? 'flex':'none'">
             <div class="image-border" *ngIf="picture_input.empty || !picture?.valid">
-                <div class="stripped">
+                <div class="striped">
                 </div>
             </div>
 

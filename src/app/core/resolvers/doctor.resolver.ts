@@ -24,7 +24,7 @@ export class DoctorResolver implements Resolve<Doctor> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<Doctor> {
-        return this.doctorsService.getOne(route.params['username']).pipe(
+        return this.doctorsService.get(route.params['username']).pipe(
             catchError((err, observable) => {
                 this.router.navigate(['/not-found']);
                 return observable;

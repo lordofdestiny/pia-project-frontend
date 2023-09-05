@@ -8,8 +8,9 @@
         <h1 class="page_title mx-auto">Doctor</h1>
     </div>
 
-    <app-profile-preview [user]="doctor" [styles]="{'margin-bottom' : '2rem', 'font-size':'1.0em'}">
-    </app-profile-preview>
+    <app-editable-profile [user]="doctor" renderFor="patient" [disabled]="true"
+        [styles]="{'margin-bottom' : '2rem', 'font-size':'1.0em'}">
+    </app-editable-profile>
 
     <h2>Examinations</h2>
     <table>

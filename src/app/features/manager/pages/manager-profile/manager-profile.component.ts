@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Manager, User } from '@core/models/users';
+import { User } from '@core/models/users';
 import { AuthService } from '@core/services/auth.service';
 import { ProfileService } from '@core/services/profile.service';
+import { ProfileUpdates } from '@core/utils/profile-update-handlers';
 import { PictureEvent } from '@shared/components/editable-profile/editable-profile.component';
-import { ProfileUpdatedDialogComponent } from '@shared/components/profile-update-dialog/profiile-update-dialog.component';
 
 @Component({
     selector: 'app-patient-profile',
@@ -13,6 +13,7 @@ import { ProfileUpdatedDialogComponent } from '@shared/components/profile-update
     template: `<div class="container">
         <app-editable-profile
             [(user)]="user"
+            [styles]="styles"
             renderFor="manager"
             (profileEdited)="handleProfileEdited($event)"
             (pictureEdited)="handlePictureEvent($event)"
@@ -20,7 +21,8 @@ import { ProfileUpdatedDialogComponent } from '@shared/components/profile-update
         </app-editable-profile>
     </div>`,
 })
-export class ManagerProfileComponent implements OnInit {
+export class ManagerProfileComponent implements OnInit, OnDestroy {
+    readonly userId = this.authService.user?.id;
     user?: User;
     userSubscription = this.authService.user$.subscribe((user) => {
         this.user = user;
@@ -30,71 +32,45 @@ export class ManagerProfileComponent implements OnInit {
         private profileService: ProfileService,
         private dialog: MatDialog
     ) {}
+    styles = {
+        'font-size': '0.8rem',
+    };
+    profileUpdateHandlers = new ProfileUpdates(
+        this.profileService,
+        this.dialog
+    );
 
     handleProfileEdited(userChanges: Partial<User>) {
-        console.log(userChanges);
-        this.profileService.update_profile(userChanges).subscribe({
-            next: (user) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateSuccessDialog(
-                    'Profile updated successfully',
-                    this.dialog
-                );
-            },
-            error: (err) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateFailedDialog(
-                    'Profile update failed. Please try again later',
-                    this.dialog
-                );
+        this.profileUpdateHandlers.updateProfile(
+            this.userId,
+            userChanges,
+            null,
+            () => {
                 this.user = this.authService.user;
-            },
-        });
+            }
+        );
     }
 
     handlePictureEvent(event: PictureEvent) {
         switch (event.action) {
             case 'edit':
-                return this.handlePictureEdit(event.picture);
+                return this.profileUpdateHandlers.updateAvatar(
+                    this.userId,
+                    event.picture
+                );
             case 'delete':
-                return this.handlePictureDelete();
+                return this.profileUpdateHandlers.deleteAvatar(
+                    this.userId,
+                    null,
+                    () => {
+                        this.user = this.authService.user;
+                    }
+                );
         }
     }
 
-    private handlePictureEdit(picture: File) {
-        const formData = new FormData();
-        formData.append('profile_picture', picture);
-        this.profileService.update_avatar(formData).subscribe({
-            next: (user) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateSuccessDialog(
-                    'Profile picture updated successfully',
-                    this.dialog
-                );
-            },
-            error: (err) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateFailedDialog(
-                    'Failed to update the profile picture. Please try again later',
-                    this.dialog
-                );
-            },
-        });
-    }
-
-    private handlePictureDelete() {
-        this.profileService.delete_avatar().subscribe({
-            next: (user) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateSuccessDialog(
-                    'Profile picture removed successfully',
-                    this.dialog
-                );
-            },
-            error: (err) => {
-                ProfileUpdatedDialogComponent.displayProfileUpdateFailedDialog(
-                    'Failed to remove the profile picture. Please try again later',
-                    this.dialog
-                );
-                this.user = this.authService.user;
-            },
-        });
-    }
-
     ngOnInit(): void {}
+    ngOnDestroy(): void {
+        this.userSubscription.unsubscribe();
+    }
 }

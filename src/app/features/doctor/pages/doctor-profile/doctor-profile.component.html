@@ -1,0 +1,10 @@
+<div class="container">
+    <app-editable-profile [(user)]="user" [styles]="styles" renderFor="doctor"
+        (profileEdited)="handleProfileEdited($event)" (pictureEdited)="handlePictureEvent($event)">
+    </app-editable-profile>
+</div>
+
+<div class="container">
+    <h3 class="subtitle">Examinations</h3>
+    <app-pick-examinations [examinations]="examinations"></app-pick-examinations>
+</div>

@@ -9,5 +9,5 @@ export type Examination = {
 export interface Specialization {
     id: string;
     name: string;
-    examinations: Examination[];
+    examinations?: Examination[];
 }

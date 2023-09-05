@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    ActivatedRoute,
-    ActivatedRouteSnapshot,
-    CanActivate,
-    CanLoad,
-    CanMatch,
     Route,
     Router,
+    CanLoad,
+    CanActivate,
     RouterStateSnapshot,
-    UrlSegment,
+    ActivatedRouteSnapshot,
 } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 
@@ -21,15 +18,18 @@ export class RoleGuard implements CanActivate, CanLoad {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): boolean {
+        if (!this.authService.logged_in) {
+            this.router.navigate(['/']);
+            return false;
+        }
         const allowedRole = route.data['expectedRole'];
         if (this.authService.user_role === allowedRole) {
             return true;
         }
-        this.router.navigate([this.authService.user_role]);
+        this.router.navigate([`${this.authService.user_role}`]);
         return false;
     }
     canLoad(route: Route): boolean {
-        console.log(route.data);
         const allowedRole = route.data?.['expectedRole'];
         if (
             this.authService.logged_in &&
@@ -37,7 +37,7 @@ export class RoleGuard implements CanActivate, CanLoad {
         ) {
             return true;
         }
-        this.router.navigate([this.authService.user_role]);
+        this.router.navigate([`${this.authService.user_role}`]);
         return false;
     }
 }

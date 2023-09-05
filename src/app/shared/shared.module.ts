@@ -40,7 +40,6 @@ import { DoctorListComponent } from '@shared/components/doctor-list/doctor-list.
 import { EditableProfileComponent } from '@shared/components/editable-profile/editable-profile.component';
 import { MatErrMsgsComponent } from '@shared/components/mat-err-msgs/mat-err-msgs.component';
 import { EditImageComponent } from './components/edit-image/edit-image.component';
-import { ProfilePreviewComponent } from './components/profile-preview/profile-preview.component';
 import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor-patient-view.component';
 import { ProfileUpdatedDialogComponent } from './components/profile-update-dialog/profiile-update-dialog.component';
 
@@ -51,7 +50,6 @@ import { ProfileUpdatedDialogComponent } from './components/profile-update-dialo
         NgVarDirective,
         BackButtonDirective,
         MatErrMsgsComponent,
-        ProfilePreviewComponent,
         EditableProfileComponent,
         EditImageComponent,
         DoctorListComponent,
@@ -98,7 +96,6 @@ import { ProfileUpdatedDialogComponent } from './components/profile-update-dialo
     exports: [
         MatErrMsgsComponent,
         EditableProfileComponent,
-        ProfilePreviewComponent,
         DoctorListComponent,
         DebugPipe,
         HoldDirective,

@@ -43,7 +43,8 @@ body {
 }
 
 router-outlet + * {
-    flex: 1;
+    flex: 0;
+    margin-bottom: 5rem;
 }
 
 .spacer-1 {
@@ -63,6 +64,9 @@ router-outlet + * {
 }
 
 input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+}
+textarea:-webkit-autofill {
     -webkit-background-clip: text !important;
 }
 
@@ -87,8 +91,29 @@ input:-webkit-autofill {
     color: var(--green);
 }
 
+.mat-icon.mat-green {
+    color: var(--green);
+}
+
 .mat-form-field[appearance="fill"] {
     box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
     clip-path: inset(-10px -5px 0 -5px);
     margin-bottom: 1rem;
+}
+
+.dialog-color mat-dialog-container {
+    background-color: var(--bg-color);
+    min-width: 250px;
+}
+
+h3.subtitle {
+    font-size: 3rem !important;
+    line-height: normal !important;
+    text-align: center;
+    color: var(--accent);
+    text-shadow:
+        1px 1px 3px var(--primary),
+        -2px -2px 4px wheat;
+    display: block;
+    margin-bottom: 3rem;
 }
