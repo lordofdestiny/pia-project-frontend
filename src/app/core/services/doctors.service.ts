@@ -10,12 +10,13 @@ import {
     resolveProfilePicture,
     resolveProfilePictures,
 } from '@core/utils/resolveProfilePicture';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'any',
 })
 export class DoctorsService {
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     public register(doctor: FormData): Observable<Doctor> {
         return this.http
@@ -31,9 +32,23 @@ export class DoctorsService {
             .pipe(tap(resolveProfilePictures));
     }
 
+    // ? This is not used anywhere
     public get(doctorId: string): Observable<Doctor> {
         return this.http
             .get<Doctor>(`${baseUri}/doctors/${doctorId}`)
             .pipe(tap(resolveProfilePicture));
+    }
+
+    public update_examinations(
+        doctorId: string,
+        offered: string[],
+        requested: string[]
+    ) {
+        return this.http
+            .put<Doctor>(`${baseUri}/doctors/${doctorId}/examinations`, {
+                offered,
+                requested,
+            })
+            .pipe(tap((doctor) => (this.authService.user = doctor)));
     }
 }

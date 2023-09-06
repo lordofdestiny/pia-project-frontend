@@ -93,7 +93,7 @@ button:not(.image-overlay) mat-icon {
 .grid-child.editing .fields .mat-form-field {
     margin: 0 0.25rem;
     flex: 1 1 calc(50% - 1rem);
-    min-width: calc(300px + 2rem);
+    min-width: calc(100%/3 - 2rem);
     order: 1;
 }
 
@@ -139,7 +139,12 @@ button:not(.image-overlay) mat-icon {
     justify-content: flex-start;
     flex-flow: column wrap;
     margin: 1rem;
+}
 
+@media screen and (max-width: 500px) {
+    .grid-child.picture {
+        margin: 0 0 1rem;
+    }
 }
 
 .striped {

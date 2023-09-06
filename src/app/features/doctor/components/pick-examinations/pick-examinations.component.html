@@ -1,1 +1,70 @@
-<pre>{{examinations | json}}</pre>
+<div class="d-flex justify-content-end align-items-center gap-3 mb-3">
+    <button type="button" *ngIf="editing" mat-raised-button color="warn" (click)="cancelEditing()"
+        [disabled]=" disabled">
+        <mat-icon>close</mat-icon> Cancel
+    </button>
+    <button type="button" *ngIf="!editing" mat-raised-button color="green" (click)="startEditing()"
+        [disabled]="editing || disabled">
+        <mat-icon>edit</mat-icon> Edit
+    </button>
+    <button type="button" *ngIf="editing" mat-raised-button color="green" (click)="handleSave()"
+        [disabled]="edited || disabled">
+        <mat-icon>save</mat-icon> Save
+    </button>
+</div>
+<div class="lists">
+    <h4>
+        <mat-icon>healing</mat-icon>
+        Offered examinations
+    </h4>
+
+    <app-examinations-list [examinations]="currentExaminations" [disabled]="!editing"
+        noDataMessage="You don't have any approved examinations">
+        <ng-template examListBtns let-examination>
+            <button type="button" mat-raised-button color="warn" (click)="handleRemove(examination)"
+                [disabled]="disabled">
+                Remove
+            </button>
+        </ng-template>
+    </app-examinations-list>
+
+
+    <h4>
+        <mat-icon>hourglass_empty</mat-icon>
+        Requested examinations
+    </h4>
+
+    <app-examinations-list [examinations]="requestedExaminations" [disabled]="!editing"
+        noDataMessage="You don't have any pending requests">
+        <ng-template examListBtns let-examination>
+            <button type="button" mat-raised-button color="accent" (click)="handleCancelRequest(examination)"
+                [disabled]="disabled">
+                Cancel
+            </button>
+        </ng-template>
+    </app-examinations-list>
+
+
+    <h4>
+        <mat-icon>check_circle</mat-icon>
+        Available examinations
+    </h4>
+
+    <app-examinations-list [examinations]="availableExaminations" [disabled]="!editing"
+        noDataMessage="There are no examinations you can request">
+        <ng-template examListBtns let-examination>
+            <ng-container *ngVar="initialCurrentExaminations.includes(examination);let initial">
+
+                <button type="button" *ngIf="!initial" mat-raised-button color="green"
+                    (click)="handleSendRequest(examination)" [disabled]="disabled">
+                    Request
+                </button>
+                <button type="button" *ngIf="initial" mat-raised-button color="accent"
+                    (click)="handleRecover(examination)" [disabled]="disabled">
+                    Recover
+                </button>
+
+            </ng-container>
+        </ng-template>
+    </app-examinations-list>
+</div>

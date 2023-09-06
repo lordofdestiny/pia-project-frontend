@@ -5,16 +5,16 @@ import {
     RouterStateSnapshot,
     ActivatedRouteSnapshot,
 } from '@angular/router';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Examination } from '@core/models/specialization';
 import { Doctor } from '@core/models/users';
 import { AuthService } from '@core/services/auth.service';
 import { ExaminationsService } from '@core/services/examinations.service';
 
 export interface DoctorExaminations {
-    requested?: Examination[];
-    current?: Examination[];
-    forSpecialization?: Examination[];
+    requested: Examination[];
+    current: Examination[];
+    forSpecialization: Examination[];
 }
 
 @Injectable({

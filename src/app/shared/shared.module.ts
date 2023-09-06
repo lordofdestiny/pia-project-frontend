@@ -42,10 +42,13 @@ import { MatErrMsgsComponent } from '@shared/components/mat-err-msgs/mat-err-msg
 import { EditImageComponent } from './components/edit-image/edit-image.component';
 import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor-patient-view.component';
 import { ProfileUpdatedDialogComponent } from './components/profile-update-dialog/profiile-update-dialog.component';
+import { MindurationPipe } from './pipes/minduration.pipe';
+import { ActionResultDialogComponent } from './components/action-success-dialog/action-success-dialog.component';
 
 @NgModule({
     declarations: [
         DebugPipe,
+        MindurationPipe,
         HoldDirective,
         NgVarDirective,
         BackButtonDirective,
@@ -55,6 +58,7 @@ import { ProfileUpdatedDialogComponent } from './components/profile-update-dialo
         DoctorListComponent,
         DoctorPatientViewComponent,
         ProfileUpdatedDialogComponent,
+        ActionResultDialogComponent,
     ],
     providers: [],
     imports: [
@@ -97,7 +101,9 @@ import { ProfileUpdatedDialogComponent } from './components/profile-update-dialo
         MatErrMsgsComponent,
         EditableProfileComponent,
         DoctorListComponent,
+        ActionResultDialogComponent,
         DebugPipe,
+        MindurationPipe,
         HoldDirective,
         NgVarDirective,
         BackButtonDirective,

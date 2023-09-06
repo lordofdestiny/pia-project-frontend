@@ -1,13 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {
+    AfterViewInit,
+    Component,
+    Inject,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
+import {
+    MAT_DIALOG_DATA,
+    MatDialog,
+    MatDialogRef,
+} from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Examination } from '@core/models/specialization';
 
 import { Doctor, User } from '@core/models/users';
 import { DoctorExaminations } from '@core/resolvers/examinations.resolver';
 import { AuthService } from '@core/services/auth.service';
+import { DoctorsService } from '@core/services/doctors.service';
 import { ProfileService } from '@core/services/profile.service';
 import { ProfileUpdates } from '@core/utils/profile-update-handlers';
+import { PickExaminationsComponent } from '@features/doctor/components/pick-examinations/pick-examinations.component';
+import { ActionResultDialogComponent } from '@shared/components/action-success-dialog/action-success-dialog.component';
 import { PictureEvent } from '@shared/components/editable-profile/editable-profile.component';
 
 @Component({
@@ -15,7 +29,9 @@ import { PictureEvent } from '@shared/components/editable-profile/editable-profi
     templateUrl: './doctor-profile.component.html',
     styleUrls: ['./doctor-profile.component.css'],
 })
-export class DoctorProfileComponent implements OnInit, OnDestroy {
+export class DoctorProfileComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
     styles = {
         'font-size': '0.8rem',
     };
@@ -26,10 +42,11 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     });
     examinations: DoctorExaminations = this.route.snapshot.data['examinations'];
     constructor(
+        private dialog: MatDialog,
+        private route: ActivatedRoute,
         public authService: AuthService,
         private profileService: ProfileService,
-        private dialog: MatDialog,
-        private route: ActivatedRoute
+        private doctorsService: DoctorsService
     ) {}
 
     profileUpdateHandlers = new ProfileUpdates(
@@ -64,6 +81,48 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
                     }
                 );
         }
+    }
+
+    @ViewChild('examinations_picker')
+    examinationsPicker?: PickExaminationsComponent;
+    ngAfterViewInit() {
+        console.log(this.examinationsPicker);
+    }
+
+    handleExaminationsSave({
+        newOffered,
+        newRequested,
+    }: {
+        newOffered: Examination[];
+        newRequested: Examination[];
+    }) {
+        const offered = newOffered.map(({ id }) => id);
+        const requested = newRequested.map(({ id }) => id);
+        return this.doctorsService
+            .update_examinations(this.userId, offered, requested)
+            .subscribe({
+                next: (result) => {
+                    this.showDoctorCreationMessage({
+                        success: true,
+                        message: 'Examinations updated successfully',
+                    });
+                    this.examinationsPicker?.confirmSave();
+                },
+                error: (err) => {
+                    this.showDoctorCreationMessage({
+                        success: false,
+                        message: 'Examinations update failed',
+                    });
+                    this.examinationsPicker?.rejectSave();
+                },
+            });
+    }
+
+    showDoctorCreationMessage(data: { success: boolean; message: string }) {
+        this.dialog.open(ActionResultDialogComponent, {
+            panelClass: 'dialog-color',
+            data,
+        });
     }
 
     ngOnInit(): void {}

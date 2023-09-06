@@ -26,6 +26,7 @@ const routes: Routes = [
                     specializations: SpecializationsResolver,
                     examinations: ExaminationsResolver,
                 },
+                runGuardsAndResolvers: 'always',
                 component: DoctorProfileComponent,
             },
         ],
