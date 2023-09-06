@@ -12,6 +12,11 @@ export class ManagerComponent implements OnInit {
     navLinks = [
         { location: 'profile', label: 'Profile', icon: 'account_circle' },
         { location: 'users', label: 'Users', icon: 'person' },
+        {
+            location: 'examinations',
+            label: 'Examinations',
+            icon: 'medical_services',
+        },
     ];
 
     constructor(private titleService: Title, private authService: AuthService) {

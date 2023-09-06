@@ -13,11 +13,5 @@ export class DoctorPatientViewComponent implements OnInit {
 
     constructor(private route: ActivatedRoute) {}
 
-    durationString(duration: number): string {
-        const minutes = duration % 60;
-        const hours = Math.floor(duration / 60);
-        return `${hours}h ${minutes}m`;
-    }
-
     ngOnInit(): void {}
 }

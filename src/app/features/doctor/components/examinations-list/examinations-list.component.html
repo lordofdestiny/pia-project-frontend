@@ -1,9 +1,6 @@
 <mat-table [dataSource]="examinations" class="mat-elevation-z4 w-100"
     *ngIf="examinations.length > 0; else noExaminations">
-    <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- Name Column -->
     <ng-container matColumnDef="name">
         <mat-header-cell mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
@@ -12,7 +9,6 @@
         </mat-cell>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="duration">
         <mat-header-cell mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
@@ -21,7 +17,6 @@
         </mat-cell>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="price">
         <mat-header-cell mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">

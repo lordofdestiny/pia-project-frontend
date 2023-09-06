@@ -69,8 +69,8 @@
             <td *ngIf="logged_in | async">
                 <span class="p-column-title">Profile</span>
                 <div class="d-flex justify-content-center align-items-center">
-                    <a [routerLink]="['/doctors',doctor.username]" [state]="{doctorId : doctor.id}" pButton
-                        type="button" icon="pi pi-chevron-right" class="p-button-rounded color-button">
+                    <a [routerLink]="['/doctors',doctor.username]" pButton type="button" icon="pi pi-chevron-right"
+                        class="p-button-rounded color-button">
                     </a>
                 </div>
             </td>

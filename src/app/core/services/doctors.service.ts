@@ -32,10 +32,9 @@ export class DoctorsService {
             .pipe(tap(resolveProfilePictures));
     }
 
-    // ? This is not used anywhere
-    public get(doctorId: string): Observable<Doctor> {
+    public get(username: string): Observable<Doctor> {
         return this.http
-            .get<Doctor>(`${baseUri}/doctors/${doctorId}`)
+            .get<Doctor>(`${baseUri}/doctors/${username}`)
             .pipe(tap(resolveProfilePicture));
     }
 
@@ -50,5 +49,18 @@ export class DoctorsService {
                 requested,
             })
             .pipe(tap((doctor) => (this.authService.user = doctor)));
+    }
+
+    respond_to_examination_request(
+        doctorId: string,
+        data: {
+            examinationId: string;
+            action: boolean;
+        }
+    ) {
+        return this.http.post(
+            `${baseUri}/doctors/${doctorId}/examinations/response`,
+            data
+        );
     }
 }

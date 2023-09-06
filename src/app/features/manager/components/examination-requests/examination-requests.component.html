@@ -1,0 +1,46 @@
+<mat-table [dataSource]="_requests" class="mat-elevation-z4 w-100" *ngIf="_requests.length > 0; else noExaminations">
+
+    <ng-container matColumnDef="doctor">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Doctor </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Doctor:</span>
+            {{request.doctor | full_name}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="specialization">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Specialization </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Specialization:</span>
+            {{request.specialization.name}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="examination">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Examination </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Examination:</span>
+            {{request.examination.name}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Actions:</span>
+            <div class="buttons">
+                <button type="button" mat-stroked-button color="green" (click)="handle(request,true)">Approve</button>
+                <button type="button" mat-stroked-button color="warn" (click)="handle(request,false)">Deny</button>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="headerRows"></mat-header-row>
+    <mat-row mat-row *matRowDef="let row; columns: headerRows;"></mat-row>
+</mat-table>
+
+<ng-template #noExaminations>
+    <div class="no-examinations mat-elevation-z4">
+        <p>No examination requests</p>
+    </div>
+</ng-template>

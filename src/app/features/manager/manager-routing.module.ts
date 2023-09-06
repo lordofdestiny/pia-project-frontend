@@ -14,6 +14,8 @@ import { SpecializationsResolver } from '@core/resolvers/specializations.resolve
 import { ManagerComponent } from './manager.component';
 import { ManagerProfileComponent } from './pages/manager-profile/manager-profile.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
+import { ExaminationRequestsResolver } from '@core/resolvers/examination-requests.resolver';
+import { ExaminationsComponent } from './pages/examinations/examinations.component';
 
 const routes: Routes = [
     {
@@ -41,6 +43,13 @@ const routes: Routes = [
                     specializations: SpecializationsResolver,
                 },
                 component: ManageUsersComponent,
+            },
+            {
+                path: 'examinations',
+                resolve: {
+                    requests: ExaminationRequestsResolver,
+                },
+                component: ExaminationsComponent,
             },
         ],
     },

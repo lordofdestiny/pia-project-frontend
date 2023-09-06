@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 // Ngx-material-file-input
 import { MaterialFileInputModule } from 'ngx-material-file-input';
@@ -29,6 +30,8 @@ import {
     DoctorCreationDialogComponent,
 } from './pages/manage-users/manage-users.component';
 import { CreateDoctorComponent } from './components/create-doctor/create-doctor.component';
+import { ExaminationsComponent } from './pages/examinations/examinations.component';
+import { ExaminationRequestsComponent } from './components/examination-requests/examination-requests.component';
 
 @NgModule({
     declarations: [
@@ -38,6 +41,8 @@ import { CreateDoctorComponent } from './components/create-doctor/create-doctor.
         DeleteUserDialogComponent,
         CreateDoctorComponent,
         DoctorCreationDialogComponent,
+        ExaminationsComponent,
+        ExaminationRequestsComponent,
     ],
     imports: [
         CommonModule,
@@ -56,6 +61,7 @@ import { CreateDoctorComponent } from './components/create-doctor/create-doctor.
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        MatTableModule,
         // Ngx-material-file-input
         MaterialFileInputModule,
         // My Modules

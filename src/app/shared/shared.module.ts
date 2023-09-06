@@ -44,6 +44,7 @@ import { DoctorPatientViewComponent } from '@features/doctor-patient-view/doctor
 import { ProfileUpdatedDialogComponent } from './components/profile-update-dialog/profiile-update-dialog.component';
 import { MindurationPipe } from './pipes/minduration.pipe';
 import { ActionResultDialogComponent } from './components/action-success-dialog/action-success-dialog.component';
+import { FullNamePipe } from './pipes/full-name.pipe';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { ActionResultDialogComponent } from './components/action-success-dialog/
         DoctorPatientViewComponent,
         ProfileUpdatedDialogComponent,
         ActionResultDialogComponent,
+        FullNamePipe,
     ],
     providers: [],
     imports: [
@@ -103,6 +105,7 @@ import { ActionResultDialogComponent } from './components/action-success-dialog/
         DoctorListComponent,
         ActionResultDialogComponent,
         DebugPipe,
+        FullNamePipe,
         MindurationPipe,
         HoldDirective,
         NgVarDirective,

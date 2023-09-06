@@ -24,8 +24,8 @@
         <tbody>
             <tr *ngFor="let examination of doctor.examinations">
                 <td>{{examination.name}}</td>
-                <td>{{examination.price}}</td>
-                <td>{{durationString(examination.duration)}}</td>
+                <td>{{examination.price }}</td>
+                <td>{{examination.duration| minduration}}</td>
             </tr>
         </tbody>
     </table>

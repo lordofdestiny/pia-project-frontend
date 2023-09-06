@@ -8,7 +8,7 @@ mat-table {
     background-color: var(--bg-color);
 }
 
-mat-table mat-row mat-cell:nth-child(4) {
+mat-table mat-row mat-cell:last-child {
     display: flex;
     justify-content: flex-end;
     gap: 0 0.5rem;
@@ -55,7 +55,7 @@ mat-cell {
     gap: 0 0.5rem;
 }
 
-@media(max-width: 500px) {
+@media(max-width: 768px) {
     .mobile-label {
         color: var(--accent);
         display: inline-block;
