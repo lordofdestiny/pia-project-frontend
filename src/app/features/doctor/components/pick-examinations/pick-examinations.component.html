@@ -19,31 +19,21 @@
     </h4>
 
     <app-examinations-list [examinations]="currentExaminations" [disabled]="!editing"
-        noDataMessage="You don't have any approved examinations">
+        noDataMessage="You are currenly not providing any examinations">
         <ng-template examListBtns let-examination>
-            <button type="button" mat-raised-button color="warn" (click)="handleRemove(examination)"
-                [disabled]="disabled">
-                Remove
-            </button>
+            <ng-container *ngVar="initialCurrentExaminations.includes(examination); let initial">
+                <button type="button" *ngIf="initial" mat-raised-button color="warn"
+                    (click)="handleRenounce(examination)" [disabled]="disabled">
+                    Renounce
+                </button>
+                <button type="button" *ngIf="!initial" mat-raised-button color="accent"
+                    (click)="handleRenounce(examination)" [disabled]="disabled">
+                    Cancel
+                </button>
+            </ng-container>
+
         </ng-template>
     </app-examinations-list>
-
-
-    <h4>
-        <mat-icon>hourglass_empty</mat-icon>
-        Requested examinations
-    </h4>
-
-    <app-examinations-list [examinations]="requestedExaminations" [disabled]="!editing"
-        noDataMessage="You don't have any pending requests">
-        <ng-template examListBtns let-examination>
-            <button type="button" mat-raised-button color="accent" (click)="handleCancelRequest(examination)"
-                [disabled]="disabled">
-                Cancel
-            </button>
-        </ng-template>
-    </app-examinations-list>
-
 
     <h4>
         <mat-icon>check_circle</mat-icon>
@@ -51,13 +41,13 @@
     </h4>
 
     <app-examinations-list [examinations]="availableExaminations" [disabled]="!editing"
-        noDataMessage="There are no examinations you can request">
+        noDataMessage="You are currently providing all examinations">
         <ng-template examListBtns let-examination>
             <ng-container *ngVar="initialCurrentExaminations.includes(examination);let initial">
 
-                <button type="button" *ngIf="!initial" mat-raised-button color="green"
-                    (click)="handleSendRequest(examination)" [disabled]="disabled">
-                    Request
+                <button type="button" *ngIf="!initial" mat-raised-button color="green" (click)="handlePick(examination)"
+                    [disabled]="disabled">
+                    Offer
                 </button>
                 <button type="button" *ngIf="initial" mat-raised-button color="accent"
                     (click)="handleRecover(examination)" [disabled]="disabled">

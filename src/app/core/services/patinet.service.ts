@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { baseUri } from '@environments/environment';
-import { Patient, User } from '@core/models/users';
+import { Patient } from '@core/models/users';
 import { resolveProfilePictures } from '@core/utils/resolveProfilePicture';
 import { AuthService } from './auth.service';
 

@@ -8,8 +8,11 @@ export class MindurationPipe implements PipeTransform {
         const hours = Math.floor(minutes / 60);
         const mins = minutes % 60;
         if (hours === 0) {
-            return `${mins}min`;
+            return `${mins} min`;
         }
-        return `${hours} h and ${mins > 10 ? mins : '0' + mins} min`;
+        if (mins === 0) {
+            return `${hours} hours`;
+        }
+        return `${hours} h ${mins >= 10 ? mins : '0' + mins} min`;
     }
 }

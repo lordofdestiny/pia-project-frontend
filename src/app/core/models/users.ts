@@ -22,13 +22,18 @@ export type Patient = UserBase & {
     status: 'created' | 'active' | 'deleted';
 };
 
+export type Vacation = {
+    start_date: Date;
+    end_date: Date;
+};
+
 export type Doctor = UserBase & {
     type: 'doctor';
     specialization: Specialization;
     examinations: Examination[];
-    examination_requests: Examination[];
     licence_number: string;
     branch: string;
+    vacations?: Vacation[];
 };
 
 export type Manager = UserBase & {

@@ -1,0 +1,29 @@
+<form [formGroup]="requestForm" (ngSubmit)="requestExamination()" class="exam-req">
+    <div class="controls">
+        <mat-form-field appearance="outline">
+            <mat-label>Examination name</mat-label>
+            <input matInput type="text" id="name" name="name" formControlName="name" autocomplete="off"
+                [errorStateMatcher]="matcher">
+            <mat-error>You have to suggest a name</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Duration ( minutes )</mat-label>
+            <input matInput type="number" id="duration" name="duration" formControlName="duration" autocomplete="off"
+                [errorStateMatcher]="matcher">
+            <mat-hint>Provide a rough estimate</mat-hint>
+            <mat-error app-mat-err-msgs [errors]="durationErrors">Duration must be a number</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Suggested price</mat-label>
+            <input matInput type="number" id="price" name="price" formControlName="price" autocomplete="off"
+                [errorStateMatcher]="matcher">
+            <mat-hint>Between 0 and 50.000</mat-hint>
+            <mat-error app-mat-err-msgs [errors]="priceErrors"></mat-error>
+        </mat-form-field>
+    </div>
+
+
+    <button mat-raised-button type="submit" color="primary" [disabled]="requestForm.invalid">Request</button>
+</form>

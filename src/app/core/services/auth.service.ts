@@ -9,11 +9,7 @@ import {
     throwError,
 } from 'rxjs';
 import { User, UserCredentials } from '@core/models/users';
-import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { baseUri } from '@environments/environment';
 import { resolveProfilePicture } from '@core/utils/resolveProfilePicture';
 
@@ -36,12 +32,32 @@ export class AuthService {
         });
     }
 
+    private userProxyHandler = (() => {
+        const that = this;
+        return {
+            set(obj: User, prop: string | symbol, value: any, receiver: any) {
+                Reflect.set(obj, prop, value, receiver);
+                that.user$.next({
+                    ...obj,
+                });
+                return true;
+            },
+        };
+    })();
+
     get user() {
-        return this.user$.value;
+        return new Proxy(this.user$.value, this.userProxyHandler);
     }
 
     set user(user: User) {
-        resolveProfilePicture(user);
+        if (user.type === 'doctor') {
+            user.vacations = user.vacations?.map(
+                ({ start_date, end_date }) => ({
+                    start_date: new Date(start_date),
+                    end_date: new Date(end_date),
+                })
+            );
+        }
         this.user$.next(user);
     }
 
@@ -71,12 +87,13 @@ export class AuthService {
             )
             .pipe(
                 catchError(AuthService.handleError),
-                tap(({ user, message: _msg }) => {
+                tap((response) => {
                     sessionStorage.setItem('auth', 'true');
-                    this.user = user;
                     this.#logged_in.next(true);
                 }),
-                map(({ user }) => user)
+                map(({ user }) => user),
+                tap(resolveProfilePicture),
+                tap((user) => (this.user = user))
             );
     }
 

@@ -1,0 +1,38 @@
+<div class="container">
+    <h3 class="subtitle">Examination requests</h3>
+
+    <app-examination-requests [(requests)]="requests" (response)="handleExaminationRequestResponse($event)"
+        [style.margin-bottom.rem]="3">
+    </app-examination-requests>
+
+    <h3 class="subtitle">Specializations</h3>
+
+    <div class="new-specialization">
+        <div>
+            <input type="text" pInputText [(ngModel)]="newSpecName" [ngModelOptions]="{standalone : true}"
+                #newSpecNameInput="ngModel" placeholder="Specialization" />
+            <button type="button" color="accent" mat-fab (click)="handleCreateSpecialization()"
+                [disabled]="newSpecNameInput.value?.trim()?.length <= 0">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let spec of specializations; let i = index"
+            [(expanded)]="isExpandedProxy[spec.id]">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3 [matBadge]="spec.examinations.length" matBadgeColor="accent" matBadgeOverlap="false">
+                        {{spec.name}}
+                    </h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <section>
+                <app-editable-specialization [(specialization)]="specializations[i]"></app-editable-specialization>
+            </section>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>

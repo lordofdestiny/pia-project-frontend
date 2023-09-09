@@ -117,3 +117,20 @@ h3.subtitle {
     display: block;
     margin-bottom: 3rem;
 }
+
+button.vacation-days {
+    background: var(--accent);
+    border-radius: 100%;
+    font-weight: 700;
+    color: black;
+}
+
+.mat-datepicker-content {
+    background-color: var(--bg-color);
+}
+
+@media (orientation: portrait) {
+    .mat-datepicker-content-touch .mat-datepicker-content-container-with-actions {
+        height: auto !important;
+    }
+}

@@ -84,6 +84,7 @@ mat-cell {
     mat-cell {
         color: initial;
         width: 100%;
+        text-align: right;
         justify-content: space-between !important;
     }
 }

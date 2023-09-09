@@ -1,10 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    RouterModule,
-    RouterStateSnapshot,
-    Routes,
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { RoleGuard } from '@core/guards/role.guard';
 import { PatientsResolver } from '@core/resolvers/patients.resolver';
@@ -14,8 +9,8 @@ import { SpecializationsResolver } from '@core/resolvers/specializations.resolve
 import { ManagerComponent } from './manager.component';
 import { ManagerProfileComponent } from './pages/manager-profile/manager-profile.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
-import { ExaminationRequestsResolver } from '@core/resolvers/examination-requests.resolver';
-import { ExaminationsComponent } from './pages/examinations/examinations.component';
+import { SpecializationsComponent } from './pages/specializations/specializations.component';
+import { ExaminationRequestsResolver } from '@core/resolvers/requests.resolver';
 
 const routes: Routes = [
     {
@@ -42,14 +37,17 @@ const routes: Routes = [
                     doctors: DoctorsResolver,
                     specializations: SpecializationsResolver,
                 },
+                runGuardsAndResolvers: 'always',
                 component: ManageUsersComponent,
             },
             {
-                path: 'examinations',
+                path: 'specializations',
                 resolve: {
+                    specializations: SpecializationsResolver,
                     requests: ExaminationRequestsResolver,
                 },
-                component: ExaminationsComponent,
+                runGuardsAndResolvers: 'always',
+                component: SpecializationsComponent,
             },
         ],
     },

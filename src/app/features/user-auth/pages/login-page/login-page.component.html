@@ -22,7 +22,7 @@
                 <button type='button' mat-icon-button matSuffix [attr.aria-label]="'Hide password'"
                     (click)="togglePassword($event)" (touchstart)="togglePassword($event)"
                     (touchend)="togglePassword($event)">
-                    <mat-icon> {{hidden ? 'visibility_off':'visibility' }}</mat-icon>
+                    <mat-icon color="primary"> {{hidden ? 'visibility_off':'visibility' }}</mat-icon>
                 </button>
 
                 <mat-error app-mat-err-msgs [errors]="errorMessages.password"></mat-error>
@@ -31,7 +31,7 @@
         </mat-card-content>
 
         <mat-card-actions class="d-flex justify-content-center align-items-center">
-            <button mat-raised-button type="submit" color="primary" [disabled]="!loginForm.valid">
+            <button mat-raised-button type="submit" color="primary" [disabled]="loginForm.invalid">
                 Log In
             </button>
         </mat-card-actions>

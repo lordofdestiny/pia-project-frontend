@@ -1,13 +1,5 @@
 <mat-table [dataSource]="_requests" class="mat-elevation-z4 w-100" *ngIf="_requests.length > 0; else noExaminations">
 
-    <ng-container matColumnDef="doctor">
-        <mat-header-cell mat-header-cell *matHeaderCellDef> Doctor </mat-header-cell>
-        <mat-cell mat-cell *matCellDef="let request">
-            <span class="mobile-label">Doctor:</span>
-            {{request.doctor | full_name}}
-        </mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="specialization">
         <mat-header-cell mat-header-cell *matHeaderCellDef> Specialization </mat-header-cell>
         <mat-cell mat-cell *matCellDef="let request">
@@ -16,11 +8,27 @@
         </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="examination">
-        <mat-header-cell mat-header-cell *matHeaderCellDef> Examination </mat-header-cell>
+    <ng-container matColumnDef="name">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell mat-cell *matCellDef="let request">
-            <span class="mobile-label">Examination:</span>
-            {{request.examination.name}}
+            <span class="mobile-label">Name:</span>
+            {{request.name}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Duration:</span>
+            {{request.duration}}
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+        <mat-header-cell mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let request">
+            <span class="mobile-label">Price:</span>
+            {{request.price}}
         </mat-cell>
     </ng-container>
 

@@ -6,18 +6,13 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import {
-    MAT_DIALOG_DATA,
-    MatDialog,
-    MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Examination } from '@core/models/specialization';
+import { Examination, Specialization } from '@core/models/specialization';
 
 import { Doctor, User } from '@core/models/users';
-import { DoctorExaminations } from '@core/resolvers/examinations.resolver';
 import { AuthService } from '@core/services/auth.service';
-import { DoctorsService } from '@core/services/doctors.service';
+import { DoctorService } from '@core/services/doctor.service';
 import { ProfileService } from '@core/services/profile.service';
 import { ProfileUpdates } from '@core/utils/profile-update-handlers';
 import { PickExaminationsComponent } from '@features/doctor/components/pick-examinations/pick-examinations.component';
@@ -35,18 +30,19 @@ export class DoctorProfileComponent
     styles = {
         'font-size': '0.8rem',
     };
-    user?: User;
+    user?: Doctor;
     readonly userId = this.authService.user?.id;
     userSubscription = this.authService.user$.subscribe((user) => {
-        this.user = user;
+        this.user = user as Doctor;
     });
-    examinations: DoctorExaminations = this.route.snapshot.data['examinations'];
+    specialzations: Specialization[] =
+        this.route.snapshot.data['specializations'];
     constructor(
         private dialog: MatDialog,
         private route: ActivatedRoute,
         public authService: AuthService,
         private profileService: ProfileService,
-        private doctorsService: DoctorsService
+        private doctorsService: DoctorService
     ) {}
 
     profileUpdateHandlers = new ProfileUpdates(
@@ -58,9 +54,11 @@ export class DoctorProfileComponent
         this.profileUpdateHandlers.updateProfile(
             this.userId,
             userChanges,
-            null,
+            (user) => {
+                this.authService.user = user;
+            },
             () => {
-                this.user = this.authService.user;
+                this.user = this.authService.user as Doctor;
             }
         );
     }
@@ -70,12 +68,20 @@ export class DoctorProfileComponent
             case 'edit':
                 return this.profileUpdateHandlers.updateAvatar(
                     this.userId,
-                    event.picture
+                    event.picture,
+                    (user) => {
+                        this.authService.user.profile_picture = user;
+                    },
+                    () => {
+                        this.user = this.authService.user as Doctor;
+                    }
                 );
             case 'delete':
                 return this.profileUpdateHandlers.deleteAvatar(
                     this.userId,
-                    null,
+                    (user) => {
+                        this.authService.user.profile_picture = user;
+                    },
                     () => {
                         this.user = this.authService.user as Doctor;
                     }
@@ -85,30 +91,23 @@ export class DoctorProfileComponent
 
     @ViewChild('examinations_picker')
     examinationsPicker?: PickExaminationsComponent;
-    ngAfterViewInit() {
-        console.log(this.examinationsPicker);
-    }
+    ngAfterViewInit() {}
 
-    handleExaminationsSave({
-        newOffered,
-        newRequested,
-    }: {
-        newOffered: Examination[];
-        newRequested: Examination[];
-    }) {
-        const offered = newOffered.map(({ id }) => id);
-        const requested = newRequested.map(({ id }) => id);
+    handleExaminationsSave(examinations: Examination[]) {
+        const examinationIds = examinations.map(({ id }) => id);
         return this.doctorsService
-            .update_examinations(this.userId, offered, requested)
+            .update_examinations(this.userId, examinationIds)
             .subscribe({
                 next: (result) => {
                     this.showDoctorCreationMessage({
                         success: true,
                         message: 'Examinations updated successfully',
                     });
+                    this.user = this.authService.user as Doctor;
                     this.examinationsPicker?.confirmSave();
                 },
                 error: (err) => {
+                    console.log(err);
                     this.showDoctorCreationMessage({
                         success: false,
                         message: 'Examinations update failed',

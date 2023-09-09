@@ -1,0 +1,43 @@
+<div class="vacations">
+    <form [formGroup]="dateRange" (ngSubmit)="handleSubmit()">
+        <mat-form-field appearance="outline" class="example-form-field" color="primary">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [dateFilter]="myFilter">
+                <input matStartDate formControlName="start" placeholder="Start date">
+                <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>DD.MM.YYYY – DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker [dateClass]="dateClass" [touchUi]="isHandset$ | async" #rangePicker disabled="false"
+                [calendarHeaderComponent]="datepickerHeader">
+                <mat-date-range-picker-actions>
+                    <button mat-button matDateRangePickerCancel>Cancel</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+                </mat-date-range-picker-actions>
+            </mat-date-range-picker>
+            <mat-error>You have to enter both the start and end dates</mat-error>
+            <mat-error *ngIf="dateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+            <mat-error *ngIf="dateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        </mat-form-field>
+        <button type="submit" mat-button color="primary" matSuffix
+            [disabled]="dateRange.untouched || dateRange.invalid">
+            Add </button>
+
+    </form>
+
+    <mat-divider class="mt-4"></mat-divider>
+
+    <mat-list class="vacations_list" *ngIf="vacations.length>0">
+        <mat-list-item *ngFor="let vacation of sorted(vacations)">
+            <mat-icon mat-list-icon color="accent">home</mat-icon>
+            <p mat-line>
+                From <em class="date">{{vacation.start_date | date: 'EEEE, dd.MM.yyyy'}}</em><wbr>
+                to <em class="date">{{vacation.end_date | date: 'EEEE, dd.MM.yyyy'}}</em>
+            </p>
+        </mat-list-item>
+    </mat-list>
+    <p *ngIf="vacations.length <=0" [style.text-align]="'center'" [style.font-size.rem]="1.5"
+        [style.margin-top.rem]="2">
+        You have not scheduled any vacations
+    </p>
+</div>

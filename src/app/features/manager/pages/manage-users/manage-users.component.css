@@ -40,11 +40,14 @@ section>h3 {
     overflow: visible;
 }
 
+.mat-expansion-panel-header:not([aria-disabled="true"]) .mat-expansion-panel-header-title h3 {
+    color: var(--primary);
+}
+
 .mat-expansion-panel-header-title h3 {
     font-size: 1.3em !important;
     font-weight: 600 !important;
     line-height: normal !important;
-    color: var(--primary);
     margin: 0;
     width: max-content;
 }

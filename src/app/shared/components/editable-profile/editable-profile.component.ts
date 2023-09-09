@@ -104,7 +104,6 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
         branch: '',
         specialization: '',
         licence_number: '',
-        profile_picture: null as unknown,
     });
 
     fieldConfig?: FieldBase<string>[];
@@ -226,9 +225,6 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
             (event: PictureEvent = { action: 'cancel' }) => {
                 const { action, picture } = event;
                 if (action === 'edit') {
-                    this.profileForm.patchValue({
-                        profile_picture: picture,
-                    });
                     this.pictureEdited.emit({
                         action: 'edit',
                         picture,

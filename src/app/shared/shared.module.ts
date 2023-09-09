@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Angular Material
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -62,7 +63,7 @@ import { FullNamePipe } from './pipes/full-name.pipe';
         ActionResultDialogComponent,
         FullNamePipe,
     ],
-    providers: [],
+
     imports: [
         // Angular
         CommonModule,

@@ -1,0 +1,111 @@
+.mat-expansion-panel {
+    background-color: var(--bg-color);
+    z-index: 25;
+}
+
+.mat-expansion-panel-header {
+    height: 56px;
+}
+
+:host ::ng-deep .mat-expansion-panel-header .mat-content {
+    overflow: visible;
+}
+
+.mat-expansion-panel-header-title h3 {
+    font-size: 1.3em !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+    color: var(--primary);
+    margin: 0;
+    width: max-content;
+}
+
+
+.mat-expansion-panel .mat-expansion-panel-header.cdk-touch-focused {
+    background-color: #e8e8d0;
+}
+
+
+:host ::ng-deep .mat-expansion-panel-content {
+    z-index: 100;
+}
+
+:host ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+}
+
+.new-specialization {
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.new-specialization>div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 1rem;
+    flex: 1 1 40%
+}
+
+.new-specialization button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.new-specialization button mat-icon {
+    font-size: xx-large;
+    width: max-content;
+    height: max-content;
+    font-weight: 700;
+}
+
+.new-specialization span {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+:host ::ng-deep .new-specialization .p-inputtext {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    background-color: transparent;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0;
+    transition: none !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+
+:host ::ng-deep .new-specialization .p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color: var(--accent);
+}
+
+:host ::ng-deep .new-specialization .p-inputtext.ng-invalid.ng-touched,
+p-inputnumber.ng-invalid.ng-touched {
+    border-color: var(--warn);
+    box-shadow: 0 0 0 0.2rem #f44336d8;
+    background-color: #f443364a;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+    :host ::ng-deep .new-specialization .p-inputtext {
+        width: 0;
+        flex: 1;
+    }
+
+}

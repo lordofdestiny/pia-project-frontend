@@ -7,7 +7,7 @@ import {
 import { Specialization } from '@core/models/specialization';
 import { AuthService } from '@core/services/auth.service';
 import { SpecializationService } from '@core/services/specialization.service';
-import { Observable, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',

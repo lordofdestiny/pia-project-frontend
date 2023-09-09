@@ -1,0 +1,40 @@
+div.vacations {
+    display: flex;
+    flex-direction: column;
+}
+
+div.vacations mat-divider {
+    flex: 1;
+}
+
+div.vacations form {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    gap: 1rem;
+}
+
+.vacations_list mat-list-item {
+    border-bottom: 1px solid #ccc;
+}
+
+.vacations_list mat-list-item mat-line {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.vacations_list em.date {
+    font-weight: bold;
+    display: inline-block;
+    color: var(--accent);
+    margin-inline: 1rem;
+}
+
+.vacations_list mat-icon {
+    font-size: 2rem;
+    width: max-content;
+    height: max-content;
+}

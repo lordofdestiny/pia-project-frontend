@@ -44,7 +44,9 @@ export class ManagerProfileComponent implements OnInit, OnDestroy {
         this.profileUpdateHandlers.updateProfile(
             this.userId,
             userChanges,
-            null,
+            (user) => {
+                this.authService.user = user;
+            },
             () => {
                 this.user = this.authService.user;
             }
@@ -52,16 +54,25 @@ export class ManagerProfileComponent implements OnInit, OnDestroy {
     }
 
     handlePictureEvent(event: PictureEvent) {
+        console.log(event);
         switch (event.action) {
             case 'edit':
                 return this.profileUpdateHandlers.updateAvatar(
                     this.userId,
-                    event.picture
+                    event.picture,
+                    (user) => {
+                        this.authService.user.profile_picture = user;
+                    },
+                    () => {
+                        this.user = this.authService.user;
+                    }
                 );
             case 'delete':
                 return this.profileUpdateHandlers.deleteAvatar(
                     this.userId,
-                    null,
+                    (user) => {
+                        this.authService.user.profile_picture = user;
+                    },
                     () => {
                         this.user = this.authService.user;
                     }

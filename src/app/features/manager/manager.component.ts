@@ -13,8 +13,8 @@ export class ManagerComponent implements OnInit {
         { location: 'profile', label: 'Profile', icon: 'account_circle' },
         { location: 'users', label: 'Users', icon: 'person' },
         {
-            location: 'examinations',
-            label: 'Examinations',
+            location: 'specializations',
+            label: 'Specializations',
             icon: 'medical_services',
         },
     ];

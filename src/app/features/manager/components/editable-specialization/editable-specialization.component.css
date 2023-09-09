@@ -1,0 +1,290 @@
+:host {
+    display: block;
+    --gap: 0.5rem;
+}
+
+mat-table {
+    border-radius: 0 0 5px 5px;
+    overflow: hidden;
+    background-color: var(--bg-color);
+}
+
+mat-table mat-row mat-cell:nth-child(4) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0 var(--gap);
+}
+
+div.no-examinations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
+    color: var(--bg-color);
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    padding: 1rem;
+    font-weight: 500;
+    background-color: #ff4080;
+}
+
+mat-header-row {
+    background-color: var(--accent);
+}
+
+mat-header-cell {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--bg-color);
+}
+
+
+mat-header-cell:nth-child(1),
+mat-cell:nth-child(1) {
+    flex: 1;
+    min-width: 45%;
+}
+
+mat-header-cell:nth-child(2),
+mat-cell:nth-child(2) {
+    max-width: 20%;
+    padding-inline: 0.5rem;
+}
+
+mat-header-cell:nth-child(3),
+mat-cell:nth-child(3) {
+    max-width: 17.5%;
+    width: fit-content;
+    padding-left: 0.5rem;
+}
+
+mat-header-cell:last-child,
+mat-cell:last-child {
+    padding: 0 12px;
+    width: 15%;
+}
+
+mat-cell {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary);
+    hyphens: auto !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
+.mobile-label {
+    display: none;
+}
+
+.buttons {
+    display: flex;
+    gap: 0 var(--gap);
+}
+
+:host ::ng-deep .p-inputtext {
+    color: var(--accent);
+    font-weight: 600;
+    width: calc(100% - 3*var(--gap) - 2px);
+    background-color: transparent;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0;
+    transition: none !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color: var(--accent);
+}
+
+:host ::ng-deep mat-cell .p-inputtext.ng-invalid.ng-dirty,
+mat-cell p-inputnumber.ng-invalid.ng-dirty {
+    border-color: var(--warn);
+    box-shadow: 0 0 0 0.2rem #f44336d8;
+    background-color: #f443364a;
+    border-radius: 4px;
+}
+
+input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: inherit !important;
+    color: var(--accent) !important;
+}
+
+mat-cell.editing {
+    padding-block: 0.5rem !important;
+    transition: padding-block 0.2s ease-in-out;
+}
+
+mat-cell.not-editing {
+    padding-block: 0 !important;
+    transition: padding-block 0.2s ease-in-out;
+}
+
+@media screen and (max-width: 996px) {
+
+    mat-header-cell:nth-child(2),
+    mat-cell:nth-child(2) {
+        min-width: 20%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-label {
+        color: var(--accent);
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    mat-header-row {
+        display: none;
+    }
+
+    mat-table {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    mat-row {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    mat-cell {
+        color: initial;
+        width: 100% !important;
+        max-width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    mat-cell:not(:last-child) {
+        padding: 0 1rem !important;
+    }
+
+    mat-cell:last-child {
+        padding-inline: 1rem 0.5rem !important;
+    }
+
+    :host ::ng-deep mat-cell .p-inputtext {
+        text-align: right;
+    }
+
+    mat-cell span:last-child {
+        text-align: right;
+        max-width: 60%;
+    }
+
+    .p-inputtext {
+        width: 70%;
+    }
+}
+
+.buttons button.mat-icon-button.mat-button-disabled .mat-icon {
+    color: #8c8c8c;
+}
+
+.add-exam-form {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.add-exam-form-inputs {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+    flex: 10;
+}
+
+.add-exam-form-inputs .add-exam-form-input {
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.add-exam-form-inputs .add-exam-form-input:first-child {
+    flex: 2;
+}
+
+.add-exam-form-button {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    flex: 1;
+    gap: 0.5rem;
+}
+
+@media screen and (max-width: 996px) {
+    .add-exam-form {
+        flex-flow: column wrap;
+        width: 100%;
+    }
+
+    .add-exam-form-inputs {
+        flex: 1;
+        flex-flow: column nowrap;
+    }
+
+    .add-exam-form-inputs .add-exam-form-input {
+        width: 50%;
+    }
+
+    .add-exam-form-inputs .add-exam-form-input * {
+        width: 100%;
+    }
+
+    .add-exam-form-button {
+        justify-content: flex-end;
+        align-self: flex-end;
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .add-exam-form-input {
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    .add-exam-form-inputs .add-exam-form-input {
+        width: 70%;
+    }
+
+    .add-exam-form-input .p-inputtext {
+        width: 100%;
+        text-align: left !important;
+    }
+}
+
+:host ::ng-deep ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep :-ms-input-placeholder {
+    /* IE 10+ */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep :-moz-placeholder {
+    /* Firefox 18- */
+    color: #ff4080cc;
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Doctor } from '@core/models/users';
 import { AuthService } from '@core/services/auth.service';
-import { DoctorsService } from '@core/services/doctors.service';
+import { DoctorService } from '@core/services/doctor.service';
 
 /**PRIME NG TEST */
 import { Observable, tap } from 'rxjs';
@@ -16,7 +16,7 @@ export class DoctorListComponent implements OnInit {
     logged_in?: Observable<boolean>;
     loading: boolean = true;
     constructor(
-        private doctorService: DoctorsService,
+        private doctorService: DoctorService,
         private authService: AuthService
     ) {}
 

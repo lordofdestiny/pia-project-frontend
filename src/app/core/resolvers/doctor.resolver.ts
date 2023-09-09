@@ -7,7 +7,7 @@ import {
     Router,
 } from '@angular/router';
 import { Doctor } from '@core/models/users';
-import { DoctorsService } from '@core/services/doctors.service';
+import { DoctorService } from '@core/services/doctor.service';
 import { Observable, catchError } from 'rxjs';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class DoctorResolver implements Resolve<Doctor> {
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private doctorsService: DoctorsService
+        private doctorsService: DoctorService
     ) {}
 
     resolve(

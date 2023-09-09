@@ -19,8 +19,7 @@ import { ProfileUpdates } from '@core/utils/profile-update-handlers';
 import { PictureEvent } from '@shared/components/editable-profile/editable-profile.component';
 import { Specialization } from '@core/models/specialization';
 import { FileInput } from 'ngx-material-file-input';
-import { DoctorsService } from '@core/services/doctors.service';
-import { create } from 'domain';
+import { DoctorService } from '@core/services/doctor.service';
 import { CreateDoctorComponent } from '@features/manager/components/create-doctor/create-doctor.component';
 
 @Component({
@@ -41,7 +40,7 @@ export class ManageUsersComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private dialog: MatDialog,
-        private doctorService: DoctorsService,
+        private doctorService: DoctorService,
         private profileService: ProfileService
     ) {}
     ngOnInit(): void {}
@@ -113,8 +112,7 @@ export class ManageUsersComponent implements OnInit, AfterViewInit, OnDestroy {
             array[index].id,
             userChanges,
             (user) => (array[index] = user),
-            null,
-            false
+            null
         );
     }
 
@@ -123,17 +121,15 @@ export class ManageUsersComponent implements OnInit, AfterViewInit, OnDestroy {
             this.profileUpdateHandlers.updateAvatar(
                 array[index].id,
                 event.picture,
-                (user) => (array[index] = user),
-                null,
-                false
+                (newPicture) => (array[index].profile_picture = newPicture),
+                null
             );
         }
         if (event.action === 'delete') {
             return this.profileUpdateHandlers.deleteAvatar(
                 array[index].id,
-                (user) => (array[index] = user),
-                null,
-                false
+                (newPicture) => (array[index].profile_picture = newPicture),
+                null
             );
         }
     }
@@ -156,7 +152,6 @@ export class ManageUsersComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             null,
-            false,
             "Patient's registration has been approved.",
             "Failed to approve patient's registration."
         );
@@ -172,7 +167,6 @@ export class ManageUsersComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.patients.requests.splice(index, 1);
             },
             null,
-            false,
             "Patient's registration has been denied.",
             "Failed to deny patient's registration."
         );

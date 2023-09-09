@@ -8,13 +8,12 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors } from '@angular/forms';
 import { ErrorMessages } from '@core/utils/form-error-messages';
+import { FileInput } from 'ngx-material-file-input';
 
 import { ConfirmationService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { BehaviorSubject } from 'rxjs';
-
-type EditAction = 'edit' | 'remove';
 
 @Component({
     selector: 'app-edit-image',
@@ -32,7 +31,7 @@ export class EditImageComponent implements OnInit, OnDestroy {
     ) {}
     errorMessages = ErrorMessages;
     pictureForm = this.fb.group({
-        picture: ['', [], [this.imageValidator.bind(this)]],
+        picture: [new FileInput(null), [], [this.imageValidator.bind(this)]],
     });
 
     picture$ = new BehaviorSubject<string>('');
@@ -56,11 +55,11 @@ export class EditImageComponent implements OnInit, OnDestroy {
 
     async imageValidator(g: AbstractControl): Promise<ValidationErrors | null> {
         const files = g?.value?.files;
-        if (files === '' || files === null || files === undefined) {
+        if (['', [], null, undefined].some((v) => v == files)) {
             return Promise.resolve(null);
         }
-        const file = files[0];
-        if ((file as File).type.split('/')[0] !== 'image') {
+        const file = files?.[0] as File;
+        if (file?.type?.split('/')?.[0] !== 'image') {
             return Promise.resolve({ notImage: true });
         }
         return new Promise((resolve, reject) => {
@@ -95,8 +94,7 @@ export class EditImageComponent implements OnInit, OnDestroy {
     handleConfirm() {
         this.returnValue({
             action: 'edit',
-            picture: (this.pictureForm.get('picture')?.value as any)
-                ?.files?.[0],
+            picture: this.pictureForm.get('picture')?.value?.files?.[0],
         });
     }
 

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Examination } from '@core/models/specialization';
-import { DoctorExaminations } from '@core/resolvers/examinations.resolver';
-import { request } from 'http';
+import { Doctor } from '@core/models/users';
 
 @Component({
     selector: 'app-pick-examinations',
@@ -10,30 +9,22 @@ import { request } from 'http';
 })
 export class PickExaminationsComponent implements OnInit {
     currentExaminations: Examination[] = [];
-    requestedExaminations: Examination[] = [];
     availableExaminations: Examination[] = [];
     initialCurrentExaminations: Examination[] = [];
-    initialRequestedExaminations: Examination[] = [];
     initialAvailableExaminations: Examination[] = [];
 
     @Input() set examinations({
-        current,
-        requested,
-        forSpecialization,
-    }: DoctorExaminations) {
-        this.currentExaminations = current;
-        this.requestedExaminations = requested;
-        this.availableExaminations = forSpecialization
-            .filter(({ id }) => !current.some((e) => e.id === id))
-            .filter(({ id }) => !requested.some((e) => e.id === id));
+        examinations,
+        specialization,
+    }: Pick<Doctor, 'examinations' | 'specialization'>) {
+        this.currentExaminations = examinations ?? [];
+        this.availableExaminations = specialization?.examinations?.filter(
+            ({ id }) => !examinations?.some((e) => e.id === id)
+        ) ??[];
         this.initialCurrentExaminations = [...this.currentExaminations];
-        this.initialRequestedExaminations = [...this.requestedExaminations];
         this.initialAvailableExaminations = [...this.availableExaminations];
     }
-    @Output() save = new EventEmitter<{
-        newOffered: Examination[];
-        newRequested: Examination[];
-    }>();
+    @Output() save = new EventEmitter<Examination[]>();
     constructor() {}
 
     editing = false;
@@ -55,10 +46,6 @@ export class PickExaminationsComponent implements OnInit {
                 this.initialCurrentExaminations
             ) &&
             this.sameMembers(
-                this.requestedExaminations,
-                this.initialRequestedExaminations
-            ) &&
-            this.sameMembers(
                 this.availableExaminations,
                 this.initialAvailableExaminations
             )
@@ -71,12 +58,11 @@ export class PickExaminationsComponent implements OnInit {
 
     cancelEditing() {
         this.currentExaminations = [...this.initialCurrentExaminations];
-        this.requestedExaminations = [...this.initialRequestedExaminations];
         this.availableExaminations = [...this.initialAvailableExaminations];
         this.editing = false;
     }
 
-    protected handleRemove(examination: Examination) {
+    protected handleRenounce(examination: Examination) {
         this.currentExaminations = this.currentExaminations.filter(
             ({ id }) => id !== examination.id
         );
@@ -93,38 +79,20 @@ export class PickExaminationsComponent implements OnInit {
         );
     }
 
-    protected handleSendRequest(examination: Examination) {
+    protected handlePick(examination: Examination) {
         this.availableExaminations = this.availableExaminations.filter(
             ({ id }) => id !== examination.id
         );
-        this.requestedExaminations = [
-            ...this.requestedExaminations,
-            examination,
-        ];
-    }
-
-    protected handleCancelRequest(examination: Examination) {
-        this.requestedExaminations = this.requestedExaminations.filter(
-            ({ id }) => id !== examination.id
-        );
-        this.availableExaminations = [
-            ...this.availableExaminations,
-            examination,
-        ];
+        this.currentExaminations = [...this.currentExaminations, examination];
     }
 
     protected handleSave() {
-        this.save.emit({
-            newOffered: this.currentExaminations,
-            newRequested: this.requestedExaminations,
-        });
+        this.save.emit(this.currentExaminations);
         this.disabled = true;
     }
 
     confirmSave() {
-        console.log('confirming save');
         this.initialCurrentExaminations = [...this.currentExaminations];
-        this.initialRequestedExaminations = [...this.requestedExaminations];
         this.initialAvailableExaminations = [...this.availableExaminations];
         this.editing = false;
         this.disabled = false;

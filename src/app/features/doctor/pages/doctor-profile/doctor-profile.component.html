@@ -6,6 +6,6 @@
 
 <div class="container">
     <h3 class="subtitle">Examinations</h3>
-    <app-pick-examinations #examinations_picker [examinations]="examinations"
+    <app-pick-examinations #examinations_picker *ngIf="user" [examinations]="user "
         (save)="handleExaminationsSave($event)"></app-pick-examinations>
 </div>

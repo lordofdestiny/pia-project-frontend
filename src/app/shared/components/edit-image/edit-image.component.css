@@ -62,14 +62,16 @@ form {
     display: block;
     align-self: center;
     justify-self: center;
-    min-width: 300px;
-    min-width: 300px;
+    min-width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    max-height: 250px;
     object-fit: contain;
 }
 
 .image-container .striped {
-    min-width: 300px;
-    min-height: 300px;
+    min-width: 250px;
+    min-height: 250px;
     border-radius: 50%;
     background: repeating-linear-gradient(45deg,
             #a1a1a1,
@@ -80,8 +82,8 @@ form {
 
 .image-border {
     width: fit-content;
-    min-width: 300px;
-    min-height: 300px;
+    min-width: 250px;
+    min-height: 250px;
     position: relative;
     border: double 10px transparent;
     border-radius: 50%;

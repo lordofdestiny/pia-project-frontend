@@ -4,7 +4,7 @@ import { DoctorComponent } from './doctor.component';
 import { DoctorProfileComponent } from './pages/doctor-profile/doctor-profile.component';
 import { RoleGuard } from '@core/guards/role.guard';
 import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
-import { ExaminationsResolver } from '@core/resolvers/examinations.resolver';
+import { MiscellaneousComponent } from './pages/miscellaneous/miscellaneous.component';
 
 const routes: Routes = [
     {
@@ -24,10 +24,13 @@ const routes: Routes = [
                 path: 'profile',
                 resolve: {
                     specializations: SpecializationsResolver,
-                    examinations: ExaminationsResolver,
                 },
                 runGuardsAndResolvers: 'always',
                 component: DoctorProfileComponent,
+            },
+            {
+                path: 'miscellaneous',
+                component: MiscellaneousComponent,
             },
         ],
     },

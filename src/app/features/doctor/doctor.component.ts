@@ -11,6 +11,11 @@ export class DoctorComponent implements OnInit {
     baseRoute = '/doctor';
     navLinks = [
         { location: 'profile', label: 'Profile', icon: 'account_circle' },
+        {
+            location: 'miscellaneous',
+            label: 'Miscellaneous',
+            icon: 'miscellaneous_services',
+        },
     ];
 
     constructor(private titleService: Title, private authService: AuthService) {
