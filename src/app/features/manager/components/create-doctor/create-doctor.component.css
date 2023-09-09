@@ -110,3 +110,9 @@ form .buttons button {
     font-size: 1.2em;
     padding: 0.25rem 1.2rem;
 }
+
+@media screen and (max-width: 500px) {
+    .mat-form-field {
+        margin: 0 1rem;
+    }
+}

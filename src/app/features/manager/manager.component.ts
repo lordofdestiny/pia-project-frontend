@@ -1,21 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { AuthService } from '@core/services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { AuthService } from "@core/services/auth.service";
 
 @Component({
-    selector: 'app-manager',
-    templateUrl: './manager.component.html',
-    styleUrls: ['./manager.component.css'],
+    selector: "app-manager",
+    templateUrl: "./manager.component.html",
+    styleUrls: ["./manager.component.css"],
 })
 export class ManagerComponent implements OnInit {
-    baseRoute = '/manager';
+    baseRoute = "/manager";
     navLinks = [
-        { location: 'profile', label: 'Profile', icon: 'account_circle' },
-        { location: 'users', label: 'Users', icon: 'person' },
+        { location: "profile", label: "Profile", icon: "account_circle" },
+        { location: "users", label: "Users", icon: "person" },
         {
-            location: 'specializations',
-            label: 'Specializations',
-            icon: 'medical_services',
+            location: "specializations",
+            label: "Specializations",
+            icon: "medical_services",
+        },
+        {
+            location: "promotions",
+            label: "Promotions",
+            icon: "flag",
         },
     ];
 

@@ -1,53 +1,63 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { RoleGuard } from '@core/guards/role.guard';
-import { PatientsResolver } from '@core/resolvers/patients.resolver';
-import { DoctorsResolver } from '@core/resolvers/doctors.resolver';
-import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
+import { RoleGuard } from "@core/guards/role.guard";
+import { PatientsResolver } from "@core/resolvers/patients.resolver";
+import { DoctorsResolver } from "@core/resolvers/doctors.resolver";
+import { SpecializationsResolver } from "@core/resolvers/specializations.resolver";
 
-import { ManagerComponent } from './manager.component';
-import { ManagerProfileComponent } from './pages/manager-profile/manager-profile.component';
-import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
-import { SpecializationsComponent } from './pages/specializations/specializations.component';
-import { ExaminationRequestsResolver } from '@core/resolvers/requests.resolver';
+import { ManagerComponent } from "./manager.component";
+import { ManagerProfileComponent } from "./pages/manager-profile/manager-profile.component";
+import { ManageUsersComponent } from "./pages/manage-users/manage-users.component";
+import { SpecializationsComponent } from "./pages/specializations/specializations.component";
+import { ExaminationRequestsResolver } from "@core/resolvers/requests.resolver";
+import { PromotionsComponent } from "./pages/promotions/promotions.component";
+import { PromotionsResolver } from "@core/resolvers/promotions.resolver";
 
 const routes: Routes = [
     {
-        path: '',
+        path: "",
         canActivate: [RoleGuard],
         data: {
-            expectedRole: 'manager',
+            expectedRole: "manager",
         },
         component: ManagerComponent,
         children: [
             {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: 'profile',
+                path: "",
+                pathMatch: "full",
+                redirectTo: "profile",
             },
             {
-                path: 'profile',
+                path: "profile",
                 component: ManagerProfileComponent,
             },
             {
-                path: 'users',
+                path: "users",
                 resolve: {
                     patients: PatientsResolver,
                     doctors: DoctorsResolver,
                     specializations: SpecializationsResolver,
                 },
-                runGuardsAndResolvers: 'always',
+                runGuardsAndResolvers: "always",
                 component: ManageUsersComponent,
             },
             {
-                path: 'specializations',
+                path: "specializations",
                 resolve: {
                     specializations: SpecializationsResolver,
                     requests: ExaminationRequestsResolver,
                 },
-                runGuardsAndResolvers: 'always',
+                runGuardsAndResolvers: "always",
                 component: SpecializationsComponent,
+            },
+            {
+                path: "promotions",
+                resolve: {
+                    promotions: PromotionsResolver,
+                },
+                runGuardsAndResolvers: "always",
+                component: PromotionsComponent,
             },
         ],
     },

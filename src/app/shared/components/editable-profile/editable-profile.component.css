@@ -190,3 +190,9 @@ button:not(.image-overlay) mat-icon {
         min-width: calc(100% - 2rem);
     }
 }
+
+@media screen and (max-width: 500px) {
+    .grid-child.editing .fields .mat-form-field {
+        margin: 0 1rem;
+    }
+}

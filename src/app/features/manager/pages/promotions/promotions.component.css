@@ -1,0 +1,124 @@
+:host ::ng-deep .p-inputtext {
+    color: var(--accent);
+    font-weight: 600;
+    width: calc(100% - 3*var(--gap) - 2px);
+    background-color: transparent;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: 0;
+    transition: none !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color: var(--accent);
+}
+
+:host ::ng-deep mat-cell .p-inputtext.ng-invalid.ng-dirty,
+mat-cell p-inputnumber.ng-invalid.ng-dirty {
+    border-color: var(--warn);
+    box-shadow: 0 0 0 0.2rem #f44336d8;
+    background-color: #f443364a;
+    border-radius: 4px;
+}
+
+
+:host ::ng-deep ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep :-ms-input-placeholder {
+    /* IE 10+ */
+    color: #ff4080cc;
+}
+
+:host ::ng-deep :-moz-placeholder {
+    /* Firefox 18- */
+    color: #ff4080cc;
+}
+
+span.period-text {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+:host ::ng-deep .p-datepicker {
+    background-color: var(--bg-color);
+
+    border: 1px solid var(--accent);
+    border-radius: 0 0 4px 4px;
+}
+
+:host ::ng-deep .p-datepicker .p-datepicker-header {
+    background-color: var(--bg-color);
+    color: var(--primary)
+}
+
+.add-button {
+    width: max-content;
+    align-self: flex-end;
+    margin-top: 2rem;
+}
+
+:host ::ng-deep .p-calendar .p-inputtext {
+    text-align: right;
+}
+
+span.date {
+    font-size: 1rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin-inline: 0.25rem;
+}
+
+@media screen and (max-width: 992px) {
+    form {
+        width: 75% !important;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    form {
+        width: 100% !important;
+    }
+}
+
+
+mat-list-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.promotion h4 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.promotion p {
+    margin: 0;
+    font-size: 1rem !important;
+    font-weight: 500;
+    color: rgb(52, 49, 77);
+    margin-bottom: 1rem;
+}

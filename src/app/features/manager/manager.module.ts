@@ -25,6 +25,7 @@ import { MaterialFileInputModule } from "ngx-material-file-input";
 //PrimeNG
 import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
+import { CalendarModule } from "primeng/calendar";
 
 import { ManagerRoutingModule } from "./manager-routing.module";
 import { ManagerComponent } from "./manager.component";
@@ -83,6 +84,7 @@ import { PromotionsComponent } from "./pages/promotions/promotions.component";
         // PrimeNG
         InputTextModule,
         InputNumberModule,
+        CalendarModule,
         // My Modules
         SharedModule,
         ManagerRoutingModule,

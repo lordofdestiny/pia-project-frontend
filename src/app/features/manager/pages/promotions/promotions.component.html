@@ -1,1 +1,30 @@
-<p>promotions works!</p>
+<h3 class="subtitle">New promotion</h3>
+<div class="container mb-5 d-flex flex-column justify-content-center align-items-center">
+    <form #newPromoForm="ngForm" class="d-flex flex-column w-50">
+        <input type="text" pInputText placeholder="Promotion text" name="message" [required]="true" [style.flex]="1"
+            [(ngModel)]="newPromotion.message" #message="ngModel">
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="period-text">Period </span>
+            <p-calendar name="dates" dateFormat="dd.mm.yy" selectionMode="range" [readonlyInput]="true"
+                [touchUI]="(isHandset$| async)!" [(ngModel)]="newPromotion.dates" #dates="ngModel"></p-calendar>
+        </div>
+        <button type="button" mat-raised-button class="mt-3" color="accent" [disabled]="!newPromoForm.valid"
+            (click)="addPromotion(newPromoForm)" class="add-button">
+            Add
+        </button>
+    </form>
+</div>
+
+<h3 class="subtitle">Currently active</h3>
+<div class="container">
+    <mat-list>
+        <mat-list-item *ngFor="let promo of promotions" class="promotion">
+            <h4 matLine>{{promo.message}}</h4>
+            <p matLine>
+                Active from
+                <span class="date">{{promo.start | date:"dd. MM. yyyy."}}</span> to
+                <span class="date">{{promo.end | date:"dd. MM. yyyy."}}</span>
+            </p>
+        </mat-list-item>
+    </mat-list>
+</div>
