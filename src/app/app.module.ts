@@ -15,6 +15,7 @@ import { Router } from "@angular/router";
 import * as _moment from "moment";
 // tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment } from "moment";
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 
 const moment = _rollupMoment || _moment;
 
@@ -41,6 +42,7 @@ export const MY_FORMATS = {
         MomentDateModule,
         CoreModule,
         LandingModule,
+        BsDatepickerModule.forRoot(),
     ],
     exports: [MomentDateModule],
     bootstrap: [AppComponent],

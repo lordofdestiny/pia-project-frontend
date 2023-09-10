@@ -1,35 +1,35 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DoctorComponent } from './doctor.component';
-import { DoctorProfileComponent } from './pages/doctor-profile/doctor-profile.component';
-import { RoleGuard } from '@core/guards/role.guard';
-import { SpecializationsResolver } from '@core/resolvers/specializations.resolver';
-import { MiscellaneousComponent } from './pages/miscellaneous/miscellaneous.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { DoctorComponent } from "./doctor.component";
+import { DoctorProfileComponent } from "./pages/doctor-profile/doctor-profile.component";
+import { RoleGuard } from "@core/guards/role.guard";
+import { SpecializationsResolver } from "@core/resolvers/specializations.resolver";
+import { MiscellaneousComponent } from "./pages/miscellaneous/miscellaneous.component";
 
 const routes: Routes = [
     {
-        path: '',
+        path: "",
         canActivate: [RoleGuard],
         data: {
-            expectedRole: 'doctor',
+            expectedRole: "doctor",
         },
         component: DoctorComponent,
         children: [
             {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: 'profile',
+                path: "",
+                pathMatch: "full",
+                redirectTo: "profile",
             },
             {
-                path: 'profile',
+                path: "profile",
                 resolve: {
                     specializations: SpecializationsResolver,
                 },
-                runGuardsAndResolvers: 'always',
+                runGuardsAndResolvers: "always",
                 component: DoctorProfileComponent,
             },
             {
-                path: 'miscellaneous',
+                path: "miscellaneous",
                 component: MiscellaneousComponent,
             },
         ],

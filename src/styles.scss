@@ -118,6 +118,15 @@ h3.subtitle {
     margin-bottom: 3rem;
 }
 
+h4.subsubtitle {
+    font-size: 2rem !important;
+    line-height: normal !important;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
 button.vacation-days {
     background: var(--accent);
     border-radius: 100%;
@@ -133,4 +142,7 @@ button.vacation-days {
     .mat-datepicker-content-touch .mat-datepicker-content-container-with-actions {
         height: auto !important;
     }
+}
+* {
+    scroll-margin-top: 100px;
 }

@@ -1,24 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 
-import { User } from '@core/models/users';
-import { AuthService } from '@core/services/auth.service';
-import { ProfileService } from '@core/services/profile.service';
-import { ProfileUpdates } from '@core/utils/profile-update-handlers';
-import { PictureEvent } from '@shared/components/editable-profile/editable-profile.component';
-import { ProfileUpdatedDialogComponent } from '@shared/components/profile-update-dialog/profiile-update-dialog.component';
+import { User } from "@core/models/users";
+import { AuthService } from "@core/services/auth.service";
+import { ProfileService } from "@core/services/profile.service";
+import { ProfileUpdates } from "@core/utils/profile-update-handlers";
+import { PictureEvent } from "@shared/components/editable-profile/editable-profile.component";
 
 @Component({
-    selector: 'app-patient-profile',
-    host: { class: 'container' },
+    selector: "app-patient-profile",
+    host: { class: "container" },
     template: `<div class="container">
         <app-editable-profile
             [(user)]="user"
             [styles]="styles"
             renderFor="patient"
             (profileEdited)="handleProfileEdited($event)"
-            (pictureEdited)="handlePictureEvent($event)"
-        >
+            (pictureEdited)="handlePictureEvent($event)">
         </app-editable-profile>
     </div>`,
 })
@@ -34,12 +32,9 @@ export class PatientProfileComponent implements OnInit, OnDestroy {
         private dialog: MatDialog
     ) {}
     styles = {
-        'font-size': '0.8rem',
+        "font-size": "0.8rem",
     };
-    profileUpdateHandlers = new ProfileUpdates(
-        this.profileService,
-        this.dialog
-    );
+    profileUpdateHandlers = new ProfileUpdates(this.profileService, this.dialog);
 
     handleProfileEdited(userChanges: Partial<User>) {
         this.profileUpdateHandlers.updateProfile(
@@ -56,7 +51,7 @@ export class PatientProfileComponent implements OnInit, OnDestroy {
 
     handlePictureEvent(event: PictureEvent) {
         switch (event.action) {
-            case 'edit':
+            case "edit":
                 return this.profileUpdateHandlers.updateAvatar(
                     this.userId,
                     event.picture,
@@ -67,7 +62,7 @@ export class PatientProfileComponent implements OnInit, OnDestroy {
                         this.user = this.authService.user;
                     }
                 );
-            case 'delete':
+            case "delete":
                 return this.profileUpdateHandlers.deleteAvatar(
                     this.userId,
                     (user) => {

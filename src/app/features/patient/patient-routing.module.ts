@@ -1,30 +1,30 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PatientComponent } from './patient.component';
-import { PatientProfileComponent } from './pages/patient-profile/patient-profile.component';
-import { DoctorsComponent } from './pages/doctors/doctors.component';
-import { ExaminationsComponent } from './pages/examinations/examinations.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { PatientComponent } from "./patient.component";
+import { PatientProfileComponent } from "./pages/patient-profile/patient-profile.component";
+import { DoctorsComponent } from "./pages/doctors/doctors.component";
+import { ExaminationsComponent } from "./pages/examinations/examinations.component";
 
 const routes: Routes = [
     {
-        path: '',
+        path: "",
         component: PatientComponent,
         children: [
             {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: 'profile',
+                path: "",
+                pathMatch: "full",
+                redirectTo: "profile",
             },
             {
-                path: 'profile',
+                path: "profile",
                 component: PatientProfileComponent,
             },
             {
-                path: 'doctors',
+                path: "doctors",
                 component: DoctorsComponent,
             },
             {
-                path: 'examinations',
+                path: "examinations",
                 component: ExaminationsComponent,
             },
         ],

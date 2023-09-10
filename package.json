@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "prestart": "node ./src/get_ip.js",
-    "start": "ng serve --open --host 0.0.0.0",
+    "start": "ng serve --open --watch --host 0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

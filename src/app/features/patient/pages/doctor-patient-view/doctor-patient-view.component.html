@@ -1,0 +1,62 @@
+<div class="container mt-5 ">
+    <button type="button" mat-raised-button class="goback" color="accent" routerLink="/patient/doctors">
+        <mat-icon>arrow_back_ios</mat-icon>
+        <span> Go back </span>
+    </button>
+    <div class="mb-lg-4 mb-md-4 mb-sm-2 d-flex align-items-center flex-row" [style.position]="'relative'">
+
+        <!-- <h1 class="page_title mx-auto">Doctor</h1> -->
+    </div>
+
+    <app-editable-profile [user]="doctor" renderFor="patient" [disabled]="true"
+        [styles]="{'margin-bottom' : '2rem', 'font-size':'1.2em'}">
+    </app-editable-profile>
+
+    <h3 class="subtitle">Examinations</h3>
+    <app-examinations-list class="mb-5" [examinations]="doctor.examinations" [disabled]="false"
+        noDataMessage="You are currently providing all examinations">
+        <ng-template examListBtns let-examination>
+            <button type="button" mat-raised-button color="primary"
+                [disabled]="examination.id === appointmentModel.examination?.id"
+                (click)="handleSelectedExamination(examination)">
+                Schedule
+            </button>
+        </ng-template>
+    </app-examinations-list>
+
+    <section class="container mt-5" #makeAppointment *ngIf="appointmentModel.examination as exam">
+        <h4 class="subsubtitle" [@flyInOut]>Schedule an appointment</h4>
+        <div class="form-appointment" [@flyInOut]>
+            <form #appointmentForm="ngForm" class="form">
+                <div class="left">
+                    <bs-datepicker-inline [name]="'date'" [bsValue]="initialDate" [bsConfig]="bsConfig" ngDefaultControl
+                        [(ngModel)]="appointmentModel.date" [required]="true"></bs-datepicker-inline>
+                    <div class="time">
+                        <p> Time</p>
+                        <timepicker [name]="'time'" [(ngModel)]="appointmentModel.time" [showMeridian]="false"
+                            [minuteStep]="5" [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"
+                            [min]="minTime" [max]="maxTime" [required]="true">
+                        </timepicker>
+                    </div>
+                </div>
+                <div class="right">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Examination</mat-label>
+                        <mat-select [name]="'examination'" [(ngModel)]="appointmentModel.examination" [required]="true">
+                            <mat-option *ngFor=" let examination of doctor.examinations" [value]="examination">
+                                {{examination.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="description">
+                        <p><b>Price:</b> {{exam.price | currency:"RSD"}}</p>
+                        <p><b>Duration:</b> {{exam.duration | minduration}}</p>
+                    </div>
+                    <button type="submit" color="accent" mat-raised-button
+                        [disabled]="appointmentForm.invalid">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>

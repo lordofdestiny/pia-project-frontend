@@ -1,0 +1,158 @@
+.page_title {
+    font-weight: bold;
+}
+
+.profile-card {
+    border-radius: 10px;
+    background-color: rgb(245, 222, 179, .15);
+}
+
+.goback {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    margin-inline: 0 auto;
+}
+
+.goback .mat-icon {
+    font-size: 1.2em;
+}
+
+.subsubtitle {
+    text-align: center;
+}
+
+.form-appointment {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    justify-content: space-evenly;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.form-appointment div.description {
+    font-size: 1.4rem !important;
+    display: inline-flex;
+    flex-flow: column wrap;
+    margin-bottom: 2rem;
+}
+
+.form-appointment div.description p {
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.form-appointment div.description b {
+    margin-inline-end: 1rem;
+    color: var(--primary);
+}
+
+.form-appointment .form {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0 5rem;
+    width: 100%;
+}
+
+.form-appointment .form .right {
+    padding-top: 1rem;
+    display: flex;
+    flex-flow: column wrap;
+    width: max-content;
+    height: 100%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .subsubtitle {
+        margin-bottom: 3rem;
+    }
+
+    .form-appointment .form .right {
+        flex-flow: row wrap;
+        gap: 0 2rem;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-appointment div.description {
+        margin-bottom: 0rem;
+    }
+}
+
+.form-appointment .form .left .time {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    font-weight: 500;
+    color: var(--accent);
+    justify-content: space-around;
+    width: 100%;
+    font-size: 1.5rem;
+    margin-block: 1rem;
+    padding-block: 0.5rem;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.form-appointment .form .left .time p {
+    margin-bottom: 0;
+}
+
+.form-appointment .form .right .time p {
+    margin-bottom: 0;
+}
+
+.form-appointment .form .right mat-form-field {
+    min-width: 350px;
+    font-size: 1.2rem;
+}
+
+
+.form-appointment .form .right button {
+    width: max-content;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+}
+
+:host ::ng-deep .bs-datepicker {
+    background-color: bg-color;
+    font-size: 1.5rem;
+    min-width: 350px;
+}
+
+:host ::ng-deep .bs-datepicker-body table td,
+:host ::ng-deep .bs-datepicker-body table th {
+    flex: 1;
+}
+
+:host ::ng-deep .bs-datepicker-body table td span {
+    font-size: 1.5rem;
+}
+
+:host ::ng-deep .bs-datepicker-body table tr {
+    padding: 0.25rem 0;
+    display: flex;
+    width: 100%;
+}
+
+:host ::ng-deep .bs-datepicker-container {
+    padding: 0;
+}
+
+:host ::ng-deep .bs-datepicker-head {
+    background-color: var(--primary);
+    color: var(--accent);
+}
+
+:host ::ng-deep .bs-datepicker-container,
+:host ::ng-deep .bs-media-container,
+:host ::ng-deep bs-days-calendar-view {
+    width: 100%;
+}
