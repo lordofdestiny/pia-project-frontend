@@ -6,7 +6,7 @@
                 <input matStartDate formControlName="start" placeholder="Start date">
                 <input matEndDate formControlName="end" placeholder="End date">
             </mat-date-range-input>
-            <mat-hint>DD.MM.YYYY – DD.MM.YYYY</mat-hint>
+            <mat-hint>DD.MM.YYYY - DD.MM.YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
             <mat-date-range-picker [dateClass]="dateClass" [touchUi]="isHandset$ | async" #rangePicker disabled="false"
                 [calendarHeaderComponent]="datepickerHeader">
@@ -21,8 +21,8 @@
         </mat-form-field>
         <button type="submit" mat-button color="primary" matSuffix
             [disabled]="dateRange.untouched || dateRange.invalid">
-            Add </button>
-
+            Add
+        </button>
     </form>
 
     <mat-divider class="mt-4"></mat-divider>

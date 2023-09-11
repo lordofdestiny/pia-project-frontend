@@ -102,7 +102,16 @@
                     <mat-error app-mat-err-msgs [errors]="errorMessages.password"></mat-error>
 
                 </mat-form-field>
-
+                <table class="password_reqs" *ngVar="group!.get('password'); let pwd">
+                    <tr *ngFor="let check of passwordChecks">
+                        <td *ngVar="check.regex.test(pwd!.value); let valid">
+                            <mat-icon *ngIf="!pwd!.dirty" color="accent">help</mat-icon>
+                            <mat-icon *ngIf="pwd!.dirty && valid" color="primary">check</mat-icon>
+                            <mat-icon *ngIf="pwd!.dirty && !valid" color="warn">cancel</mat-icon>
+                        </td>
+                        <td><span>{{check.error}}</span></td>
+                    </tr>
+                </table>
 
                 <mat-form-field appearance="fill" *ngVar="group!.get('confirm_password'); let cpwd">
                     <mat-label>Confirm password</mat-label>

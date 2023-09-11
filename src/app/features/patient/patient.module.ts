@@ -21,15 +21,15 @@ import { PatientComponent } from "./patient.component";
 import { PatientRoutingModule } from "./patient-routing.module";
 import { PatientProfileComponent } from "./pages/patient-profile/patient-profile.component";
 import { DoctorsComponent } from "./pages/doctors/doctors.component";
-import { ExaminationsComponent } from "./pages/examinations/examinations.component";
+import { PatientAppointmentsComponent } from "./pages/patient-appointments/patient-appointments.component";
 import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-patient-view.component";
 @NgModule({
     declarations: [
         PatientComponent,
         PatientProfileComponent,
         DoctorsComponent,
-        ExaminationsComponent,
         DoctorPatientViewComponent,
+        PatientAppointmentsComponent,
     ],
     imports: [
         // Angular

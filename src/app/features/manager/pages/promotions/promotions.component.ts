@@ -54,6 +54,7 @@ export class PromotionsComponent implements OnInit {
     handlePromotionAdded(promotion: Promotion) {
         this.promotions = [...this.promotions, promotion];
         this.dialog.open(ActionResultDialogComponent, {
+            panelClass: "dialog-color",
             data: {
                 success: true,
                 message: "Promotion added",
@@ -63,6 +64,7 @@ export class PromotionsComponent implements OnInit {
 
     handlePromotionAddedError(error: any) {
         this.dialog.open(ActionResultDialogComponent, {
+            panelClass: "dialog-color",
             data: {
                 success: false,
                 message: "Error adding promotion",

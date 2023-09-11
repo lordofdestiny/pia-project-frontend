@@ -7,36 +7,33 @@ import {
     ChangeDetectorRef,
     ChangeDetectionStrategy,
     ViewChild,
-} from '@angular/core';
-import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
+} from "@angular/core";
+import { FormBuilder, FormGroupDirective, Validators } from "@angular/forms";
 import {
     DateAdapter,
     MAT_DATE_FORMATS,
     MAT_DATE_LOCALE,
     MatDateFormats,
-} from '@angular/material/core';
+} from "@angular/material/core";
 import {
     MAT_MOMENT_DATE_ADAPTER_OPTIONS,
     MomentDateAdapter,
-} from '@angular/material-moment-adapter';
-import {
-    MatCalendar,
-    MatCalendarCellClassFunction,
-} from '@angular/material/datepicker';
+} from "@angular/material-moment-adapter";
+import { MatCalendar, MatCalendarCellClassFunction } from "@angular/material/datepicker";
 
-import { Doctor } from '@core/models/users';
-import { AuthService } from '@core/services/auth.service';
+import { Doctor } from "@core/models/users";
+import { AuthService } from "@core/services/auth.service";
 
-import { Subject, takeUntil } from 'rxjs';
-import { MY_FORMATS } from 'src/app/app.module';
-import { IsHandsetService } from '@core/services/is-handset.service';
-import { DoctorService } from '@core/services/doctor.service';
-import { moment } from '@core/utils/moment';
+import { Subject, takeUntil } from "rxjs";
+import { MY_FORMATS } from "src/app/app.module";
+import { IsHandsetService } from "@core/services/is-handset.service";
+import { DoctorService } from "@core/services/doctor.service";
+import { moment } from "@core/utils/moment";
 
 @Component({
-    selector: 'app-vacations',
-    templateUrl: './vacations.component.html',
-    styleUrls: ['./vacations.component.css'],
+    selector: "app-vacations",
+    templateUrl: "./vacations.component.html",
+    styleUrls: ["./vacations.component.css"],
     providers: [
         {
             provide: DateAdapter,
@@ -48,56 +45,40 @@ import { moment } from '@core/utils/moment';
     encapsulation: ViewEncapsulation.Emulated,
 })
 export class VacationsComponent implements OnInit {
-    minDate = moment().add(1, 'days').toDate();
+    minDate = moment().add(1, "days").toDate();
     datepickerHeader = DatepickerHeader;
 
     vacations =
         (this.authService.user as Doctor)?.vacations?.filter(({ end_date }) =>
-            moment(end_date).isAfter(moment(), 'days')
+            moment(end_date).isAfter(moment(), "days")
         ) ?? [];
     get initialDate() {
         return moment(this.vacations[this.vacations.length - 1]?.end_date)
-            .add(1, 'days')
+            .add(1, "days")
             .toDate();
     }
 
     dateRange = this.fb.group({
-        start: [
-            { value: this.initialDate, disabled: false },
-            Validators.required,
-        ],
-        end: [
-            { value: this.initialDate, disabled: false },
-            Validators.required,
-        ],
+        start: [{ value: this.initialDate, disabled: false }, Validators.required],
+        end: [{ value: this.initialDate, disabled: false }, Validators.required],
     });
     myFilter = (date: Date | null): boolean => {
         return !this.vacations.some((vacation) => {
-            return moment(date).isBetween(
-                vacation.start_date,
-                vacation.end_date,
-                'days',
-                '[]'
-            );
+            return moment(date).isBetween(vacation.start_date, vacation.end_date, "days", "[]");
         });
     };
     dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
-        if (view !== 'month') {
-            return '';
+        if (view !== "month") {
+            return "";
         }
         const highligh = this.vacations.some((vacation) =>
-            moment(cellDate).isBetween(
-                vacation.start_date,
-                vacation.end_date,
-                'days',
-                '[]'
-            )
+            moment(cellDate).isBetween(vacation.start_date, vacation.end_date, "days", "[]")
         );
-        if (moment(cellDate).isBefore(moment(), 'days')) {
-            return 'before-today';
+        if (moment(cellDate).isBefore(moment(), "days")) {
+            return "before-today";
         }
 
-        return highligh ? 'vacation-days' : '';
+        return highligh ? "vacation-days" : "";
     };
 
     constructor(
@@ -112,9 +93,8 @@ export class VacationsComponent implements OnInit {
     sorted(array: { start_date: Date; end_date: Date }[]) {
         return array
             .slice()
-            .sort(({ start_date: a }, { start_date: b }) =>
-                moment(a).isBefore(b) ? -1 : 1
-            );
+            .sort(({ start_date: a }, { start_date: b }) => (moment(a).isBefore(b) ? -1 : 1))
+            .filter(({ end_date }) => moment(end_date).isAfter(moment(), "days"));
     }
 
     ngOnInit(): void {}
@@ -143,29 +123,31 @@ export class VacationsComponent implements OnInit {
 }
 
 @Component({
-    selector: 'header',
+    selector: "header",
     template: `
         <div class="header">
             <button
                 mat-icon-button
                 class="double-arrow"
-                (click)="previousClicked('year')"
-            >
+                (click)="previousClicked('year')">
                 <mat-icon>keyboard_arrow_left</mat-icon>
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
-            <button mat-icon-button (click)="previousClicked('month')">
+            <button
+                mat-icon-button
+                (click)="previousClicked('month')">
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
             <span class="header-label">{{ periodLabel }}</span>
-            <button mat-icon-button (click)="nextClicked('month')">
+            <button
+                mat-icon-button
+                (click)="nextClicked('month')">
                 <mat-icon>keyboard_arrow_right</mat-icon>
             </button>
             <button
                 mat-icon-button
                 class="double-arrow"
-                (click)="nextClicked('year')"
-            >
+                (click)="nextClicked('year')">
                 <mat-icon>keyboard_arrow_right</mat-icon>
                 <mat-icon>keyboard_arrow_right</mat-icon>
             </button>
@@ -214,25 +196,22 @@ export class DatepickerHeader<D> implements OnDestroy {
 
     get periodLabel() {
         return this._dateAdapter
-            .format(
-                this._calendar.activeDate,
-                this._dateFormats.display.monthYearLabel
-            )
+            .format(this._calendar.activeDate, this._dateFormats.display.monthYearLabel)
             .toLocaleUpperCase();
     }
 
-    previousClicked(mode: 'month' | 'year') {
+    previousClicked(mode: "month" | "year") {
         this.handlePositionUpdate(mode, -1);
     }
 
-    nextClicked(mode: 'month' | 'year') {
+    nextClicked(mode: "month" | "year") {
         this.handlePositionUpdate(mode, 1);
     }
 
-    handlePositionUpdate(mode: 'month' | 'year', amount: number) {
+    handlePositionUpdate(mode: "month" | "year", amount: number) {
         const args: [D, number] = [this._calendar.activeDate, amount];
         this._calendar.activeDate =
-            mode === 'month'
+            mode === "month"
                 ? this._dateAdapter.addCalendarMonths(...args)
                 : this._dateAdapter.addCalendarYears(...args);
     }

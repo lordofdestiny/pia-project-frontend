@@ -1,9 +1,18 @@
-import { animate, keyframes, style, transition, trigger } from "@angular/animations";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
+import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Examination } from "@core/models/specialization";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { animate, keyframes, style, transition, trigger } from "@angular/animations";
+
+import { MatDialog } from "@angular/material/dialog";
+
+import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
+
 import { Doctor } from "@core/models/users";
+import { Examination } from "@core/models/specialization";
+import { AppointmentPatient } from "@core/models/appointment";
+import { AuthService } from "@core/services/auth.service";
+import { AppointmentsService } from "@core/services/appointments.service";
+import { ActionResultDialogComponent } from "@shared/components/action-success-dialog/action-success-dialog.component";
 import { moment } from "@core/utils/moment";
 
 @Component({
@@ -30,7 +39,6 @@ import { moment } from "@core/utils/moment";
     ],
 })
 export class DoctorPatientViewComponent implements OnInit {
-    username: string = this.route.snapshot.params["username"];
     doctor: Doctor = this.route.snapshot.data["doctor"];
 
     minTime = new Date();
@@ -39,7 +47,13 @@ export class DoctorPatientViewComponent implements OnInit {
     initialTime = new Date();
     bsConfig?: Partial<BsDatepickerConfig>;
 
-    constructor(private route: ActivatedRoute, protected router: Router) {
+    constructor(
+        private route: ActivatedRoute,
+        protected router: Router,
+        private dialog: MatDialog,
+        private authService: AuthService,
+        private appointmentsService: AppointmentsService
+    ) {
         this.minTime.setHours(7);
         this.minTime.setMinutes(0);
         this.maxTime.setHours(23);
@@ -80,5 +94,51 @@ export class DoctorPatientViewComponent implements OnInit {
         date: this.initialDate,
         time: this.initialTime,
     };
+
+    attemptAppointment(appointmentForm: NgForm) {
+        const { examination, date, time } = appointmentForm?.value;
+        const datetime = moment(date)
+            .set({
+                hour: time.getHours(),
+                minute: time.getMinutes(),
+                second: 0,
+            })
+            .toDate();
+        this.appointmentsService
+            .attemptAppointment({
+                doctorId: this.doctor.id,
+                patientId: this.authService.user.id!,
+                examinationId: examination!.id!,
+                datetime,
+            })
+            .subscribe({
+                next: this.handleAttemptedAppointmentSuccess.bind(this),
+                error: this.handleAttemptedAppointmentError.bind(this),
+            });
+    }
+
+    handleAttemptedAppointmentSuccess(appointment: AppointmentPatient) {
+        this.authService.user["appointments"] ??= [];
+        this.authService.user["appointments"].push(appointment);
+        this.router.navigate(["/patient/appointments"]);
+
+        this.dialog.open(ActionResultDialogComponent, {
+            panelClass: "dialog-color",
+            data: {
+                success: true,
+                message: "Appointment made successfully",
+            },
+        });
+    }
+    handleAttemptedAppointmentError(error: any) {
+        this.dialog.open(ActionResultDialogComponent, {
+            panelClass: "dialog-color",
+            data: {
+                success: false,
+                message: "Appointment could not be made.\n Doctor is not available at that time.",
+            },
+        });
+    }
+
     ngOnInit(): void {}
 }

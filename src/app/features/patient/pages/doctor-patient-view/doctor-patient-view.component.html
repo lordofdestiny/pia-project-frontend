@@ -14,7 +14,7 @@
 
     <h3 class="subtitle">Examinations</h3>
     <app-examinations-list class="mb-5" [examinations]="doctor.examinations" [disabled]="false"
-        noDataMessage="You are currently providing all examinations">
+        noDataMessage="This doctor is currently not providing any examinations">
         <ng-template examListBtns let-examination>
             <button type="button" mat-raised-button color="primary"
                 [disabled]="examination.id === appointmentModel.examination?.id"
@@ -27,22 +27,25 @@
     <section class="container mt-5" #makeAppointment *ngIf="appointmentModel.examination as exam">
         <h4 class="subsubtitle" [@flyInOut]>Schedule an appointment</h4>
         <div class="form-appointment" [@flyInOut]>
-            <form #appointmentForm="ngForm" class="form">
+            <form #appointmentForm="ngForm" class="form" (ngSubmit)="attemptAppointment(appointmentForm)">
                 <div class="left">
-                    <bs-datepicker-inline [name]="'date'" [bsValue]="initialDate" [bsConfig]="bsConfig" ngDefaultControl
-                        [(ngModel)]="appointmentModel.date" [required]="true"></bs-datepicker-inline>
+                    <bs-datepicker-inline name="date" [name]="'date'" [bsValue]="initialDate"
+                        (bsValueChange)="appointmentModel.date = $event" bsDatepicker [bsConfig]="bsConfig"
+                        ngDefaultControl [(ngModel)]="appointmentModel.date" [required]="true">
+                    </bs-datepicker-inline>
                     <div class="time">
                         <p> Time</p>
-                        <timepicker [name]="'time'" [(ngModel)]="appointmentModel.time" [showMeridian]="false"
-                            [minuteStep]="5" [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"
-                            [min]="minTime" [max]="maxTime" [required]="true">
+                        <timepicker name="time" [name]="'time'" [(ngModel)]="appointmentModel.time"
+                            [showMeridian]="false" [minuteStep]="5" [mousewheel]="true" [arrowkeys]="true"
+                            [showSpinners]="false" [min]="minTime" [max]="maxTime" [required]="true">
                         </timepicker>
                     </div>
                 </div>
                 <div class="right">
                     <mat-form-field appearance="outline">
                         <mat-label>Examination</mat-label>
-                        <mat-select [name]="'examination'" [(ngModel)]="appointmentModel.examination" [required]="true">
+                        <mat-select name="examination" [name]="'examination'" [(ngModel)]="appointmentModel.examination"
+                            [required]="true">
                             <mat-option *ngFor=" let examination of doctor.examinations" [value]="examination">
                                 {{examination.name}}
                             </mat-option>
