@@ -1,0 +1,155 @@
+:host {
+    display: block;
+}
+
+table.mat-table {
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+}
+
+table.mat-table tr.mat-row td.mat-cell button {
+    display: inline-table;
+    overflow: visible;
+    margin-inline: auto;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+    width: 25%;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+    padding-inline: 0;
+    width: 10%;
+}
+
+div.no-examinations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
+    color: var(--bg-color);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    font-weight: 500;
+    background-color: #ff4080;
+}
+
+tr.mat-header-row,
+tr.mat-row {
+    gap: 0 0.25rem;
+}
+
+tr.mat-header-row {
+    background-color: var(--accent);
+}
+
+th.mat-header-cell {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--bg-color);
+}
+
+td.mat-cell {
+    overflow: visible;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary)
+}
+
+.mobile-label {
+    display: none;
+}
+
+.buttons {
+    text-align: right;
+    width: 100%;
+    padding-inline: 0.5rem;
+}
+
+:host ::ng-deep .buttons button {
+    margin-inline-start: 0.5rem;
+    margin-block: 0.25rem
+}
+
+@media screen and (max-width: 992px) {
+
+    th.mat-header-cell:last-of-type,
+    td.mat-cell:last-of-type,
+    td.mat-footer-cell:last-of-type {
+        padding-inline: 0;
+        width: 15%;
+    }
+
+}
+
+@media(max-width: 768px) {
+    .buttons {
+        text-align: right;
+    }
+
+    :host ::ng-deep table.mat-table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table.mat-table {
+        box-shadow: none;
+        border: 0;
+
+    }
+
+    tr.mat-row {
+        padding: 0.25rem;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    tr.mat-row,
+    tr.mat-footer-row {
+        height: auto;
+    }
+
+    td.mat-cell:first-of-type,
+    td.mat-cell:last-of-type {
+        padding-inline: 0;
+    }
+
+    td.mat-cell {
+        display: block;
+        color: initial;
+        width: 100% !important;
+        text-align: right;
+        padding-block: 0.5rem;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-block: auto;
+        height: 100%;
+    }
+
+    table td:not(:last-child) {
+        border-bottom: 0;
+    }
+}

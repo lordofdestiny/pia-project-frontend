@@ -1,0 +1,73 @@
+::ng-deep .mat-list .mat-list-item .mat-line {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.mat-list-item {
+    /* padding: 0; */
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+    cursor: default;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+:host ::ng-deep .mat-list-item-content {
+    padding: 0 !important;
+}
+
+.header-field {
+    padding-inline: 1rem !important;
+    padding-block: 0.1rem !important;
+    color: var(--bg-color);
+    background-color: var(--accent);
+}
+
+.date-field {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+    text-align: right;
+    padding-block-start: 1rem !important;
+}
+
+
+.doctor-field {
+    font-size: 2rem;
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+}
+
+.spec-field {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    padding-bottom: 1rem !important;
+    border-bottom: 2px solid #ccc;
+}
+
+.report-field {
+    padding-inline: 2rem !important;
+    margin-block-end: 0.5rem !important;
+    font-size: 1.3rem !important;
+}
+
+.report-field:last-of-type {
+    margin-block-end: 0 !important;
+}
+
+.report-field .report-field-name {
+    font-weight: 600;
+    color: var(--primary);
+    margin-inline-end: 1rem;
+}
+
+.report-field .report-field-value {
+    word-spacing: 0.25rem;
+}
+
+.buttons {
+    text-align: right;
+    padding-inline: 2rem !important;
+    margin-block-end: 2rem !important;
+    overflow: visible !important;
+    height: min-content !important;
+}

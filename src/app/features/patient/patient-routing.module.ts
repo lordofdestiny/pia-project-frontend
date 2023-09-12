@@ -3,7 +3,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { PatientComponent } from "./patient.component";
 import { PatientProfileComponent } from "./pages/patient-profile/patient-profile.component";
 import { DoctorsComponent } from "./pages/doctors/doctors.component";
-import { PatientAppointmentsComponent as PatientAppointmentsComponent } from "./pages/patient-appointments/patient-appointments.component";
+import { AppointmentsReportsComponent } from "./pages/appointments-reports/appointments-reports.component";
+import { AppointmentsResolver } from "@core/resolvers/appointments.resolver";
 
 const routes: Routes = [
     {
@@ -25,7 +26,10 @@ const routes: Routes = [
             },
             {
                 path: "appointments",
-                component: PatientAppointmentsComponent,
+                resolve: {
+                    appointments: AppointmentsResolver,
+                },
+                component: AppointmentsReportsComponent,
             },
         ],
     },

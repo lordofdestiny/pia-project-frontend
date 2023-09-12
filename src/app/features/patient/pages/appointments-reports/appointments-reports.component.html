@@ -1,0 +1,35 @@
+<div class="container pb-5">
+    <h3 class="subtitle" #appointmentList>Appointments</h3>
+
+    <app-appointment-list type="patient" noDataMessage="You don't have any future appointments"
+        [appointments]="unfulfilledAppointments" [sort]="ascDateSort">
+        <ng-template appointmentListButtons let-appointment let-index="index">
+            <button type="button" mat-stroked-button color="warn" (click)="handleCancel(index, appointment)">
+                Cancel
+            </button>
+        </ng-template>
+    </app-appointment-list>
+</div>
+
+<div class="container">
+    <h3 class="subtitle">Reports</h3>
+    <div class="buttons">
+        Request all reports
+        <p-progressSpinner [style]="{width: '56px', height: '56px'}" *ngIf="loadingStates.get(-1)">
+        </p-progressSpinner>
+        <button type="button" mat-fab color="primary" *ngIf="!loadingStates.get(-1)" (click)="requestAll()">
+            <mat-icon>save_alt</mat-icon>
+        </button>
+    </div>
+    <app-report-list type="patient" noDataMessage="You don't have any completed appointments"
+        [appointments]="fulfilledAppointments" [sort]="dscDateSort">
+        <ng-template reportListButtons let-appointment let-index="index">
+            <p-progressSpinner [style]="{width: '56px', height: '56px'}"
+                *ngIf="loadingStates.get(index)"></p-progressSpinner>
+            <button type="button" class="report-button" mat-fab color="primary"
+                (click)="requestReport(appointment, index)" *ngIf="!loadingStates.get(index)">
+                <mat-icon>save_alt</mat-icon>
+            </button>
+        </ng-template>
+    </app-report-list>
+</div>

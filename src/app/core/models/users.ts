@@ -1,6 +1,7 @@
-import { Examination, Specialization } from './specialization';
+import { AppointmentDoctor, AppointmentPatient } from "./appointment";
+import { Examination, Specialization } from "./specialization";
 
-export type UserRole = 'patient' | 'doctor' | 'manager';
+export type UserRole = "patient" | "doctor" | "manager";
 
 export interface UserBase {
     id: string;
@@ -18,8 +19,8 @@ export interface UserBase {
 
 export type User = Patient | Doctor | Manager;
 export type Patient = UserBase & {
-    type: 'patient';
-    status: 'created' | 'active' | 'deleted';
+    type: "patient";
+    status: "created" | "active" | "deleted";
 };
 
 export type Vacation = {
@@ -28,7 +29,7 @@ export type Vacation = {
 };
 
 export type Doctor = UserBase & {
-    type: 'doctor';
+    type: "doctor";
     specialization: Specialization;
     examinations: Examination[];
     licence_number: string;
@@ -37,7 +38,7 @@ export type Doctor = UserBase & {
 };
 
 export type Manager = UserBase & {
-    type: 'manager';
+    type: "manager";
 };
 
-export type UserCredentials = Pick<User, 'username' | 'password'>;
+export type UserCredentials = Pick<User, "username" | "password">;

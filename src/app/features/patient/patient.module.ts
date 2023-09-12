@@ -16,12 +16,15 @@ import { MatInputModule } from "@angular/material/input";
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 
+// PrimeNG
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+
 import { SharedModule } from "@shared/shared.module";
 import { PatientComponent } from "./patient.component";
 import { PatientRoutingModule } from "./patient-routing.module";
 import { PatientProfileComponent } from "./pages/patient-profile/patient-profile.component";
 import { DoctorsComponent } from "./pages/doctors/doctors.component";
-import { PatientAppointmentsComponent } from "./pages/patient-appointments/patient-appointments.component";
+import { AppointmentsReportsComponent } from "./pages/appointments-reports/appointments-reports.component";
 import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-patient-view.component";
 @NgModule({
     declarations: [
@@ -29,7 +32,7 @@ import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-p
         PatientProfileComponent,
         DoctorsComponent,
         DoctorPatientViewComponent,
-        PatientAppointmentsComponent,
+        AppointmentsReportsComponent,
     ],
     imports: [
         // Angular
@@ -47,6 +50,8 @@ import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-p
         // Ngx-Bootstrap
         TimepickerModule.forRoot(),
         BsDatepickerModule.forRoot(),
+        // PrimeNG
+        ProgressSpinnerModule,
         // My Modules
         SharedModule,
         PatientRoutingModule,

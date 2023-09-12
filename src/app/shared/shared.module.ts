@@ -4,7 +4,6 @@ import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // Angular Material
-import { MatNativeDateModule, MAT_DATE_FORMATS } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
@@ -13,6 +12,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTableModule } from "@angular/material/table";
+import { MatListModule } from "@angular/material/list";
 
 import { MaterialFileInputModule } from "ngx-material-file-input";
 
@@ -35,21 +35,29 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { TooltipModule } from "primeng/tooltip";
 
 import { DebugPipe } from "@shared/pipes/debug.pipe";
+import { FullNamePipe } from "@shared/pipes/full-name.pipe";
+import { MindurationPipe } from "@shared/pipes/minduration.pipe";
 import { HoldDirective } from "@shared/directives/hold.directive";
 import { NgVarDirective } from "@shared/directives/ng-var.directive";
 import { BackButtonDirective } from "@shared/directives/back-button.directive";
 import { DoctorListComponent } from "@shared/components/doctor-list/doctor-list.component";
 import { EditableProfileComponent } from "@shared/components/editable-profile/editable-profile.component";
 import { MatErrMsgsComponent } from "@shared/components/mat-err-msgs/mat-err-msgs.component";
-import { EditImageComponent } from "./components/edit-image/edit-image.component";
-import { ProfileUpdatedDialogComponent } from "./components/profile-update-dialog/profiile-update-dialog.component";
-import { MindurationPipe } from "./pipes/minduration.pipe";
-import { ActionResultDialogComponent } from "./components/action-success-dialog/action-success-dialog.component";
+import { EditImageComponent } from "@shared/components/edit-image/edit-image.component";
+import { ProfileUpdatedDialogComponent } from "@shared/components/profile-update-dialog/profiile-update-dialog.component";
+import { ActionResultDialogComponent } from "@shared/components/action-success-dialog/action-success-dialog.component";
 import {
     ExaminationsListButtonsDirective,
     ExaminationsListComponent,
 } from "@shared/components/examinations-list/examinations-list.component";
-import { FullNamePipe } from "./pipes/full-name.pipe";
+import {
+    AppointmentListComponent,
+    AppointmentListButtonsDirective,
+} from "@shared/components/appointment-list/appointment-list.component";
+import {
+    ReportListButtonsDirective,
+    ReportListComponent,
+} from "./components/report-list/report-list.component";
 
 @NgModule({
     declarations: [
@@ -65,8 +73,12 @@ import { FullNamePipe } from "./pipes/full-name.pipe";
         DoctorListComponent,
         ProfileUpdatedDialogComponent,
         ActionResultDialogComponent,
-        ExaminationsListButtonsDirective,
         ExaminationsListComponent,
+        ExaminationsListButtonsDirective,
+        AppointmentListComponent,
+        AppointmentListButtonsDirective,
+        ReportListComponent,
+        ReportListButtonsDirective,
     ],
 
     imports: [
@@ -85,6 +97,7 @@ import { FullNamePipe } from "./pipes/full-name.pipe";
         MatDialogModule,
         MatButtonModule,
         MatTableModule,
+        MatListModule,
         // PrimeNG
         KeyFilterModule,
         FormsModule,
@@ -107,18 +120,22 @@ import { FullNamePipe } from "./pipes/full-name.pipe";
         MaterialFileInputModule,
     ],
     exports: [
-        MatErrMsgsComponent,
-        EditableProfileComponent,
-        DoctorListComponent,
-        BackButtonDirective,
-        ActionResultDialogComponent,
-        ExaminationsListButtonsDirective,
-        ExaminationsListComponent,
         DebugPipe,
         FullNamePipe,
         MindurationPipe,
         HoldDirective,
         NgVarDirective,
+        MatErrMsgsComponent,
+        EditableProfileComponent,
+        DoctorListComponent,
+        BackButtonDirective,
+        ActionResultDialogComponent,
+        ExaminationsListComponent,
+        ExaminationsListButtonsDirective,
+        AppointmentListComponent,
+        AppointmentListButtonsDirective,
+        ReportListComponent,
+        ReportListButtonsDirective,
     ],
 })
 export class SharedModule {}

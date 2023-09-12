@@ -1,0 +1,72 @@
+<table mat-table [dataSource]="appointments" class="mat-elevation-z4 w-100"
+    *ngIf="(appointments?.length??-1) > 0; else noExaminations">
+
+    <ng-container matColumnDef="examination">
+        <th mat-header-cell *matHeaderCellDef>Exam</th>
+        <td mat-cell *matCellDef="let element" data-label="Exam">
+            <ng-container *ngVar="asBase(element).examination; let exam">
+                {{exam.name}}
+            </ng-container>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element" data-label="Date">
+            {{element.datetime | date:'dd.MM.yyyy.'}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef> Time </th>
+        <td mat-cell *matCellDef="let element" data-label="Time">
+            {{element.datetime | date:'HH:mm'}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef> Branch </th>
+        <td mat-cell *matCellDef="let element" data-label="Branch">
+            <ng-container *ngVar="asPatient(element).doctor; let doctor">
+                {{doctor.branch}}
+            </ng-container>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="patient">
+        <th mat-header-cell *matHeaderCellDef> Patient </th>
+        <td mat-cell *matCellDef="let element" data-label="Patient">
+            <ng-container *ngVar="asDoctor(element).patient; let patient">
+                {{patient | full_name}}
+            </ng-container>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctor">
+        <th mat-header-cell *matHeaderCellDef> Doctor </th>
+        <td mat-cell *matCellDef="let element" data-label="Doctor">
+            <ng-container *ngVar="asPatient(element).doctor; let doctor">
+                {{doctor | full_name}}
+            </ng-container>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let appointmnet; let i = index">
+            <div class="buttons">
+                <ng-container *ngTemplateOutlet="buttons.templateRef;context:{$implicit :appointmnet, index : i}">
+                </ng-container>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="headerRows"> </tr>
+    <tr mat-row *matRowDef="let row; columns: headerRows;"></tr>
+</table>
+
+<ng-template #noExaminations>
+    <div class="no-examinations mat-elevation-z4">
+        <p>{{noDataMessage}}</p>
+    </div>
+</ng-template>

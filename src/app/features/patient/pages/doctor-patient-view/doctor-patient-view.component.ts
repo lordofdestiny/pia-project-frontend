@@ -112,15 +112,17 @@ export class DoctorPatientViewComponent implements OnInit {
                 datetime,
             })
             .subscribe({
-                next: this.handleAttemptedAppointmentSuccess.bind(this),
+                next: this.handleAttemptedAppointmentSuccess.bind(this, appointmentForm),
                 error: this.handleAttemptedAppointmentError.bind(this),
             });
     }
 
-    handleAttemptedAppointmentSuccess(appointment: AppointmentPatient) {
-        this.authService.user["appointments"] ??= [];
-        this.authService.user["appointments"].push(appointment);
-        this.router.navigate(["/patient/appointments"]);
+    handleAttemptedAppointmentSuccess(form: NgForm, appointment: AppointmentPatient) {
+        form.resetForm({
+            examination: null,
+            date: this.initialDate,
+            time: this.initialTime,
+        });
 
         this.dialog.open(ActionResultDialogComponent, {
             panelClass: "dialog-color",

@@ -1,0 +1,33 @@
+<mat-list *ngIf="appointments">
+    <mat-list-item *ngFor="let app of appointments;let i = index">
+        <p matLine class="header-field date-field">
+            {{app.datetime | date:"dd.MM.yyyy"}} - {{app.datetime | date:"HH:mm"}}
+        </p>
+        <p matLine class="header-field doctor-field">
+            {{asPatient(app).doctor | full_name}}
+        </p>
+        <p matLine class="header-field spec-field">
+            {{asPatient(app).doctor.specialization.name | uppercase}}
+        </p>
+        <p matLine class="report-field" [style.margin-block-start.rem]="1">
+            <span class="report-field-name"> Visited for:</span>
+            <span class="report-field-value">{{app.report!.reason}}</span>
+        </p>
+        <p matLine class="report-field">
+            <span class="report-field-name">Diagnosis:</span>
+            <span class="report-field-value">{{app.report!.diagnosis}}</span>
+        </p>
+        <p matLine class="report-field">
+            <span class="report-field-name">Prescribe therapy: </span>
+            <span class="report-field-value">{{app.report!.therapy}}</span>
+        </p>
+        <p matLine class="report-field">
+            <span class="report-field-name">Followup date:</span>
+            <span class="report-field-value">{{app.report!.followup | date:"dd.MM.yyyy"}}</span>
+        </p>
+        <div matLine class="buttons" *ngIf="buttons?.templateRef">
+            <ng-container *ngTemplateOutlet="buttons.templateRef;context:{$implicit :app, index : i}">
+            </ng-container>
+        </div>
+    </mat-list-item>
+</mat-list>
