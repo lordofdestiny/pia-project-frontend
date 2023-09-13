@@ -61,24 +61,28 @@ import {
 
 @NgModule({
     declarations: [
+        // Pipes
         DebugPipe,
         FullNamePipe,
         MindurationPipe,
+        // Directives
         HoldDirective,
         NgVarDirective,
         BackButtonDirective,
+        // Components
         MatErrMsgsComponent,
         EditableProfileComponent,
         EditImageComponent,
         DoctorListComponent,
-        ProfileUpdatedDialogComponent,
-        ActionResultDialogComponent,
         ExaminationsListComponent,
         ExaminationsListButtonsDirective,
         AppointmentListComponent,
         AppointmentListButtonsDirective,
         ReportListComponent,
         ReportListButtonsDirective,
+        // Dialogs components
+        ProfileUpdatedDialogComponent,
+        ActionResultDialogComponent,
     ],
 
     imports: [

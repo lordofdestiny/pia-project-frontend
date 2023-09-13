@@ -10,6 +10,7 @@ import { NotLoggedInGurad } from "@core/guards/notloggedin.guard";
 import { PageNotFoundComponent } from "@core/components/page-not-found/page-not-found.component";
 import { SpecializationsResolver } from "@core/resolvers/specializations.resolver";
 import { DoctorPatientViewComponent } from "@features/patient/pages/doctor-patient-view/doctor-patient-view.component";
+import { PatientPastAppointmentsComponent } from "./features/doctor/pages/patient-past-appointments/patient-past-appointments.component";
 
 export const appRoutes: Routes = [
     {
@@ -23,6 +24,15 @@ export const appRoutes: Routes = [
             import("@features/user-auth/user-auth.module").then(
                 ({ UserAuthModule }) => UserAuthModule
             ),
+    },
+    {
+        path: "patients/:id",
+        canLoad: [RoleGuard],
+        canActivate: [RoleGuard],
+        data: {
+            expectedRole: "doctor",
+        },
+        component: PatientPastAppointmentsComponent,
     },
     {
         path: "patient",

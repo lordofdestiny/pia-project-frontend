@@ -26,15 +26,23 @@ export class AppointmentListComponent implements OnInit {
     readonly docorHeaderRows = ["patient", "date", "time", "examination", "actions"];
     private _type?: AppointmentType;
     @Input() set type(value: AppointmentType) {
-        if (value === "patient") {
-            this.headerRows = this.patientHeaderRows;
-        } else if (value === "doctor") {
-            this.headerRows = this.docorHeaderRows;
-        }
         this._type = value;
     }
     get type(): AppointmentType {
         return this._type as AppointmentType;
+    }
+
+    get headerRows(): string[] {
+        if (this.type === "patient") {
+            return this.buttons?.templateRef
+                ? this.patientHeaderRows
+                : this.patientHeaderRows.slice(0, -1);
+        } else if (this.type === "doctor") {
+            return this.buttons?.templateRef
+                ? this.docorHeaderRows
+                : this.docorHeaderRows.slice(0, -1);
+        }
+        return [];
     }
 
     private _appointments: AppointmentBase<any>[] = [];
@@ -75,7 +83,6 @@ export class AppointmentListComponent implements OnInit {
     }
 
     ngOnInit(): void {}
-    headerRows: string[] = [];
 
     @ContentChild(AppointmentListButtonsDirective)
     buttons!: AppointmentListButtonsDirective;

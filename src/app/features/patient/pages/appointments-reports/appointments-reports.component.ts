@@ -116,7 +116,7 @@ export class AppointmentsReportsComponent implements OnInit {
 
     requestAll() {
         this.loadingStates.set(-1, true);
-        this.appointmentsService.requestFullPdfReport("").subscribe({
+        this.appointmentsService.requestFullPdfReport().subscribe({
             next: this.handleReportRequestSuccess.bind(this),
             error: this.handleReportRequestFailed.bind(this),
             complete: () => this.loadingStates.set(-1, false),

@@ -1,0 +1,13 @@
+::ng-deep .p-dialog .p-dialog-header {
+    color: var(--accent);
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+    background-color: var(--bg-color);
+}

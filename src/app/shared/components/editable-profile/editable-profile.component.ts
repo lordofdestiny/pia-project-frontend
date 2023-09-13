@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 import {
     Component,
     Input,
@@ -9,47 +9,43 @@ import {
     EventEmitter,
     SimpleChanges,
     AfterViewInit,
-} from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { BehaviorSubject, of } from 'rxjs';
+} from "@angular/core";
+import { AbstractControl, FormBuilder, Validators } from "@angular/forms";
+import { BehaviorSubject, of } from "rxjs";
 
-import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { ShowOnDirtyErrorStateMatcher } from "@angular/material/core";
 
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 
-import { AuthService } from '@core/services/auth.service';
-import {
-    emailRegex,
-    phoneRegex,
-    usernameRegex,
-} from '@core/constants/verification-regex';
+import { AuthService } from "@core/services/auth.service";
+import { emailRegex, phoneRegex, usernameRegex } from "@core/constants/verification-regex";
 import {
     UniqueCredentialValidator,
     UniqueEmailValidator,
     UniqueUsernameValidator,
-} from '@core/services/unique-creds.service';
-import { Specialization } from '@core/models/specialization';
+} from "@core/services/unique-creds.service";
+import { Specialization } from "@core/models/specialization";
 
-import { EditImageComponent } from '@shared/components/edit-image/edit-image.component';
+import { EditImageComponent } from "@shared/components/edit-image/edit-image.component";
 
-import { FieldBase, baseFieldConfig } from '@core/utils/profile-fields';
-import { ErrorMessages } from '@core/utils/form-error-messages';
-import { Doctor, Manager, Patient, User, UserRole } from '@core/models/users';
-import '@core/utils/object';
+import { FieldBase, baseFieldConfig } from "@core/utils/profile-fields";
+import { ErrorMessages } from "@core/utils/form-error-messages";
+import { Doctor, Manager, Patient, User, UserRole } from "@core/models/users";
+import "@core/utils/object";
 
-export type PictureEventAction = 'edit' | 'cancel' | 'delete';
+export type PictureEventAction = "edit" | "cancel" | "delete";
 export interface PictureEventBase {
     action: PictureEventAction;
     picture?: File;
 }
 export type PictureEvent =
-    | (PictureEventBase & { action: 'edit'; picture: File })
-    | (PictureEventBase & { action: 'cancel' | 'delete'; picture?: undefined });
+    | (PictureEventBase & { action: "edit"; picture: File })
+    | (PictureEventBase & { action: "cancel" | "delete"; picture?: undefined });
 
 @Component({
-    selector: 'app-editable-profile',
-    templateUrl: './editable-profile.component.html',
-    styleUrls: ['./editable-profile.component.css'],
+    selector: "app-editable-profile",
+    templateUrl: "./editable-profile.component.html",
+    styleUrls: ["./editable-profile.component.css"],
     providers: [DialogService],
 })
 export class EditableProfileComponent<T extends Patient | Doctor | Manager>
@@ -72,38 +68,28 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     private emailValidator = new UniqueEmailValidator(this.authService);
     private usernameValidator = new UniqueUsernameValidator(this.authService);
     profileForm = this.fb.group({
-        first_name: ['', [Validators.required]],
-        last_name: ['', [Validators.required]],
+        first_name: ["", [Validators.required]],
+        last_name: ["", [Validators.required]],
         email: [
-            '',
+            "",
             [Validators.required, Validators.pattern(emailRegex)],
-            [
-                this.uniqueAndNotMineValidator(
-                    'email',
-                    this.emailValidator
-                ).bind(this),
-            ],
+            [this.uniqueAndNotMineValidator("email", this.emailValidator).bind(this)],
         ],
         username: [
-            '',
+            "",
             [
                 Validators.required,
                 Validators.minLength(4),
                 Validators.maxLength(20),
                 Validators.pattern(usernameRegex),
             ],
-            [
-                this.uniqueAndNotMineValidator(
-                    'username',
-                    this.usernameValidator
-                ).bind(this),
-            ],
+            [this.uniqueAndNotMineValidator("username", this.usernameValidator).bind(this)],
         ],
-        phone: ['', [Validators.required, Validators.pattern(phoneRegex)]],
-        address: ['', [Validators.required]],
-        branch: '',
-        specialization: '',
-        licence_number: '',
+        phone: ["", [Validators.required, Validators.pattern(phoneRegex)]],
+        address: ["", [Validators.required]],
+        branch: "",
+        specialization: "",
+        licence_number: "",
     });
 
     fieldConfig?: FieldBase<string>[];
@@ -116,14 +102,10 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
         private authService: AuthService,
         public dialogService: DialogService
     ) {
-        this.specializations =
-            this.route.snapshot.data['specializations'] ?? [];
+        this.specializations = this.route.snapshot.data["specializations"] ?? [];
     }
 
-    uniqueAndNotMineValidator(
-        field: 'email' | 'username',
-        validator: UniqueCredentialValidator
-    ) {
+    uniqueAndNotMineValidator(field: "email" | "username", validator: UniqueCredentialValidator) {
         return (control: AbstractControl) => {
             if (control.value === this.user?.[field]) {
                 return of(null);
@@ -133,13 +115,13 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     }
     protected resetField(key: string, event?: Event) {
         event?.stopPropagation?.();
-        if (key === 'specialization' && this.user?.type === 'doctor') {
+        if (key === "specialization" && this.user?.type === "doctor") {
             this.profileForm.patchValue({
                 specialization: this.user?.specialization?.id ?? null,
             });
         } else {
             this.profileForm.patchValue({
-                [key]: this.user?.[key] ?? '',
+                [key]: this.user?.[key] ?? "",
             });
         }
         this.profileForm.get(key)?.markAsPristine();
@@ -172,11 +154,11 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
 
     protected resetForm() {
         this.profileForm.patchValue(this.user as any);
-        if (this.user?.type === 'doctor') {
+        if (this.user?.type === "doctor") {
             const spec = this.specializations.find(
                 ({ id }) => id === this.user?.specialization?.id
             );
-            if (this.profileForm.get('specialization')) {
+            if (this.profileForm.get("specialization")) {
                 this.profileForm.patchValue({
                     specialization: spec?.id ?? null,
                 });
@@ -187,32 +169,30 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     }
 
     protected fieldEdited(key: string) {
-        if (key === 'specialization') {
+        if (key === "specialization") {
             return this.profileForm.get(key)?.value !== this.user?.[key]?.id;
         }
         return this.profileForm.get(key)?.value !== this.user?.[key];
     }
 
     get formEdited(): boolean {
-        return (
-            this.fieldConfig?.some(({ key }) => this.fieldEdited(key)) ?? false
-        );
+        return this.fieldConfig?.some(({ key }) => this.fieldEdited(key)) ?? false;
     }
 
     private createEditImageDialog() {
         return this.dialogService.open(EditImageComponent, {
             data: {
                 profile_picture: this.user?.profile_picture,
-                forManager: this.renderFor === 'manager',
+                forManager: this.renderFor === "manager",
             },
-            header: 'Edit profile picture',
-            width: '70%',
+            header: "Edit profile picture",
+            width: "70%",
             draggable: false,
             resizable: true,
-            styleClass: 'edit-image-modal',
+            styleClass: "edit-image-modal",
             contentStyle: {
-                overflow: 'auto',
-                backgroundColor: 'var(--bg-color)',
+                overflow: "auto",
+                backgroundColor: "var(--bg-color)",
             },
             modal: true,
             baseZIndex: 10000,
@@ -221,12 +201,12 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
 
     dialogRef: DynamicDialogRef | undefined;
     protected openEditImageModal() {
-        this.createEditImageDialog().onClose.subscribe(
-            (event: PictureEvent = { action: 'cancel' }) => {
+        const subscription = this.createEditImageDialog().onClose.subscribe(
+            (event: PictureEvent = { action: "cancel" }) => {
                 const { action, picture } = event;
-                if (action === 'edit') {
+                if (action === "edit") {
                     this.pictureEdited.emit({
-                        action: 'edit',
+                        action: "edit",
                         picture,
                     });
                 } else {
@@ -234,6 +214,7 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
                         action,
                     });
                 }
+                subscription.unsubscribe();
             }
         );
     }
@@ -242,12 +223,12 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     private addDoctorControls() {
         if (this.addedControls) return;
         this.addedControls = true;
-        if (this.renderFor === 'doctor') {
-            this.profileForm.get('email')?.disable();
+        if (this.renderFor === "doctor") {
+            this.profileForm.get("email")?.disable();
         }
         this.profileForm.setControl(
-            'licence_number' as any,
-            this.fb.control('', [
+            "licence_number" as any,
+            this.fb.control("", [
                 Validators.required,
                 Validators.minLength(5),
                 Validators.maxLength(12),
@@ -255,21 +236,20 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
             ])
         );
         this.profileForm.setControl(
-            'specialization' as any,
+            "specialization" as any,
             this.fb.control(null, [Validators.required])
         );
         this.profileForm.setControl(
-            'branch' as any,
-            this.fb.control(
-                { value: '', disabled: this.renderFor === 'doctor' },
-                [Validators.required]
-            )
+            "branch" as any,
+            this.fb.control({ value: "", disabled: this.renderFor === "doctor" }, [
+                Validators.required,
+            ])
         );
     }
 
     loaded = false;
     ngOnInit(): void {
-        if (this.renderFor === 'doctor') {
+        if (this.renderFor === "doctor") {
             this.addDoctorControls();
         }
         this.profileForm.valueChanges.subscribe((value) => {
@@ -282,22 +262,21 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     ngAfterViewInit(): void {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes?.['user']?.isFirstChange()) {
+        if (changes?.["user"]?.isFirstChange()) {
             this.fieldConfig = baseFieldConfig(
-                this.user?.type ?? 'patient',
-                this.renderFor ?? 'manager'
+                this.user?.type ?? "patient",
+                this.renderFor ?? "manager"
             );
-            if (this.user?.type === 'doctor') {
-                this.fieldConfig.find(
-                    ({ key }) => key === 'specialization'
-                )!.options = this.specializations;
+            if (this.user?.type === "doctor") {
+                this.fieldConfig.find(({ key }) => key === "specialization")!.options =
+                    this.specializations;
                 this.addDoctorControls();
             }
         }
-        if (changes?.['user']) {
+        if (changes?.["user"]) {
             this.resetForm();
         }
-        if (changes['disabled']?.currentValue) {
+        if (changes["disabled"]?.currentValue) {
             this.profileForm.disable();
         } else {
             this.profileForm.enable();

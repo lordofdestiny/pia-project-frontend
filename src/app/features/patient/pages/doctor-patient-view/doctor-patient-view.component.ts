@@ -44,7 +44,7 @@ export class DoctorPatientViewComponent implements OnInit {
     minTime = new Date();
     maxTime = new Date();
     initialDate = new Date();
-    initialTime = new Date();
+    initialTime = moment().add(1, "hours").startOf("hour").toDate();
     bsConfig?: Partial<BsDatepickerConfig>;
 
     constructor(
@@ -68,12 +68,17 @@ export class DoctorPatientViewComponent implements OnInit {
         if (this.initialTime.getHours() > this.maxTime.getHours()) {
             this.initialTime.setHours(this.minTime.getHours());
             this.initialTime.setMinutes(0);
-            this.initialDate = moment(this.initialDate).add(1, "days").toDate();
+            this.initialDate = moment(this.initialDate).add(1, "days").startOf("day").toDate();
         }
         this.bsConfig = {
             containerClass: "theme-default",
             dateInputFormat: "DD-MM-YYYY",
-            minDate: new Date(),
+            minDate: (() => {
+                const date = moment();
+                if (date.hour() > 23) date.add(1, "days");
+                date.hour(7).minute(0);
+                return date.toDate();
+            })(),
         };
     }
 

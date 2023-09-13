@@ -7,7 +7,6 @@
 // @import "primeflex/primeflex.css"; // Conflict with bootstrap
 @import "primeicons/primeicons.css";
 
-/* You can add global styles to this file, and also import other style files */
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 
@@ -143,4 +142,32 @@ button.vacation-days {
 }
 * {
     scroll-margin-top: 100px;
+}
+
+.eventWithcomment {
+    white-space: pre-line;
+}
+
+.fc-timegrid-slot {
+    height: 3em !important;
+    border-bottom: 0 !important;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--primary);
+    font-family: "Ubuntu", "Roboto", "Helvetica Neue", sans-serif;
+}
+
+.fc.fc-theme-standard .fc-toolbar .fc-button {
+    background-color: var(--accent);
+    color: var(--bg-color);
+}
+
+.fc.fc-theme-standard .fc-toolbar .fc-button:disabled {
+    background-color: var(--bg-color);
+    color: var(--accent);
+}
+
+.cdk-overlay-container {
+    z-index: 12000 !important;
 }

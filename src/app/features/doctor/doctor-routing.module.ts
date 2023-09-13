@@ -1,10 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DoctorComponent } from "./doctor.component";
-import { DoctorProfileComponent } from "./pages/doctor-profile/doctor-profile.component";
 import { RoleGuard } from "@core/guards/role.guard";
+
+import { AppointmentsResolver } from "@core/resolvers/appointments.resolver";
 import { SpecializationsResolver } from "@core/resolvers/specializations.resolver";
+
+import { DoctorComponent } from "./doctor.component";
+import { AppointmentsComponent } from "./pages/appointments/appointments.component";
 import { MiscellaneousComponent } from "./pages/miscellaneous/miscellaneous.component";
+import { DoctorProfileComponent } from "./pages/doctor-profile/doctor-profile.component";
 
 const routes: Routes = [
     {
@@ -27,6 +31,14 @@ const routes: Routes = [
                 },
                 runGuardsAndResolvers: "always",
                 component: DoctorProfileComponent,
+            },
+            {
+                path: "appointments",
+                resolve: {
+                    appointments: AppointmentsResolver,
+                },
+                runGuardsAndResolvers: "always",
+                component: AppointmentsComponent,
             },
             {
                 path: "miscellaneous",

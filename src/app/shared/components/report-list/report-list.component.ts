@@ -64,5 +64,5 @@ export class ReportListComponent implements OnInit {
     ngOnInit(): void {}
 
     @ContentChild(ReportListButtonsDirective)
-    buttons!: ReportListButtonsDirective;
+    buttons?: ReportListButtonsDirective;
 }

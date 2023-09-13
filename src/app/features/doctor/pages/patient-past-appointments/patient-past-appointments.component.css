@@ -1,0 +1,14 @@
+.patient-data {
+    font-size: 1.3rem;
+    margin-block: 5rem 2.5rem;
+    text-align: left;
+}
+
+.patient-data dt {
+    font-size: 1.4rem;
+    color: var(--primary);
+}
+
+.patient-data dd {
+    text-indent: 1rem;
+}

@@ -46,6 +46,7 @@ export interface AppointmentDoctor extends AppointmentBase<"doctor"> {
     doctor: string;
     patient: {
         id: string;
+        username: string;
         first_name: string;
         last_name: string;
     };

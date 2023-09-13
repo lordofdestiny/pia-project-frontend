@@ -1,0 +1,23 @@
+<div class="container pb-5">
+    <h3 class="subtitle">
+        Upcomming Appointments
+    </h3>
+
+    <app-appointment-list type="doctor" [appointments]="upcommingAppointments.slice(0,3)">
+    </app-appointment-list>
+</div>
+
+
+<div class="container calendar-container pb-5 mb-4">
+    <h3 class="subtitle">Two week calendar</h3>
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+</div>
+
+<div class="container">
+    <h3 class="subtitle">Add reports</h3>
+    <app-appointment-list type="doctor" [appointments]="pastAppointments">
+        <ng-template appointmentListButtons let-appointment let-i="index">
+            <button type="button" mat-stroked-button (click)="showAddReportDialog(appointment, i)">Add report</button>
+        </ng-template>
+    </app-appointment-list>
+</div>

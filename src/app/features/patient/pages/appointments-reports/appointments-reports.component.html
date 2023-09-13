@@ -21,8 +21,8 @@
             <mat-icon>save_alt</mat-icon>
         </button>
     </div>
-    <app-report-list type="patient" noDataMessage="You don't have any completed appointments"
-        [appointments]="fulfilledAppointments" [sort]="dscDateSort">
+    <app-report-list noDataMessage="You don't have any completed appointments" [appointments]="fulfilledAppointments"
+        [sort]="dscDateSort">
         <ng-template reportListButtons let-appointment let-index="index">
             <p-progressSpinner [style]="{width: '56px', height: '56px'}"
                 *ngIf="loadingStates.get(index)"></p-progressSpinner>

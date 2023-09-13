@@ -1,0 +1,36 @@
+<div class="d-flex flex-column justify-space-between">
+    <dl>
+        <dt>Patient:</dt>
+        <dd>{{appointment.patient.first_name}} {{appointment.patient.last_name}}</dd>
+
+        <dt>Examination</dt>
+        <dd>{{appointment.examination.name}}</dd>
+
+        <dt>Date and time</dt>
+        <dd>{{appointment.datetime | date:"dd.MM.yyyy 'at' HH:mm"}}</dd>
+    </dl>
+
+
+    <div class="buttons d-flex align-self-end justify-content-evenly align-items-center w-100">
+        <button type="button" mat-raised-button color="primary" (click)="handleSeeAll()"> See all reports</button>
+    </div>
+
+    <mat-divider class="my-3"></mat-divider>
+
+    <h4 [style.font-size.rem]="1.1" [style.color]="'var(--accent)'" [style.font-weight]="600">Cancel appointment</h4>
+    <form #cancelReasonForm="ngForm" (ngSubmit)="handleCancel()">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Reason for cancellation</mat-label>
+            <textarea matInput placeholder="Reason for cancellation" name="reason" [(ngModel)]="cancellationReason"
+                required [style.resize]="'none'" autocomplete="off" [errorStateMatcher]="matcher" rows="3">
+            </textarea>
+            <mat-error *ngIf="cancelReasonForm.invalid">Please enter a reason for cancellation</mat-error>
+        </mat-form-field>
+
+        <div class="buttons d-flex align-self-end justify-content-evenly align-items-center w-100">
+            <button type="submit" mat-raised-button color="warn" [disabled]="cancelReasonForm.invalid">
+                Cancel now
+            </button>
+        </div>
+    </form>
+</div>

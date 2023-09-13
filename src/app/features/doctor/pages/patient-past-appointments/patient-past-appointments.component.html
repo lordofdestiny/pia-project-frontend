@@ -1,0 +1,29 @@
+<div class="container mt-5 ">
+    <button type="button" mat-raised-button class="goback" color="accent" routerLink="/doctor/appointments">
+        <mat-icon>arrow_back_ios</mat-icon>
+        <span> Go back </span>
+    </button>
+
+    <div class="mt-lg-4 mt-md-4 mt-sm-2 " *ngIf="!loading && patient; else tmpLoading" [style.min-height.vh]="50">
+        <dl class="patient-data">
+            <dt>Patient</dt>
+            <dd>{{patient | full_name}}</dd>
+
+            <dt>Username</dt>
+            <dd>@{{patient.username}}</dd>
+
+            <dt>Email</dt>
+            <dd>{{patient.email}}</dd>
+        </dl>
+        <app-report-list noDataMessage="No reports exist for this patient" [appointments]="appointments"
+            [sort]="dscDateSort">
+        </app-report-list>
+    </div>
+
+    <ng-template #tmpLoading>
+        <div class="w-100 d-flex justify-content-center align-items-center" [style.min-height.vh]="50">
+            <p-progressSpinner></p-progressSpinner>
+        </div>
+    </ng-template>
+
+</div>

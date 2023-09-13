@@ -1,4 +1,4 @@
-import { AppointmentDoctor, AppointmentPatient } from "./appointment";
+import { AppointmentBase, AppointmentDoctor, AppointmentPatient } from "./appointment";
 import { Examination, Specialization } from "./specialization";
 
 export type UserRole = "patient" | "doctor" | "manager";
@@ -20,6 +20,7 @@ export interface UserBase {
 export type User = Patient | Doctor | Manager;
 export type Patient = UserBase & {
     type: "patient";
+    appointments?: AppointmentBase<any>[];
     status: "created" | "active" | "deleted";
 };
 
@@ -34,6 +35,7 @@ export type Doctor = UserBase & {
     examinations: Examination[];
     licence_number: string;
     branch: string;
+    appointments?: AppointmentBase<any>[];
     vacations?: Vacation[];
 };
 

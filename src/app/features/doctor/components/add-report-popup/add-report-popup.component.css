@@ -1,0 +1,23 @@
+::ng-deep .p-dialog .p-dialog-header {
+    color: var(--accent);
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+    background-color: var(--bg-color);
+}
+
+.form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.25rem 2rem;
+}
+
+.form .mat-form-field {
+    flex: 1 1 calc(50% - 2rem);
+}

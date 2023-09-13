@@ -1,4 +1,4 @@
-<mat-list *ngIf="appointments">
+<mat-list *ngIf="(appointments?.length??-1) > 0; else noExaminations">
     <mat-list-item *ngFor="let app of appointments;let i = index">
         <p matLine class="header-field date-field">
             {{app.datetime | date:"dd.MM.yyyy"}} - {{app.datetime | date:"HH:mm"}}
@@ -21,13 +21,18 @@
             <span class="report-field-name">Prescribe therapy: </span>
             <span class="report-field-value">{{app.report!.therapy}}</span>
         </p>
-        <p matLine class="report-field">
-            <span class="report-field-name">Followup date:</span>
+        <p matLine class="report-field" [ngClass]="{'mb-0': buttons}">
+            <span class="report-field-name">Follow-up date:</span>
             <span class="report-field-value">{{app.report!.followup | date:"dd.MM.yyyy"}}</span>
         </p>
         <div matLine class="buttons" *ngIf="buttons?.templateRef">
-            <ng-container *ngTemplateOutlet="buttons.templateRef;context:{$implicit :app, index : i}">
+            <ng-container *ngTemplateOutlet="buttons!.templateRef;context:{$implicit :app, index : i}">
             </ng-container>
         </div>
     </mat-list-item>
 </mat-list>
+<ng-template #noExaminations>
+    <div class="no-examinations mat-elevation-z4">
+        <p>{{noDataMessage}}</p>
+    </div>
+</ng-template>

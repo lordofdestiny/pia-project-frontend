@@ -2,6 +2,9 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+// Angular Material
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatDividerModule } from "@angular/material/divider";
 import { MatCardModule } from "@angular/material/card";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatButtonModule } from "@angular/material/button";
@@ -13,16 +16,28 @@ import { MatInputModule } from "@angular/material/input";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatListModule } from "@angular/material/list";
 
-import { DoctorRoutingModule } from "./doctor-routing.module";
-import { DoctorComponent } from "./doctor.component";
-import { DoctorProfileComponent } from "./pages/doctor-profile/doctor-profile.component";
+// FullCalendar
+import { FullCalendarModule } from "@fullcalendar/angular";
+
+// PrimeNG
+import { ButtonModule } from "primeng/button";
+import { DynamicDialogModule } from "primeng/dynamicdialog";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+
+// My modules
 import { SharedModule } from "@shared/shared.module";
-import { PickExaminationsComponent } from "./components/pick-examinations/pick-examinations.component";
+import { DoctorComponent } from "./doctor.component";
+import { DoctorRoutingModule } from "./doctor-routing.module";
+import { AppointmentsComponent } from "./pages/appointments/appointments.component";
+import { DoctorProfileComponent } from "./pages/doctor-profile/doctor-profile.component";
 import { MiscellaneousComponent } from "./pages/miscellaneous/miscellaneous.component";
+import { PickExaminationsComponent } from "./components/pick-examinations/pick-examinations.component";
 import { RequestExaminationComponent } from "./components/request-examination/request-examination.component";
+import { CalendarEventPopupComponent } from "./components/calendar-event-popup/calendar-event-popup.component";
 import { DatepickerHeader, VacationsComponent } from "./components/vacations/vacations.component";
-import { MatNativeDateModule } from "@angular/material/core";
-import { MatDividerModule } from "@angular/material/divider";
+import { PatientPastAppointmentsComponent } from "./pages/patient-past-appointments/patient-past-appointments.component";
+import { AddReportPopupComponent } from './components/add-report-popup/add-report-popup.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +48,10 @@ import { MatDividerModule } from "@angular/material/divider";
         RequestExaminationComponent,
         VacationsComponent,
         DatepickerHeader,
+        AppointmentsComponent,
+        CalendarEventPopupComponent,
+        PatientPastAppointmentsComponent,
+        AddReportPopupComponent,
     ],
     imports: [
         CommonModule,
@@ -51,6 +70,13 @@ import { MatDividerModule } from "@angular/material/divider";
         MatNativeDateModule,
         MatListModule,
         MatDividerModule,
+        // PrimeNG
+        DynamicDialogModule,
+        ConfirmDialogModule,
+        ButtonModule,
+        ProgressSpinnerModule,
+        //FullCalendar
+        FullCalendarModule, // register FullCalendar with your app
         //My modules
         SharedModule,
         DoctorRoutingModule,

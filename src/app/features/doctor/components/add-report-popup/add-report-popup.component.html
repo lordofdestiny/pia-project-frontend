@@ -1,0 +1,56 @@
+<div class="d-flex flex-column justify-space-between">
+
+
+    <dl class="pt-3">
+        <dt>Patient:</dt>
+        <dd>{{appointment.patient.first_name}} {{appointment.patient.last_name}}</dd>
+
+        <dt>Examination</dt>
+        <dd>{{appointment.examination.name}}</dd>
+
+        <dt>Date and time</dt>
+        <dd>{{appointment.datetime | date:"dd.MM.yyyy 'at' HH:mm"}}</dd>
+    </dl>
+
+    <h4 [style.font-size.rem]="1.1" [style.color]="'var(--accent)'" [style.font-weight]="600">
+        Write appointment report
+    </h4>
+
+
+    <form #reportForm="ngForm" class="form">
+        <mat-form-field appearance="outline">
+            <mat-label>Reson for visit</mat-label>
+            <input matInput name="reason" [(ngModel)]="report.reason" required autocomplete="off"
+                [errorStateMatcher]="matcher" />
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Diagnosis</mat-label>
+            <input matInput name="diagnosis" [(ngModel)]="report.diagnosis" required autocomplete="off"
+                [errorStateMatcher]="matcher" />
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Therapy</mat-label>
+            <input matInput name="therapy" [(ngModel)]="report.therapy" required autocomplete="off"
+                [errorStateMatcher]="matcher" />
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Follow-up date</mat-label>
+            <input matInput name="followup" [(ngModel)]="report.followup" required [matDatepicker]="picker"
+                [min]="minDate" disabled>
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker [panelClass]="'panelClass'" #picker disabled="false"></mat-datepicker>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+    </form>
+</div>
+
+<div class="d-flex justify-content-center align-items-center gap-5 mt-5">
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="green" (click)="handleAddReport()" [disabled]="!reportForm.form.valid">
+        Save report
+    </button>
+</div>
