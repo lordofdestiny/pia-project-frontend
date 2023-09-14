@@ -1,0 +1,70 @@
+.notifications {
+    width: 100%;
+}
+
+.notification {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.notification .mat-icon {
+    font-size: 2rem;
+    width: max-content;
+    height: max-content;
+    margin-inline: 1rem;
+}
+
+.notification .mat-icon.visible {
+    max-width: max-content;
+    max-height: max-content;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.notification .mat-icon.hidden {
+    margin: 0;
+    max-width: 0;
+    max-height: 0;
+    visibility: hidden;
+    opacity: 0;
+    overflow: hidden;
+    transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.notification.seen {
+    background-color: #ff00553e;
+    color: #444;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.notification.notseen {
+    background-color: #0026ff85;
+    color: var(--bg-color);
+}
+
+.notification.notseen .mat-icon {
+    color: #ffad66;
+    transition: color 0.5s ease-in-out;
+}
+
+.notification.seen .mat-icon {
+    color: var(--primary);
+    transition: color 0.5s ease-in-out;
+}
+
+.notification-content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-left: 10px;
+}

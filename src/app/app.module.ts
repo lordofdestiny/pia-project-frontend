@@ -17,8 +17,6 @@ import * as _moment from "moment";
 import { default as _rollupMoment } from "moment";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 
-const moment = _rollupMoment || _moment;
-
 export const MY_FORMATS = {
     parse: {
         dateInput: "DD.MM.YYYY.",

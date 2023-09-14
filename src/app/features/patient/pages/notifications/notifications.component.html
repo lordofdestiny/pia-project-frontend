@@ -1,0 +1,49 @@
+<div class="container">
+    <h3 class="subtitle">Notifications</h3>
+
+    <div class="notifications">
+        <div class="notification" *ngFor="let ntf of notifications ?? []" [ngSwitch]="ntf.notification.type"
+            [class]="ntf.seen?'seen':'notseen'" (mouseover)="ntf.seen = true">
+            <ng-container *ngSwitchCase="'cancellation'">
+                <ng-container *ngTemplateOutlet="tplCancelled;context:{$implicit :ntf.notification, seen:ntf.seen }">
+                </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'promotion'">
+                <ng-container *ngTemplateOutlet="tplPromotion;context:{$implicit :ntf.notification, seen:ntf.seen}">
+                </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'appointment'">
+                <ng-container *ngTemplateOutlet="tplReminder;context:{$implicit :ntf.notification, seen:ntf.seen}">
+                </ng-container>
+            </ng-container>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #tplCancelled let-notification let-seen="seen">
+    <div class="notification-content">
+        <span>{{notification.message}}</span>
+    </div>
+    <mat-icon [class]="seen?'visible':'hidden'">notifications_none</mat-icon>
+    <mat-icon [class]="seen?'hidden':'visible'">notifications_active</mat-icon>
+</ng-template>
+
+<ng-template #tplPromotion let-notification let-seen="seen">
+    <div class="notification-content">
+        <span>
+            Promotion: {{notification.message}} -
+            From {{notification.start| date:"dd.MM.yyyy."}} to {{notification.end |date:"dd.MM.yyyy."}}
+        </span>
+    </div>
+    <mat-icon [class]="seen?'visible':'hidden'">notifications_none</mat-icon>
+    <mat-icon [class]="seen?'hidden':'visible'">notifications_active</mat-icon>
+</ng-template>
+
+<ng-template #tplReminder let-notification let-seen="seen">
+    <div class="notification-content">
+        <span>{{notification.message}}</span>
+    </div>
+    <mat-icon [class]="seen?'visible':'hidden'">notifications_none</mat-icon>
+    <mat-icon [class]="seen?'hidden':'visible'">notifications_active</mat-icon>
+</ng-template>

@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { NgForm, NgModel } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute } from "@angular/router";
-import { Promotion } from "@core/models/promotions";
+import { Promotion } from "@core/models/notifications";
 import { IsHandsetService } from "@core/services/is-handset.service";
 import { PromotionsService } from "@core/services/promotions.service";
 import { ActionResultDialogComponent } from "@shared/components/action-success-dialog/action-success-dialog.component";
+import moment from "moment";
 
 @Component({
     selector: "app-promotions",
@@ -16,11 +17,11 @@ export class PromotionsComponent implements OnInit {
     promotions: Promotion[] = this.route.snapshot.data["promotions"];
 
     promotionSort = (a: Promotion, b: Promotion) => {
-        const diff = b.start.getTime() - a.start.getTime();
+        const diff = moment(b.start).valueOf() - moment(a.start).valueOf();
         if (diff !== 0) {
             return diff;
         }
-        return b.end.getTime() - a.end.getTime();
+        return moment(b.end).valueOf() - moment(a.end).valueOf();
     };
 
     constructor(
@@ -29,7 +30,7 @@ export class PromotionsComponent implements OnInit {
         private isHandsetService: IsHandsetService,
         private promotionsService: PromotionsService
     ) {
-        this.promotions.sort((a, b) => b.start.getTime() - a.start.getTime());
+        this.promotions.sort((a, b) => moment(b.start).valueOf() - moment(a.start).valueOf());
     }
 
     isHandset$ = this.isHandsetService.isHandset$;

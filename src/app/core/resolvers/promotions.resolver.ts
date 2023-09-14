@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from "@angular/router";
-import { Promotion } from "@core/models/promotions";
+import { Promotion } from "@core/models/notifications";
 import { PromotionsService } from "@core/services/promotions.service";
 import { Observable, of } from "rxjs";
 

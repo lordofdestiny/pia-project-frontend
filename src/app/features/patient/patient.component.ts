@@ -19,7 +19,6 @@ export class PatientComponent implements OnInit {
             icon: "notifications",
         },
     ];
-
     constructor(private titleService: Title, private authService: AuthService) {
         titleService.setTitle(`Patient - ${authService.full_name}`);
     }

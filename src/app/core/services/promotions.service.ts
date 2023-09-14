@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Promotion } from "@core/models/promotions";
+import { Promotion } from "@core/models/notifications";
 
 import { moment } from "@core/utils/moment";
 import { baseUri } from "@environments/environment";
@@ -35,8 +35,8 @@ export class PromotionsService {
         return this.http
             .post<PromotionServer>(`${baseUri}/managers/promotions`, {
                 ...promotion,
-                start: promotion.start.toISOString(),
-                end: promotion.end.toISOString(),
+                start: moment(promotion.start).toISOString(),
+                end: moment(promotion.end).toISOString(),
             })
             .pipe(
                 map((promotion) => ({

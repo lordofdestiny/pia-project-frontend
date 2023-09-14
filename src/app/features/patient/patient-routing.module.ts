@@ -5,6 +5,8 @@ import { PatientProfileComponent } from "./pages/patient-profile/patient-profile
 import { DoctorsComponent } from "./pages/doctors/doctors.component";
 import { AppointmentsReportsComponent } from "./pages/appointments-reports/appointments-reports.component";
 import { AppointmentsResolver } from "@core/resolvers/appointments.resolver";
+import { NotificationsResolver } from "@core/resolvers/notifications.resolver";
+import { NotificationsComponent } from "./pages/notifications/notifications.component";
 
 const routes: Routes = [
     {
@@ -29,7 +31,16 @@ const routes: Routes = [
                 resolve: {
                     appointments: AppointmentsResolver,
                 },
+                runGuardsAndResolvers: "always",
                 component: AppointmentsReportsComponent,
+            },
+            {
+                path: "notifications",
+                resolve: {
+                    notifications: NotificationsResolver,
+                },
+                runGuardsAndResolvers: "always",
+                component: NotificationsComponent,
             },
         ],
     },

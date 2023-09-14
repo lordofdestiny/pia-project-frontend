@@ -11,6 +11,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
+import { MatBadgeModule } from "@angular/material/badge";
 
 // Ngx-Bootstrap
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
@@ -26,6 +27,7 @@ import { PatientProfileComponent } from "./pages/patient-profile/patient-profile
 import { DoctorsComponent } from "./pages/doctors/doctors.component";
 import { AppointmentsReportsComponent } from "./pages/appointments-reports/appointments-reports.component";
 import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-patient-view.component";
+import { NotificationsComponent } from "./pages/notifications/notifications.component";
 @NgModule({
     declarations: [
         PatientComponent,
@@ -33,6 +35,7 @@ import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-p
         DoctorsComponent,
         DoctorPatientViewComponent,
         AppointmentsReportsComponent,
+        NotificationsComponent,
     ],
     imports: [
         // Angular
@@ -47,6 +50,7 @@ import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-p
         MatFormFieldModule,
         MatSelectModule,
         MatInputModule,
+        MatBadgeModule,
         // Ngx-Bootstrap
         TimepickerModule.forRoot(),
         BsDatepickerModule.forRoot(),
