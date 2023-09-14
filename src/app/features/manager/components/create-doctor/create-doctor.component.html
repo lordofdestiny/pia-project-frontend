@@ -34,11 +34,9 @@
         <mat-form-field appearance="outline" *ngIf="config.controlType=='image'">
             <mat-label>Profile picture</mat-label>
             <mat-icon matPrefix color="accent">image</mat-icon>
-            <ngx-mat-file-input #picture [formControlName]="config.key" type="file" accept="image/*" tabindex="1"
+            <ngx-mat-file-input #picture [formControlName]="config.key" type="file" accept="image/*"
                 valuePlaceholder="No picture selected" color="accent">
-                <mat-icon ngxMatFileInputIcon>
-                    image
-                </mat-icon>
+                <mat-icon> image </mat-icon>
             </ngx-mat-file-input>
             <button type="button" matSuffix *ngIf="!picture.empty" mat-icon-button color="warn"
                 (click)="picture.clear($event)">
