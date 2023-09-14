@@ -114,6 +114,17 @@ button:not(.image-overlay) mat-icon {
 
 }
 
+:host ::ng-deep .mat-form-field-flex {
+    align-items: center;
+}
+
+:host ::ng-deep .mat-form-field-flex:has(textarea) {
+    align-items: flex-start;
+}
+
+:host ::ng-deep .mat-form-field-flex:has(textarea) .cancel-edit-button {
+    margin-top: 0.5rem;
+}
 
 .cancel-edit-button mat-icon {
     font-weight: 600 !important;
