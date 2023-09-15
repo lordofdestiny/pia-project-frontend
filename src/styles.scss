@@ -172,3 +172,8 @@ button.vacation-days {
 .cdk-overlay-container {
     z-index: 12000 !important;
 }
+
+p-avatar > div {
+    border: 1px solid #ccc;
+    border-radius: 100%;
+}

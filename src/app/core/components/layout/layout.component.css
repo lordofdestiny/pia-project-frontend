@@ -13,46 +13,47 @@
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
 }
 
-.mat-toolbar {
+:host ::ng-deep .mat-toolbar {
   position: sticky;
   top: 0;
   z-index: 1;
   min-height: 64px;
+  color: var(--bg-color);
+  height: 64px;
 }
 
 .hidden {
   display: none;
 }
 
-.mat-sidenav {
+:host ::ng-deep .mat-sidenav {
   background-color: var(--bg-color);
 }
 
-.mat-toolbar {
-  color: var(--bg-color);
-  height: 64px;
-}
-
-.mat-nav-list {
+:host ::ng-deep .mat-nav-list {
   padding: 0;
   text-align: right;
 }
 
-.mat-icon-button {
+:host ::ng-deep .mat-icon-button {
   width: fit-content;
   height: fit-content;
 }
 
-.mat-nav-list a {
+:host ::ng-deep.mat-nav-list a {
   font-weight: 500;
   border: 1px solid transparent;
   color: var(--accent);
 }
 
-.mat-toolbar a {
+:host ::ng-deep .mat-toolbar a {
   display: inline-block;
   margin: 0 5px;
   text-decoration: none;
+}
+
+:host ::ng-deep .mat-toolbar a span {
+  font-size: medium !important;
 }
 
 .large-icon {
@@ -79,6 +80,7 @@
 
 :host ::ng-deep .mat-sidenav-content .mat-toolbar a.active-navbar span {
   color: var(--accent) !important;
+  font-size: medium !important;
 }
 
 :host ::ng-deep .mat-sidenav-content .mat-toolbar a:not(.active-navbar):hover {

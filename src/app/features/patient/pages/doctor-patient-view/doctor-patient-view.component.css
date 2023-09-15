@@ -16,6 +16,8 @@
 
 .goback .mat-icon {
     font-size: 1.2em;
+    width: max-content;
+    height: max-content;
 }
 
 .subsubtitle {
@@ -65,24 +67,21 @@
     }
 
     .form-appointment.right {
-        flex-flow: column nowrap;
+        display: flex;
+        flex-flow: row wrap;
         gap: 2rem 0rem;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
-        width: 100%;
     }
 
     .form-appointment div.description {
         justify-content: space-evenly;
         margin-bottom: 0rem;
-        flex: 1 1 100%;
-        width: 100%;
     }
 
     .form-appointment div.buttons {
-        flex: 1 1 100%;
-        width: 100%;
+        margin-block: 2rem;
     }
 }
 
