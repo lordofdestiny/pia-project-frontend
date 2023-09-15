@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angula
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AppointmentBase, AppointmentPatient } from "@core/models/appointment";
+import { Patient } from "@core/models/users";
 import { AppointmentsService } from "@core/services/appointments.service";
 import { AuthService } from "@core/services/auth.service";
 import { moment } from "@core/utils/moment";
@@ -26,7 +27,7 @@ class DefaultValueMap<K, V> extends Map<K, V> {
     styleUrls: ["./appointments-reports.component.css"],
 })
 export class AppointmentsReportsComponent implements OnInit {
-    appointments: AppointmentPatient[] = this.route.snapshot.data["appointments"];
+    appointments: AppointmentPatient[] = this.route.snapshot.data["appointments"].slice();
     loadingStates: Map<number, boolean> = new DefaultValueMap<number, boolean>(false);
 
     @ViewChild("appointmentList") appointmentList?: ElementRef<HTMLTableElement>;
@@ -40,12 +41,12 @@ export class AppointmentsReportsComponent implements OnInit {
     private appointmentEnd({ datetime, examination: { duration } }: AppointmentBase<any>) {
         return moment(datetime).add(duration, "minutes").toDate().getTime();
     }
-    get unfulfilledAppointments(): AppointmentPatient[] {
+    unfulfilledAppointments(): AppointmentPatient[] {
         return this.appointments.filter(
             (appointment) => this.appointmentEnd(appointment) >= new Date().getTime()
         );
     }
-    get fulfilledAppointments(): AppointmentPatient[] {
+    fulfilledAppointments(): AppointmentPatient[] {
         return this.appointments.filter(
             (appointment) => this.appointmentEnd(appointment) < new Date().getTime()
         );
@@ -56,14 +57,14 @@ export class AppointmentsReportsComponent implements OnInit {
     dscDateSort = (a: AppointmentBase<any>, b: AppointmentBase<any>) =>
         b.datetime.getTime() - a.datetime.getTime();
 
-    handleCancel(index: number, appointment: AppointmentPatient) {
+    handleCancel(appointment: AppointmentPatient) {
         this.appointmentsService.patientCancelAppointment(appointment.id).subscribe({
-            next: this.handleCancelSuccess.bind(this, index),
+            next: this.handleCancelSuccess.bind(this, appointment),
             error: this.handleCancelFailed.bind(this),
         });
     }
 
-    handleCancelSuccess(index: number) {
+    handleCancelSuccess(appointment: AppointmentPatient) {
         this.dialog.open(ActionResultDialogComponent, {
             panelClass: "dialog-color",
             data: {
@@ -71,7 +72,7 @@ export class AppointmentsReportsComponent implements OnInit {
                 message: "Appointment canceled successfully",
             },
         });
-        this.appointments?.splice(index, 1);
+        this.appointments.splice(this.appointments.indexOf(appointment), 1);
         this.appointments = [...this.appointments];
     }
 

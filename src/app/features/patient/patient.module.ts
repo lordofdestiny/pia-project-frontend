@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 // Angular Material
@@ -12,13 +12,16 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 // Ngx-Bootstrap
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
-import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
-
+//FullCalendar
+import { FullCalendarModule } from "@fullcalendar/angular";
 // PrimeNG
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { DynamicDialogModule } from "primeng/dynamicdialog";
 
 import { SharedModule } from "@shared/shared.module";
 import { PatientComponent } from "./patient.component";
@@ -28,6 +31,7 @@ import { DoctorsComponent } from "./pages/doctors/doctors.component";
 import { AppointmentsReportsComponent } from "./pages/appointments-reports/appointments-reports.component";
 import { DoctorPatientViewComponent } from "./pages/doctor-patient-view/doctor-patient-view.component";
 import { NotificationsComponent } from "./pages/notifications/notifications.component";
+import { EditAppointmentTimeComponent } from "./components/edit-appointment-time/edit-appointment-time.component";
 @NgModule({
     declarations: [
         PatientComponent,
@@ -36,11 +40,13 @@ import { NotificationsComponent } from "./pages/notifications/notifications.comp
         DoctorPatientViewComponent,
         AppointmentsReportsComponent,
         NotificationsComponent,
+        EditAppointmentTimeComponent,
     ],
     imports: [
         // Angular
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         // Angular Material
         MatIconModule,
         MatTabsModule,
@@ -51,11 +57,15 @@ import { NotificationsComponent } from "./pages/notifications/notifications.comp
         MatSelectModule,
         MatInputModule,
         MatBadgeModule,
+        MatDatepickerModule,
+        MatSnackBarModule,
         // Ngx-Bootstrap
         TimepickerModule.forRoot(),
-        BsDatepickerModule.forRoot(),
+        //FullCalendar
+        FullCalendarModule,
         // PrimeNG
         ProgressSpinnerModule,
+        DynamicDialogModule,
         // My Modules
         SharedModule,
         PatientRoutingModule,

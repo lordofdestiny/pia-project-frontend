@@ -1,7 +1,7 @@
 <div class="container">
     <h3 class="subtitle">Notifications</h3>
 
-    <div class="notifications">
+    <div class="notifications" *ngIf="(notifications??[]).length > 0 ; else tplNoNotif">
         <div class="notification" *ngFor="let ntf of notifications ?? []" [ngSwitch]="ntf.notification.type"
             [class]="ntf.seen?'seen':'notseen'" (mouseover)="ntf.seen = true">
             <ng-container *ngSwitchCase="'cancellation'">
@@ -46,4 +46,10 @@
     </div>
     <mat-icon [class]="seen?'visible':'hidden'">notifications_none</mat-icon>
     <mat-icon [class]="seen?'hidden':'visible'">notifications_active</mat-icon>
+</ng-template>
+
+<ng-template #tplNoNotif>
+    <div class="no-notifications mat-elevation-z4">
+        <span>No notifications at this time</span>
+    </div>
 </ng-template>

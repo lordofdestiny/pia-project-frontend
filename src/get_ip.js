@@ -3,7 +3,7 @@ const {join}= require('path');
 const {writeFileSync}= require('fs');
 
 // Get local IPv4 address of the machine
-const networkInterfacesDict = os.networkInterfaces();
+const networkInterfacesDict = os.networkInterfaces();   
 const ipv4 = Object.keys(networkInterfacesDict)
     .map((key) => networkInterfacesDict[key])
     .flat()

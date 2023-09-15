@@ -1,0 +1,28 @@
+<dl>
+    <dt>Exam</dt>
+    <dd>{{exam.name}}</dd>
+
+    <dt>Price</dt>
+    <dd>{{exam.price | currency:"RSD"}}</dd>
+
+    <dt>Duration</dt>
+    <dd>{{exam.duration | minduration}}</dd>
+
+    <dt>Date</dt>
+    <dd>{{datetime | date:"dd.MM.yyyy."}}</dd>
+</dl>
+
+<p class="adjust-text">Adjust the appointment time using arrows</p>
+<p class="time-text">Earliest time: <span class="time">{{minTime | date:"HH:mm"}}</span></p>
+<p class="time-text">Latest time: <span class="time">{{maxTime | date:"HH:mm"}}</span></p>
+<form #form="ngForm" class="form" (ngSubmit)="handleSubmit(form)">
+    <timepicker name="time2" [name]="'time2'" [(ngModel)]="model.time" (ngModelChange)="handleTimeChanged($event)"
+        [showMeridian]="false" [mousewheel]="true" [arrowkeys]="true" [min]="minTime" [max]="maxTime" [required]="true">
+    </timepicker>
+    <div class="buttons">
+        <button type="button" mat-raised-button color="warn" (click)="handleCancel()">Cancel</button>
+        <button type="submit" mat-raised-button color="green" [disabled]="form.invalid">Submit</button>
+    </div>
+</form>
+<!-- Including duration, start time, and end time -->
+<!-- Controls to move up and down inside the interval clicked and to save and cancel -->

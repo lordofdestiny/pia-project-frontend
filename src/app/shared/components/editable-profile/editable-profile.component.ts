@@ -53,7 +53,18 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
 {
     errorMessages = ErrorMessages;
     imgLoading = true;
-    @Input() disabled = false;
+    _disabled = false;
+    @Input() set disabled(value: boolean) {
+        this._disabled = value;
+        if (value) {
+            this.profileForm.disable();
+        } else {
+            this.profileForm.enable();
+        }
+    }
+    get disabled() {
+        return this._disabled;
+    }
     @Input() styles: any = {};
     @Input() classes: any = {};
     @Input() renderFor?: UserRole;
@@ -222,26 +233,35 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
     private addedControls = false;
     private addDoctorControls() {
         if (this.addedControls) return;
+        const disabled = this.renderFor !== "manager";
         this.addedControls = true;
-        if (this.renderFor === "doctor") {
+        if (this.renderFor !== "manager") {
             this.profileForm.get("email")?.disable();
         }
         this.profileForm.setControl(
-            "licence_number" as any,
-            this.fb.control("", [
+            "licence_number",
+            this.fb.control(
+                {
+                    value: "",
+                    disabled: this.renderFor === "patient",
+                },
+                [
+                    Validators.required,
+                    Validators.minLength(5),
+                    Validators.maxLength(12),
+                    Validators.pattern(/^\d{5,12}$/),
+                ]
+            )
+        );
+        this.profileForm.setControl(
+            "specialization",
+            this.fb.control({ value: null, disabled: this.renderFor === "patient" }, [
                 Validators.required,
-                Validators.minLength(5),
-                Validators.maxLength(12),
-                Validators.pattern(/^\d{5,12}$/),
             ])
         );
         this.profileForm.setControl(
-            "specialization" as any,
-            this.fb.control(null, [Validators.required])
-        );
-        this.profileForm.setControl(
-            "branch" as any,
-            this.fb.control({ value: "", disabled: this.renderFor === "doctor" }, [
+            "branch",
+            this.fb.control({ value: "", disabled: this.renderFor !== "manager" }, [
                 Validators.required,
             ])
         );
@@ -275,11 +295,6 @@ export class EditableProfileComponent<T extends Patient | Doctor | Manager>
         }
         if (changes?.["user"]) {
             this.resetForm();
-        }
-        if (changes["disabled"]?.currentValue) {
-            this.profileForm.disable();
-        } else {
-            this.profileForm.enable();
         }
     }
 

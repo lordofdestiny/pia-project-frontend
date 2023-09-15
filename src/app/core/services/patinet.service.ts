@@ -6,6 +6,7 @@ import { baseUri } from "@environments/environment";
 import { Patient } from "@core/models/users";
 import { resolveProfilePictures } from "@core/utils/resolveProfilePicture";
 import { AuthService } from "./auth.service";
+import { Notification } from "@core/models/notifications";
 
 @Injectable({
     providedIn: "root",
@@ -25,8 +26,7 @@ export class PatinetService {
     }
 
     markAsSeen(id: string) {
-        return this.http
-            .put(`${baseUri}/patients/${id}/notifications`, {})
-            .pipe(catchError(AuthService.handleError));
+        return this.http.put<Notification[]>(`${baseUri}/patients/${id}/notifications`, {});
+        // .pipe(catchError(AuthService.handleError));
     }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { Notification } from "@core/models/notifications";
 import { AuthService } from "@core/services/auth.service";
 import { PatinetService } from "@core/services/patinet.service";
@@ -10,7 +10,7 @@ import moment from "moment";
     templateUrl: "./notifications.component.html",
     styleUrls: ["./notifications.component.css"],
 })
-export class NotificationsComponent implements OnInit {
+export class NotificationsComponent implements OnInit, OnDestroy {
     notifications? = (this.route.snapshot.data["notifications"] as Notification[])
         .filter(this.showReminder)
         .sort(
@@ -30,11 +30,17 @@ export class NotificationsComponent implements OnInit {
         return moment(notification.date).toDate() <= new Date();
     }
 
-    ngOnInit(): void {
-        if (this.notifications?.some(({ seen }) => !seen)) {
-            this.patientService.markAsSeen(this.authService.user.id).subscribe({
-                error: (err) => console.error(err),
-            });
-        }
+    ngOnInit(): void {}
+
+    ngOnDestroy(): void {
+        this.patientService.markAsSeen(this.authService.user.id).subscribe({
+            next: (notifications) => {
+                this.authService.user = {
+                    ...this.authService.user,
+                    notifications,
+                };
+            },
+            error: (err) => console.error(err),
+        });
     }
 }

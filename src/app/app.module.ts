@@ -10,6 +10,7 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { LandingModule } from "@features/landing/landing.module";
 import { Router } from "@angular/router";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 // Import moment.js
 import * as _moment from "moment";
@@ -40,6 +41,7 @@ export const MY_FORMATS = {
         MomentDateModule,
         CoreModule,
         LandingModule,
+        MatSnackBarModule,
         BsDatepickerModule.forRoot(),
     ],
     exports: [MomentDateModule],

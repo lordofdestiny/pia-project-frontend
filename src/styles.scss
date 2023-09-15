@@ -9,6 +9,8 @@
 
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
+/* Importing Bootstrap SCSS file. Required for ng-bootstrap*/
+@import "~bootstrap/scss/bootstrap";
 
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 
@@ -150,7 +152,6 @@ button.vacation-days {
 
 .fc-timegrid-slot {
     height: 3em !important;
-    border-bottom: 0 !important;
 }
 
 .fc .fc-toolbar-title {

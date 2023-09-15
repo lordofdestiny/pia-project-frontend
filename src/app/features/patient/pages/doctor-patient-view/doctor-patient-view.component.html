@@ -11,54 +11,56 @@
         [styles]="{'margin-bottom' : '2rem', 'font-size':'1.2em'}">
     </app-editable-profile>
 
-    <h3 class="subtitle">Examinations</h3>
+    <h3 class="subtitle" #subtitleExams>Examinations</h3>
     <app-examinations-list class="mb-5" [examinations]="doctor.examinations" [disabled]="false"
         noDataMessage="This doctor is currently not providing any examinations">
         <ng-template examListBtns let-examination>
             <button type="button" mat-raised-button color="primary"
-                [disabled]="examination.id === appointmentModel.examination?.id"
+                [disabled]="appointmentModel.examination && examination.id === appointmentModel.examination.id"
                 (click)="handleSelectedExamination(examination)">
                 Schedule
             </button>
         </ng-template>
     </app-examinations-list>
+</div>
 
-    <section class="container mt-5" #makeAppointment *ngIf="appointmentModel.examination as exam">
-        <h4 class="subsubtitle" [@flyInOut]>Schedule an appointment</h4>
-        <div class="form-appointment" [@flyInOut]>
-            <form #appointmentForm="ngForm" class="form" (ngSubmit)="attemptAppointment(appointmentForm)">
+<section class="mt-5" #makeAppointment *ngIf="appointmentModel.examination as exam">
+    <h4 class="subsubtitle" [@flyInOut]>Schedule an appointment</h4>
+    <mat-tab-group mat-align-tabs="center" [@flyInOut] preserveContent>
+        <mat-tab label="Regular">
+            <form #appointmentForm="ngForm" class="container form-appointment form" (ngSubmit)="attemptAppointment()">
                 <div class="left">
-                    <bs-datepicker-inline name="date" [name]="'date'" [bsValue]="initialDate"
-                        (bsValueChange)="appointmentModel.date = $event" bsDatepicker [bsConfig]="bsConfig"
-                        ngDefaultControl [(ngModel)]="appointmentModel.date" [required]="true">
-                    </bs-datepicker-inline>
+                    <mat-calendar ngDefaultControl name="date" [minDate]="minDate" [style.min-width.px]="300"
+                        [(selected)]="appointmentModel.date"></mat-calendar>
                     <div class="time">
                         <p> Time</p>
                         <timepicker name="time" [name]="'time'" [(ngModel)]="appointmentModel.time"
                             [showMeridian]="false" [minuteStep]="5" [mousewheel]="true" [arrowkeys]="true"
-                            [showSpinners]="false" [min]="minTime" [max]="maxTime" [required]="true">
+                            [min]="minTime" [max]="maxTime" [required]="true">
                         </timepicker>
                     </div>
                 </div>
                 <div class="right">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Examination</mat-label>
-                        <mat-select name="examination" [name]="'examination'" [(ngModel)]="appointmentModel.examination"
-                            [required]="true">
-                            <mat-option *ngFor=" let examination of doctor.examinations" [value]="examination">
-                                {{examination.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
                     <div class="description">
+                        <p><b>Examination:</b> {{exam.name}}</p>
                         <p><b>Price:</b> {{exam.price | currency:"RSD"}}</p>
                         <p><b>Duration:</b> {{exam.duration | minduration}}</p>
                     </div>
-                    <button type="submit" color="accent" mat-raised-button
-                        [disabled]="appointmentForm.invalid">Schedule</button>
+                    <div class="buttons d-flex justify-content-around align-items-center">
+                        <button type="button" color="warn" mat-raised-button
+                            (click)="handleCancelNewAppointment()">Cancel</button>
+                        <button type="submit" color="accent" mat-raised-button
+                            [disabled]="appointmentForm.invalid">Schedule</button>
+                    </div>
                 </div>
             </form>
-        </div>
-    </section>
-
-</div>
+        </mat-tab>
+        <mat-tab label="Interactive">
+            <ng-template matTabContent>
+                <div class="container py-5 appointment-calendar" [style.min-width.vh]="70">
+                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                </div>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</section>

@@ -12,11 +12,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 })
 export class CalendarEventPopupComponent implements OnInit {
     appointment: AppointmentDoctor = this.dialogConfig.data["appointment"];
-    constructor(
-        public dialogRef: DynamicDialogRef,
-        public dialogConfig: DynamicDialogConfig,
-        private confirmationService: ConfirmationService
-    ) {}
+    constructor(public dialogRef: DynamicDialogRef, public dialogConfig: DynamicDialogConfig) {}
 
     cancellationReason: string = "";
     matcher = new ShowOnDirtyErrorStateMatcher();

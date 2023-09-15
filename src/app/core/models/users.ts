@@ -1,4 +1,5 @@
 import { AppointmentBase, AppointmentDoctor, AppointmentPatient } from "./appointment";
+import { Notification } from "./notifications";
 import { Examination, Specialization } from "./specialization";
 
 export type UserRole = "patient" | "doctor" | "manager";
@@ -21,6 +22,7 @@ export type User = Patient | Doctor | Manager;
 export type Patient = UserBase & {
     type: "patient";
     appointments?: AppointmentBase<any>[];
+    notifications?: Notification[];
     status: "created" | "active" | "deleted";
 };
 

@@ -1,0 +1,44 @@
+::ng-deep .p-dialog .p-dialog-header {
+    color: var(--accent);
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+    background-color: var(--bg-color);
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+    background-color: var(--bg-color);
+}
+
+.adjust-text {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.time-text {
+    text-align: center;
+    font-weight: 500;
+}
+
+.time-text .time {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.form {
+    display: inline-flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 2rem;
+}

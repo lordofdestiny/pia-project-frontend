@@ -1,19 +1,22 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AppointmentDoctor, AppointmentReport } from "@core/models/appointment";
 import { Doctor, Patient } from "@core/models/users";
-import { AuthService } from "@core/services/auth.service";
-import { moment } from "@core/utils/moment";
-import { FullCalendarComponent } from "@fullcalendar/angular";
-import { CalendarOptions, EventInput, EventSourceInput } from "@fullcalendar/core";
+
+import { DialogService } from "primeng/dynamicdialog";
+
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { DialogService } from "primeng/dynamicdialog";
-import { CalendarEventPopupComponent } from "@features/doctor/components/calendar-event-popup/calendar-event-popup.component";
-import { AppointmentsService } from "@core/services/appointments.service";
-import { MatDialog } from "@angular/material/dialog";
-import { ActionResultDialogComponent } from "@shared/components/action-success-dialog/action-success-dialog.component";
 import { EventImpl } from "@fullcalendar/core/internal";
+import { CalendarOptions, EventInput } from "@fullcalendar/core";
+
+import { moment } from "@core/utils/moment";
+
+import { MatDialog } from "@angular/material/dialog";
+import { AuthService } from "@core/services/auth.service";
+import { AppointmentsService } from "@core/services/appointments.service";
+import { AppointmentDoctor, AppointmentReport } from "@core/models/appointment";
+import { ActionResultDialogComponent } from "@shared/components/action-success-dialog/action-success-dialog.component";
+import { CalendarEventPopupComponent } from "@features/doctor/components/calendar-event-popup/calendar-event-popup.component";
 import { AddReportPopupComponent } from "@features/doctor/components/add-report-popup/add-report-popup.component";
 
 @Component({
@@ -151,7 +154,6 @@ export class AppointmentsComponent implements OnInit {
             })
             .onClose.subscribe((event: CalendarPopupEvent) => {
                 if (event.action === "seeAll") {
-                    console.log("ALL", event.data);
                     this.router.navigate(["/patients", event.data.id]);
                 }
                 if (event.action === "cancel") {
@@ -240,7 +242,6 @@ export class AppointmentsComponent implements OnInit {
     }
 
     handlePublishReportError(error: any) {
-        console.log(error);
         this.dialog.open(ActionResultDialogComponent, {
             panelClass: "dialog-color",
             data: {

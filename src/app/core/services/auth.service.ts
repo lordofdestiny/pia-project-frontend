@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     set user(user: User) {
-        this.user$.next(user);
+        this.user$.next({ ...user });
     }
 
     get logged_in() {

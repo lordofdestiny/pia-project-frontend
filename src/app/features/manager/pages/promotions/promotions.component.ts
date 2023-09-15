@@ -47,12 +47,12 @@ export class PromotionsComponent implements OnInit {
             end: form.value.dates[1],
         };
         this.promotionsService.add_promotion(promotion).subscribe({
-            next: this.handlePromotionAdded.bind(this),
+            next: this.handlePromotionAdded.bind(this, form),
             error: this.handlePromotionAddedError.bind(this),
         });
     }
 
-    handlePromotionAdded(promotion: Promotion) {
+    handlePromotionAdded(form: NgForm, promotion: Promotion) {
         this.promotions = [...this.promotions, promotion];
         this.dialog.open(ActionResultDialogComponent, {
             panelClass: "dialog-color",
@@ -61,6 +61,7 @@ export class PromotionsComponent implements OnInit {
                 message: "Promotion added",
             },
         });
+        form.resetForm();
     }
 
     handlePromotionAddedError(error: any) {

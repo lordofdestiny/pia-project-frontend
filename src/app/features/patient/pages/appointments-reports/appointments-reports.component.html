@@ -2,9 +2,9 @@
     <h3 class="subtitle" #appointmentList>Appointments</h3>
 
     <app-appointment-list type="patient" noDataMessage="You don't have any future appointments"
-        [appointments]="unfulfilledAppointments" [sort]="ascDateSort">
+        [appointments]="unfulfilledAppointments()" [sort]="ascDateSort">
         <ng-template appointmentListButtons let-appointment let-index="index">
-            <button type="button" mat-stroked-button color="warn" (click)="handleCancel(index, appointment)">
+            <button type="button" mat-stroked-button color="warn" (click)="handleCancel(appointment)">
                 Cancel
             </button>
         </ng-template>
@@ -21,7 +21,7 @@
             <mat-icon>save_alt</mat-icon>
         </button>
     </div>
-    <app-report-list noDataMessage="You don't have any completed appointments" [appointments]="fulfilledAppointments"
+    <app-report-list noDataMessage="You don't have any completed appointments" [appointments]="fulfilledAppointments()"
         [sort]="dscDateSort">
         <ng-template reportListButtons let-appointment let-index="index">
             <p-progressSpinner [style]="{width: '56px', height: '56px'}"

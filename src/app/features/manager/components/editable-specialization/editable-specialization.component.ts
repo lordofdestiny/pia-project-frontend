@@ -1,30 +1,21 @@
-import {
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-} from '@angular/core';
-import { NgForm } from '@angular/forms';
-import {
-    MAT_SNACK_BAR_DATA,
-    MatSnackBar,
-    MatSnackBarRef,
-} from '@angular/material/snack-bar';
-import { Examination, Specialization } from '@core/models/specialization';
-import { SpecializationService } from '@core/services/specialization.service';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef } from "@angular/material/snack-bar";
+import { Examination, Specialization } from "@core/models/specialization";
+import { SpecializationService } from "@core/services/specialization.service";
 
 @Component({
-    selector: 'message-snack-bar-component',
-    template: ` <div
-        class="d-flex justify-content-between align-items-baseline"
-    >
+    selector: "message-snack-bar-component",
+    template: ` <div class="d-flex justify-content-between align-items-baseline">
         <span class="message {{ data.class }}">
             {{ data.message }}
         </span>
-        <button mat-button (click)="click()" class="btn">OK</button>
+        <button
+            mat-button
+            (click)="click()"
+            class="btn">
+            OK
+        </button>
     </div>`,
     styles: [
         `
@@ -57,11 +48,11 @@ export class MessageSnackBar {
         public snackBarRef: MatSnackBarRef<MessageSnackBar>,
         @Inject(MAT_SNACK_BAR_DATA)
         public data: {
-            class: 'primary' | 'accent' | 'green' | 'warn' | 'beige';
+            class: "primary" | "accent" | "green" | "warn" | "beige";
             message: string;
         } = {
-            class: 'primary',
-            message: 'Message',
+            class: "primary",
+            message: "Message",
         }
     ) {}
     click() {
@@ -70,9 +61,9 @@ export class MessageSnackBar {
 }
 
 @Component({
-    selector: 'app-editable-specialization[specialization]',
-    templateUrl: './editable-specialization.component.html',
-    styleUrls: ['./editable-specialization.component.css'],
+    selector: "app-editable-specialization[specialization]",
+    templateUrl: "./editable-specialization.component.html",
+    styleUrls: ["./editable-specialization.component.css"],
 })
 export class EditableSpecializationComponent implements OnInit {
     _specialization?: Specialization;
@@ -89,12 +80,12 @@ export class EditableSpecializationComponent implements OnInit {
     }
 
     // Header rows for table
-    headerRows = ['name', 'price', 'duration', 'actions'];
+    headerRows = ["name", "price", "duration", "actions"];
 
     editing = false;
     editingIndex = -1;
     initialValue: Partial<Examination> = {
-        name: '',
+        name: "",
         price: 0,
         duration: 30,
     };
@@ -105,24 +96,19 @@ export class EditableSpecializationComponent implements OnInit {
         this.initialValue = { ...this.examinations[index] };
     }
 
-    @ViewChild('examForm') examForm?: NgForm;
+    @ViewChild("examForm") examForm?: NgForm;
 
     saveEdit(event: SubmitEvent) {
         const editedExam = this.examinations[this.editingIndex];
         editedExam.duration ??= 30;
         this.specializationsService.update_examination(editedExam).subscribe({
             next: this.handleExaminationUpdated.bind(this, this.editingIndex),
-            error: this.handleActionFailed.bind(
-                this,
-                this.editingIndex,
-                'edit'
-            ),
+            error: this.handleActionFailed.bind(this, this.editingIndex, "edit"),
             complete: this.stopEditing.bind(this),
         });
     }
 
     handleExaminationUpdated(index: number, event: Examination) {
-        console.log(event);
         this.examinations.splice(index, 1, event);
         this.specializationChange.emit({
             ...(this.specialization ?? ({} as Specialization)),
@@ -130,30 +116,30 @@ export class EditableSpecializationComponent implements OnInit {
         });
         this._snackBar.openFromComponent(MessageSnackBar, {
             duration: 2000,
-            politeness: 'polite',
+            politeness: "polite",
             data: {
-                class: 'green',
-                message: 'Examination updated',
+                class: "green",
+                message: "Examination updated",
             },
         });
     }
 
     handleActionFailed(index: number, type: string, event: any) {
         let message: string;
-        if (type === 'edit') {
+        if (type === "edit") {
             this.examinations[index] = {
                 ...this.examinations[index],
                 ...this.initialValue,
             };
-            message = 'Examination update failed';
+            message = "Examination update failed";
         } else {
-            message = 'Examination delete failed';
+            message = "Examination delete failed";
         }
         this._snackBar.openFromComponent(MessageSnackBar, {
             duration: 2000,
-            politeness: 'polite',
+            politeness: "polite",
             data: {
-                class: 'warn',
+                class: "warn",
                 message: message,
             },
         });
@@ -170,12 +156,10 @@ export class EditableSpecializationComponent implements OnInit {
     }
 
     deleteExam(index: number) {
-        this.specializationsService
-            .delete_examination(this.examinations[index].id)
-            .subscribe({
-                next: this.handleExaminationDeleted.bind(this, index),
-                error: this.handleActionFailed.bind(this, index, 'delete'),
-            });
+        this.specializationsService.delete_examination(this.examinations[index].id).subscribe({
+            next: this.handleExaminationDeleted.bind(this, index),
+            error: this.handleActionFailed.bind(this, index, "delete"),
+        });
     }
 
     handleExaminationDeleted(index: number) {
@@ -186,10 +170,10 @@ export class EditableSpecializationComponent implements OnInit {
         });
         this._snackBar.openFromComponent(MessageSnackBar, {
             duration: 2000,
-            politeness: 'polite',
+            politeness: "polite",
             data: {
-                class: 'green',
-                message: 'Examination deleted',
+                class: "green",
+                message: "Examination deleted",
             },
         });
     }
@@ -200,23 +184,23 @@ export class EditableSpecializationComponent implements OnInit {
     ) {}
 
     newExamInitial: Partial<Examination> = {
-        name: '',
+        name: "",
         price: 0,
         duration: 30,
     };
 
     newExam: Partial<Examination> = { ...this.newExamInitial };
 
-    @ViewChild('addExamForm') addExamForm?: NgForm;
+    @ViewChild("addExamForm") addExamForm?: NgForm;
     addExam() {
         const newExam = {
             ...this.newExam,
             duration: 30,
-        } as Required<Omit<Examination, 'status'>>;
+        } as Required<Omit<Examination, "status">>;
         this.specializationsService
             .add_examination(this.specialization.id, {
                 ...newExam,
-                status: 'active',
+                status: "active",
             })
             .subscribe({
                 next: this.handleNewExamAdded.bind(this),
@@ -236,9 +220,9 @@ export class EditableSpecializationComponent implements OnInit {
         });
         this._snackBar.openFromComponent(MessageSnackBar, {
             duration: 2000,
-            politeness: 'polite',
+            politeness: "polite",
             data: {
-                class: 'green',
+                class: "green",
                 message: `Examination added to ${this.specialization?.name}`,
             },
         });
@@ -247,9 +231,9 @@ export class EditableSpecializationComponent implements OnInit {
     handleNewExamFailed(event: any) {
         this._snackBar.openFromComponent(MessageSnackBar, {
             duration: 2000,
-            politeness: 'polite',
+            politeness: "polite",
             data: {
-                class: 'warn',
+                class: "warn",
                 message: `Failed to add examination to ${this.specialization?.name}`,
             },
         });
