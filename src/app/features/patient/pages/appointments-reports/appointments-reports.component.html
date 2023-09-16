@@ -13,7 +13,7 @@
 
 <div class="container">
     <h3 class="subtitle">Reports</h3>
-    <div class="buttons">
+    <div class="buttons" *ngIf="fulfilledAppointments().length > 0">
         Request all reports
         <p-progressSpinner [style]="{width: '56px', height: '56px'}" *ngIf="loadingStates.get(-1)">
         </p-progressSpinner>
