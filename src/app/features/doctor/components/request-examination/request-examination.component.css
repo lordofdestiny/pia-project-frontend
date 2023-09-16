@@ -5,8 +5,9 @@
 form.exam-req {
     display: flex;
     flex-flow: column nowrap;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 }
 
 form.exam-req .controls {
@@ -15,13 +16,13 @@ form.exam-req .controls {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    flex: 0 1 50%;
     gap: var(--gap);
 }
 
 form.exam-req .controls mat-form-field {
     margin: 0;
-    flex: 0 1 calc(100% / 2 - var(--gap));
+    flex: 1 1 100%;
 }
 
 @media screen and (max-width: 500px) {
