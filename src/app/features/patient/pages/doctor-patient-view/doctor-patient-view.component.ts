@@ -375,7 +375,7 @@ export class DoctorPatientViewComponent implements OnInit {
             ?.filter(({ datetime }) => moment(datetime).isSameOrBefore(date))
             .at(-1);
         const first_after = thisDayAppointments?.find(({ datetime }) =>
-            moment(datetime).isSameOrAfter(date)
+            moment(datetime).isAfter(date)
         );
         let valid = false;
         if (!first_before && !first_after) {
