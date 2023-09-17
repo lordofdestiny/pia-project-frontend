@@ -23,18 +23,23 @@ export class PatientPastAppointmentsComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get("id");
 
         if (id) {
-            this.appointmentService.getPastAllAppointments(id).subscribe((patient) => {
-                this.patient = patient as any;
-                if (this.patient?.appointments) {
-                    this.patient.appointments = this.patient.appointments.filter(
-                        ({ report }) => report
-                    );
-                }
-                setTimeout(() => {
-                    this.loading = false;
-                }, 500);
+            this.appointmentService.getPastAllAppointments(id).subscribe({
+                next: this.handlePatientAllAppointments.bind(this),
+                error: (err) => {
+                    this.router.navigate(["/not-found"]);
+                },
             });
         }
+    }
+
+    handlePatientAllAppointments(patient: Partial<Patient>) {
+        this.patient = patient as any;
+        if (this.patient?.appointments) {
+            this.patient.appointments = this.patient.appointments.filter(({ report }) => report);
+        }
+        setTimeout(() => {
+            this.loading = false;
+        }, 500);
     }
 
     dscDateSort(a: AppointmentBase<any>, b: AppointmentBase<any>) {
