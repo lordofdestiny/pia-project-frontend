@@ -5,11 +5,11 @@ import { animate, keyframes, style, transition, trigger } from "@angular/animati
 
 import { MatDialog } from "@angular/material/dialog";
 
-import { CalendarOptions, EventInput } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionsPugin from "@fullcalendar/interaction";
 import { FullCalendarComponent } from "@fullcalendar/angular";
+import { CalendarOptions, EventInput } from "@fullcalendar/core";
 
 import { DialogService } from "primeng/dynamicdialog";
 
@@ -82,10 +82,6 @@ export class DoctorPatientViewComponent implements OnInit {
         const date = moment();
         if (date.hour() >= 23) {
             date.add(1, "days").startOf("day");
-            date.set({
-                hour: 7,
-                minute: 0,
-            });
         }
         return date.toDate();
     })();
@@ -104,15 +100,15 @@ export class DoctorPatientViewComponent implements OnInit {
         .toDate();
 
     initialDate = moment(this.minDate).startOf("day").toDate();
-    initialTime = moment(this.minDate).add(1, "hour").startOf("hour").toDate();
+    initialTime = moment(this.minDate).add(1, "hours").startOf("hour").toDate();
 
     constructor(
-        private route: ActivatedRoute,
         protected router: Router,
+        private route: ActivatedRoute,
         private dialog: MatDialog,
+        private _snackBar: MatSnackBar,
         private dialogService: DialogService,
         private authService: AuthService,
-        private _snackBar: MatSnackBar,
         private appointmentsService: AppointmentsService
     ) {
         let minutes = this.initialTime.getMinutes();
@@ -132,7 +128,7 @@ export class DoctorPatientViewComponent implements OnInit {
     handleExamChange(exam: Examination) {
         if (!exam) return;
         this.appointmentModel.time = this.initialTime;
-        this.maxTime = moment()
+        this.maxTime = moment(this.minDate)
             .set({
                 hour: 23,
                 minute: 0,
@@ -144,7 +140,7 @@ export class DoctorPatientViewComponent implements OnInit {
     @ViewChild("makeAppointment") makeAppointment?: ElementRef<HTMLElement>;
     handleSelectedExamination(examination: Examination) {
         this.appointmentModel = { ...this.appointmentModel, examination };
-        this.maxTime = moment()
+        this.maxTime = moment(this.minDate)
             .set({
                 hour: 23,
                 minute: 0,
