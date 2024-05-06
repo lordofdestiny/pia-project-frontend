@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Doctor, User } from '@core/models/users';
-import { baseUri } from '@environments/environment';
+import { environment } from '@environments/environment';
 import { AuthService } from './auth.service';
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: 'root',

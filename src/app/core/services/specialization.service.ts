@@ -8,7 +8,10 @@ import {
     NewExamination,
     Specialization,
 } from '@core/models/specialization';
-import { baseUri } from '@environments/environment';
+
+import { environment } from '@environments/environment';
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: 'root',

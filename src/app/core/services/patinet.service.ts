@@ -2,11 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
 
-import { baseUri } from "@environments/environment";
+import { environment } from "@environments/environment";
 import { Patient } from "@core/models/users";
 import { resolveProfilePictures } from "@core/utils/resolveProfilePicture";
 import { AuthService } from "./auth.service";
 import { Notification } from "@core/models/notifications";
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: "root",

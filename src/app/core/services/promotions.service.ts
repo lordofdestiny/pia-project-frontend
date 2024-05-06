@@ -3,8 +3,10 @@ import { Injectable } from "@angular/core";
 import { Promotion } from "@core/models/notifications";
 
 import { moment } from "@core/utils/moment";
-import { baseUri } from "@environments/environment";
+import { environment } from "@environments/environment";
 import { Observable, map } from "rxjs";
+
+const baseUri = environment.apiUri;
 
 export interface PromotionServer {
     id: string;

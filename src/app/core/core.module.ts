@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatRippleModule} from "@angular/material/core";
 import { RouterModule } from '@angular/router';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -40,6 +41,7 @@ import { RoleGuard } from './guards/role.guard';
         MatSidenavModule,
         MatToolbarModule,
         MatProgressBarModule,
+        MatRippleModule,
     ],
     exports: [FooterComponent, LayoutComponent, PageNotFoundComponent],
 })

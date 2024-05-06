@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { baseUri } from '@environments/environment';
+import { environment } from '@environments/environment';
 import { Doctor } from '@core/models/users';
 import {
     resolveProfilePicture,
@@ -13,6 +13,8 @@ import {
 import { AuthService } from './auth.service';
 import { moment } from '@core/utils/moment';
 import { Examination } from '@core/models/specialization';
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: 'any',

@@ -1,8 +1,8 @@
 import { Doctor, Manager, Patient, User } from '@core/models/users';
-import { baseUri } from '@environments/environment';
+import { environment } from '@environments/environment';
 
 export function resolveProfilePicturePath(path: string) {
-    return `${baseUri}${path}`;
+    return `${environment.baseUri}/${path}`.replace(/\/+/,"/");
 }
 
 export function resolveProfilePicture<T extends User>(user: T) {
