@@ -3,8 +3,10 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, catchError, map, tap, throwError } from "rxjs";
 import { User, UserCredentials } from "@core/models/users";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { baseUri } from "@environments/environment";
+import { environment } from "@environments/environment";
 import { resolveProfilePicture } from "@core/utils/resolveProfilePicture";
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: "root",

@@ -7,10 +7,12 @@ import {
     AppointmentReport,
     NewAppointment,
 } from "@core/models/appointment";
-import { baseUri } from "@environments/environment";
+import { environment  } from "@environments/environment";
 import { Observable, map, tap } from "rxjs";
 import { AuthService } from "./auth.service";
 import { Patient } from "@core/models/users";
+
+const baseUri = environment.apiUri;
 
 type UnresolvedDateAppoinment = Omit<AppointmentBase<any>, "datetime"> & {
     datetime: string;

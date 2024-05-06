@@ -3,11 +3,10 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)!">
 
-    <mat-toolbar matRipple color="primary" class="p-0 w-100" (click)="drawer.close()"
-      [routerLink]="'/'+(is_logged_in$| async)!?(authService.user$ | async)!.type:''">
-
-      <div class="d-flex align-items-center p-0 w-100">
-        <mat-icon fontIcon="local_hospital" style="font-size: xxx-large; height: fit-content; width: fit-content;"
+    <mat-toolbar matRipple color="primary" class="p-0 w-100" (click)="drawer.close()">
+      <div class="d-flex align-items-center p-0 w-100" matRipple [matRippleCentered]="true"
+           [routerLink]="'/'+(is_logged_in$| async)!?(authService.user$ | async)!.type:''">
+        <mat-icon  fontIcon="local_hospital" style="font-size: xxx-large; height: fit-content; width: fit-content;"
           color="accent"></mat-icon>
         <span style="font-size: x-large;">{{title}}</span>
       </div>

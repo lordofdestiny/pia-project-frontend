@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    serverPort: 4000,
+    baseUri: "/",
+    apiUri: "/api",
 };

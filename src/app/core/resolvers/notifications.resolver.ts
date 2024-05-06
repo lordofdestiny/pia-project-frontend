@@ -3,8 +3,10 @@ import { Injectable } from "@angular/core";
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable, map, tap } from "rxjs";
 import { Notification } from "@core/models/notifications";
-import { baseUri } from "@environments/environment";
+import { environment } from "@environments/environment";
 import { AuthService } from "@core/services/auth.service";
+
+const baseUri = environment.apiUri;
 
 @Injectable({
     providedIn: "root",

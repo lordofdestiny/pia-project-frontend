@@ -1,15 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import ipv4s from '@assets/ipv4.json';
-const serverPort = 4000;
-
-export const baseUri = `http://${ipv4s[0]}:${serverPort}`;
 
 export const environment = {
     production: false,
-    serverPort: 4000,
-    baseUri,
+    baseUri : "http://0.0.0.0:4000",
+    apiUri : "http://0.0.0.0:4000/api",
 };
 
 /*
