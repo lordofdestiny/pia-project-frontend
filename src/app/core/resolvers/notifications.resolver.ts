@@ -16,7 +16,7 @@ export class NotificationsResolver implements Resolve<Notification[]> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Notification[]> {
         const patientId = this.authService.user.id;
-        return this.http.get<Notification[]>(`${baseUri}/patients/${patientId}/notifications`).pipe(
+        return this.http.get<Notification[]>(`${environment.baseUri}/patients/${patientId}/notifications`).pipe(
             tap((notifications) => {
                 this.authService.user = {
                     ...this.authService.user,
