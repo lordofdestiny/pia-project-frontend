@@ -10,7 +10,7 @@ import { NotLoggedInGurad } from "@core/guards/notloggedin.guard";
 import { PageNotFoundComponent } from "@core/components/page-not-found/page-not-found.component";
 import { SpecializationsResolver } from "@core/resolvers/specializations.resolver";
 import { DoctorPatientViewComponent } from "@features/patient/pages/doctor-patient-view/doctor-patient-view.component";
-import { PatientPastAppointmentsComponent } from "./features/doctor/pages/patient-past-appointments/patient-past-appointments.component";
+import { PatientPastAppointmentsComponent } from "@features/doctor/pages/patient-past-appointments/patient-past-appointments.component";
 
 export const appRoutes: Routes = [
     {

@@ -106,6 +106,7 @@ export class AppointmentsReportsComponent implements OnInit {
     }
 
     handleReportRequestFailed(err: any) {
+        this.loadingStates.set(-1, false);
         this.dialog.open(ActionResultDialogComponent, {
             panelClass: "dialog-color",
             data: {
